@@ -1,0 +1,156 @@
+@if (this.data){
+
+<div class="wrapper">
+  <div class="profile-container">
+    <h1 class="title">Profile</h1>
+    <div class="profile-header">
+      <div
+        class="profile-background"
+        style="background-image: url('{{ this.data!.bg | bg }}')"
+      ></div>
+      <div class="profile-info">
+        <div class="profile-avatar">
+          <img [src]="this.data!.img | img" alt="" class="profile-avatar-img" />
+          <img
+            [src]="this.data! .border | border"
+            alt=""
+            class="profile-border"
+          />
+        </div>
+        <div class="prof-info">
+          <div class="nickname">{{ this.data.username }}</div>
+          <div class="name">{{ this.data!.name }}</div>
+          <div class="description">{{ this.data!.description }}</div>
+        </div>
+        @if (this.isItMyProfile){
+          <button class="btn editBtn" (click)="this.editProfile($event)">
+            <svg icon="pen"></svg>
+          </button>
+        }
+      </div>
+    </div>
+    @if (this.isItMyProfile) {
+    <div class="createPost">
+      <h2>Create Post</h2>
+      <form
+        class="createPostForm"
+        [formGroup]="createPostForm"
+        (ngSubmit)="createPost($event)"
+      >
+        <div class="createPostFormHolder">
+          <input
+            type="file"
+            accept="image/*"
+            class="upload"
+            formControlName="file"
+            name="file"
+            ngModel
+            [ngClass]="{ selected: createPostForm.get('file')?.value }"
+            (change)="onFileSelected($event)"
+          />
+          <div class="createPostInputs">
+            <input
+              name="title"
+              ngModel
+              type="text"
+              placeholder="Title"
+              formControlName="title"
+            />
+            <textarea
+              name="description"
+              ngModel
+              formControlName="description"
+              type="description"
+              placeholder="Description"
+            ></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create Post</button>
+      </form>
+    </div>
+    } @for (post of this.posts; track post.id) {
+    <app-post [data]="post"></app-post>
+    }
+  </div>
+</div>
+<div
+  class="edit-profile-wrapper"
+  [ngStyle]="{ display: isItMyProfile && isEditing ? 'flex' : 'none' }"
+>
+  <div class="edit-profile">
+    <button
+      class="btn close"
+      (click)="this.editProfile($event)"
+      style="position: absolute; top: 10px; right: 10px"
+    >
+      x
+    </button>
+    <div class="edit" style="grid-area: main">
+      <h1>Edit Profile</h1>
+      <form
+        class="edit-profile-form"
+        [formGroup]="editProfileForm"
+        (ngSubmit)="editProfile($event)"
+      >
+        <input
+          type="file"
+          class="upload avatar"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          formControlName="img"
+          [ngClass]="{ selected: editProfileForm.get('img')?.value }"
+        />
+        <input
+          type="text"
+          placeholder="Name"
+          formControlName="name"
+          name="name"
+          ngModel
+          style="grid-area: name"
+        />
+        <textarea
+          placeholder="Description"
+          formControlName="description"
+          name="description"
+          ngModel
+          style="grid-area: description"
+        ></textarea>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          style="grid-area: save"
+          (click)="this.onEditProfile($event)"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+    <div class="select-border" style="grid-area: border">
+      <h1>Select Border</h1>
+      <div class="select-border-holder">
+        @for (border of this.borders; track border) {
+        <img
+          [src]="border | border"
+          class="select-border-item"
+          (click)="this.onSelectBorder($event, border)"
+        />
+        }
+      </div>
+    </div>
+    <div class="select-bg" style="grid-area: bg">
+      <h1>Select Background</h1>
+      <div class="select-bg-holder">
+        @for (bg of this.backgrounds; track bg) {
+        <div
+          class="select-bg-item"
+          [ngStyle]="{ 'background-image': 'url(' + (bg | bg) + ')' }"
+          (click)="this.onSelectBg($event, bg)"
+        ></div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="loading">Loading...</div>
+}

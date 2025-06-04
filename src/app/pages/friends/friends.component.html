@@ -1,0 +1,10 @@
+<div class="friends-container">
+  <div class="friends-header">
+    <h1>Friends</h1>
+  </div>
+  <div class="friends-list">
+    @for (friend of this.friends; track friend.id) {
+    <app-friend-card [data]="friend"></app-friend-card>
+    }
+  </div>
+</div>

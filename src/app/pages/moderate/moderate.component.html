@@ -1,0 +1,11 @@
+
+@for (post of getPosts; track post.id) {
+  <div class="post-holder">
+    <div class="actionBtns">
+      <button class="btn btn-primary" (click)="approvePost(post.id)">Approve</button>
+      <button class="btn btn-danger" (click)="rejectPost(post.id)">Reject</button>
+      <button class="btn btn-danger" (click)="banUser(post.username)">Ban User</button>
+    </div>
+    <app-post [data] = "post"></app-post>
+  </div>
+}

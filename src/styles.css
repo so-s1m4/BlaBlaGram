@@ -1,1 +1,144 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+:root {
+  --dark-color: #0a0a0a;
+  --light-color: white;
+  --primary-color: #9cce2b;
+  --secondary-color: #111111;
+  --gray-color: #666666;
+  --lightgray-color: #999999;
+}
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+body {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+
+  width: 100svw;
+  height: 100svh;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  width: fit-content;
+  text-align: center;
+}
+
+.btn {
+  cursor: pointer;
+  width: 100%;
+  font-weight: 800;
+  line-height: 1.5rem;
+  border: 1px solid var(--primary-color);
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--primary-color);
+
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.btn:active {
+  transition: all 0.1s ease-in;
+  transform: scale(0.95);
+}
+
+.btn:disabled {
+  display: none;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  color: red;
+  border-color: red;
+}
+.btn-danger:hover {
+  background-color: red;
+  color: var(--light-color);
+}
+
+
+*::-webkit-scrollbar {
+  width: 0.25rem;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+textarea:focus, input:focus {
+  border: none;
+  outline: 2px solid var(--primary-color);
+}
+
+input[type="file"] {
+  outline: none;
+  appearance: none;
+}
+
+input.upload {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+input.upload[type="file"]::-webkit-file-upload-button {
+  width: 100%;
+  height: 100%;
+
+  background: transparent;
+  color: transparent;
+  border: 0;
+
+  -webkit-mask: url("/assets/svg/plus.svg") no-repeat center / contain;
+  mask: url("/assets/svg/plus.svg") no-repeat center / contain;
+
+  /* pick whatever color you like here */
+  background-color: var(--primary-color);
+}
+
+input.upload[type="file"] {
+  color: transparent;
+}
+
+input.upload.selected[type="file"]::-webkit-file-upload-button {
+  -webkit-mask: initial;
+  mask: initial;
+
+  background-color: transparent;
+}
+
+input, textarea {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--secondary-color);
+
+  resize: none;
+  color: var(--lightgray-color);
+}
+
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+  }
+}

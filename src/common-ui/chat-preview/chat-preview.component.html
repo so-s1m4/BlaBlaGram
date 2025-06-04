@@ -1,0 +1,23 @@
+<img class="avatar" [src]="chat.profile.img" alt="" />
+<div class="chat-info">
+  <div class="username">
+    {{ chat.profile.username }}
+  </div>
+  <div class="message-preview">
+    <div class="message-preview-text">
+      {{ chat.lastMessage.text }}
+    </div>
+    <div class="message-preview-time">
+      {{ chat.lastMessage.time.toLocaleTimeString() }}
+    </div>
+  </div>
+</div>
+@if (chat.unreadMessages > 0) {
+  <div class="unread-messages">
+    @if (chat.unreadMessages > 99) {
+      99+
+    } @else {
+      {{ chat.unreadMessages }}
+    }
+  </div>
+}

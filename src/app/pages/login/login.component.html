@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <div class="holder">
+    <h1 class="title">BlaBlaGram</h1>
+    <form (ngSubmit)="onSubmit($event)" class="form" [formGroup]="form">
+      <label class="input-field">
+        Username or Email*
+        <input type="text" formControlName="username" />
+      </label>
+      <label class="input-field">
+        Password *
+        <input type="password" formControlName="password" />
+      </label>
+      <button class="btn" type="submit" [disabled]="!form.valid">Login</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="sidebar">
+  <h1 class="title">Bla Bla Gram</h1>
+  <div class="buttons">
+    @for (link of this.pages; track link.name) {
+      <button class="button page-link" [name] = "link.name" [routerLink]="link.name">
+        <svg [icon]="link.icon"></svg><span>{{link.title}}</span>
+      </button>
+    }
+  </div>
+</div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

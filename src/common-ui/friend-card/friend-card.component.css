@@ -1,0 +1,111 @@
+:host {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+
+  align-items: center;
+  justify-content: center;
+
+  background: var(--secondary-color);
+  border-radius: 1rem;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: 3px solid var(--primary-color);
+}
+
+.username {
+  color: var(--light-color);
+  text-align: center;
+}
+.name {
+  color: var(--lightgray-color);
+  text-align: center;
+}
+.actionBtns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.actionBtns button {
+  display: flex;
+  gap: 0.5rem;
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--light-color);
+  }
+}
+
+.block-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  padding: 0;
+  border: none;
+
+  width: 25px;
+  height: 25px;
+
+  color: var(--primary-color);
+
+  svg {
+    width: 100%;
+    height: 100%;
+  } 
+
+}
+
+.block-btn:hover {
+  cursor: pointer;
+  color: red;
+  background: transparent;
+  
+  box-shadow: 10 10 20px rgba(255, 0, 0, 0.2);
+}
+
+@media (max-width: 1000px) {
+  :host {
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    padding: 0 .5rem;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .username {
+    font-size: 1.2rem;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+  .actionBtns {
+    flex-direction: column;
+  }
+
+  .block-btn {
+    display: none;
+  }
+
+}

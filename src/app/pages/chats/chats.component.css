@@ -1,0 +1,63 @@
+:host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  background: var(--dark-color);
+}
+
+.chats-container {
+  min-width: 270px;
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-top: 20px;
+  background: var(--dark-color);
+
+
+}
+
+.chats-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x:visible;
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  overflow: hidden;
+}
+
+.chats-content {
+  width: 80%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+@media (max-width: 1200px) {
+  :host {
+    flex-direction: column;
+  }
+
+  .chats-container {
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .chats-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

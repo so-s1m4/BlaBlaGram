@@ -1,0 +1,60 @@
+:host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  background: var(--dark-color);
+}
+
+.friends-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-top: 20px;
+  background: var(--dark-color);
+}
+
+.friends-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x:visible;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  padding-right: 15 px;
+}
+
+.friends-content {
+  width: 80%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+@media (max-width: 1000px) {
+  :host {
+    flex-direction: column;
+  }
+
+  .friends-container {
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .friends-list {
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      max-height: 150px;
+    }
+  }
+}
