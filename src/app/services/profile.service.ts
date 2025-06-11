@@ -102,6 +102,64 @@ export class ProfileService {
         bg: 'bg1.avif',
         border: 'border1.png',
       },
+      {
+        id: 1,
+        name: 'SomeBody',
+        username: 'Doaosdja',
+        img: 'assets/img/avatar.webp',
+        description: 'akljsdb jgasdhg vahgsdv havshgd h',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 2,
+        name: 'John Doe',
+        username: 'johndoe',
+        img: 'assets/img/avatar.webp',
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 3,
+        name: 'Jane Smith',
+        username: 'janesmith',
+        img: 'assets/img/avatar.webp',
+        description:
+          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 1,
+        name: 'SomeBody',
+        username: 'Doaosdja',
+        img: 'assets/img/avatar.webp',
+        description: 'akljsdb jgasdhg vahgsdv havshgd h',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 2,
+        name: 'John Doe',
+        username: 'johndoe',
+        img: 'assets/img/avatar.webp',
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 3,
+        name: 'Jane Smith',
+        username: 'janesmith',
+        img: 'assets/img/avatar.webp',
+        description:
+          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
     ];
   }
   async getPendingRequests(): Promise<ProfileData[]> {

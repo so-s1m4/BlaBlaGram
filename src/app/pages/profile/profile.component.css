@@ -31,7 +31,7 @@
 }
 .profile-header {
   width: 100%;
-  height: 35vh;
+  height: 45vh;
 
   background: var(--secondary-color);
   border-radius: 1rem;
@@ -43,7 +43,7 @@
 }
 .profile-background {
   width: 100%;
-  height: 15vh;
+  height: 50%;
 
   border-radius: 1rem;
 
@@ -86,19 +86,18 @@
   display: flex;
   position: relative;
   gap: 2rem;
-  height: 18vh;
+  height: 50%;
 }
 .profile-avatar {
   position: relative;
-  transform: translateY(-25%);
+  transform: translateY(-30%);
   z-index: 1;
-
-  width: 15rem;
-  height: auto;
+  width: 18vh;
+  height: 18vh;
 }
 .profile-avatar-img {
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
 }
 .profile-border {
   position: absolute;
@@ -106,8 +105,8 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(1.05);
 
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -357,7 +356,6 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: auto;
   }
   .profile-info {
     flex-direction: column;
