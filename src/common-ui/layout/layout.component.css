@@ -65,13 +65,13 @@
   color: var(--primary-color);
 }
 
-
-
 @media (max-width: 800px) {
   :host {
     flex-direction: column-reverse;
   }
   .sidebar {
+    border-top: 2px solid var(--primary-color);
+
     width: 100%;
     height: 8rem;
     display: flex;

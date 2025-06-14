@@ -88,6 +88,10 @@
     justify-content: space-between;
 
     padding: 0 0.5rem;
+
+    border-bottom: 1px solid var(--primary-color);
+    border-radius: 0;
+    padding-bottom: .7rem;
   }
 
   .avatar {
@@ -112,5 +116,25 @@
 
   .block-btn {
     display: none;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :host {
+    background: transparent;
+  }
+
+  .avatar {
+    border: 3px solid var(--primary-color);
+  }
+
+  .actionBtns button {
+    svg {
+      color: inherit;
+    }
+  }
+
+  .block-btn {
+    color: red;
   }
 }

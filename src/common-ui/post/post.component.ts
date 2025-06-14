@@ -38,14 +38,21 @@ export class PostComponent {
   profileService = inject(ProfileService);
 
   showComments$ = false;
+  showDescFull$ = false;
 
   get showComments() {
     return this.showComments$;
+  }
+  get showDescFull() {
+    return this.showDescFull$;
   }
   toggleShowComments() {
     this.showComments$ = !this.showComments$;
   }
 
+  toggleShowDescFull() {
+    this.showDescFull$ = !this.showDescFull$;
+  }
 
   public likePost(event: Event) {
     this.data.actions.isLiked = !this.data.actions.isLiked;

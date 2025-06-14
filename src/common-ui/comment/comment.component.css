@@ -3,6 +3,8 @@
   height: fit-content;
 
   position: relative;
+
+  border-bottom: 1px solid var(--lightgray-color);
 }
 
 .comment-header {

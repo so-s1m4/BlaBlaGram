@@ -9,8 +9,10 @@
       <button class="btn" (onclick)="followUser($event)">Subscribe</button>
     </div>
   </div>
-  <div class="content">
+  <div class="post-image">
     <img class="post-image" [src]="this.data.img | img" alt="" />
+  </div>
+  <div class="content">
     <div class="post-actions-btns">
       <button
         class="act-btn"
@@ -31,24 +33,36 @@
     </div>
     <div class="post-info">
       <h3 class="post-title">{{ this.data.title }}</h3>
-      <p class="post-description">
+      <p class="post-description" [ngClass]="{ full: this.showDescFull }" (click)="toggleShowDescFull()">
         {{ this.data.description }}
       </p>
     </div>
   </div>
 </div>
-<div class="comments" [style]="{display: this.showComments ? 'flex' : 'none'}">
-  <h3 class="comments-title">Comments</h3>
+<div
+  class="comments"
+  [style]="{ display: this.showComments ? 'flex' : 'none' }"
+>
+  <div class="comments-header">
+    <h3 class="comments-title">Comments</h3>
+    <button class="btn close-btn" (click)="toggleShowComments()">
+      <svg icon="cross"></svg>
+    </button>
+  </div>
+
   <div class="comments-holder">
     @if(!this.data.comments.data || this.data.comments.data.length === 0) {
-      <div class="no-comments"><h3>No comments yet</h3></div>
-    }
-    @for (c of this.data.comments.data; track c.id) {
+    <div class="no-comments"><h3>No comments yet</h3></div>
+    } @for (c of this.data.comments.data; track c.id) {
     <app-comment [data]="c"></app-comment>
     }
   </div>
   <div class="add-comment">
-    <input type="text" placeholder="Write a comment" [id] = `#comment-input-${this.data.id}`/>
+    <input
+      type="text"
+      placeholder="Write a comment"
+      [id]="`#comment-input-${this.data.id}`"
+    />
     <button class="btn" onclick="sendComment($event)">Send</button>
   </div>
 </div>

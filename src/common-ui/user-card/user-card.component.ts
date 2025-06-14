@@ -1,28 +1,30 @@
 import { Component, inject, Input } from '@angular/core';
-import { ProfileData, ProfileService } from '../../app/services/profile.service';
-import { ImgPipe } from "../../app/utils/img.pipe";
+import {
+  ProfileData,
+  ProfileService,
+} from '../../app/services/profile.service';
+import { ImgPipe } from '../../app/utils/img.pipe';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-friend-card',
+  selector: 'app-user-card',
   imports: [SvgIconComponent, ImgPipe, RouterLink],
-  templateUrl: './friend-card.component.html',
-  styleUrl: './friend-card.component.css',
+  templateUrl: './user-card.component.html',
+  styleUrl: './user-card.component.css',
 })
-export class FriendCardComponent {
+export class UserCardComponent {
   @Input() data: ProfileData | undefined;
 
   profileService = inject(ProfileService);
 
   ngOnInit() {
     if (!this.data) {
-      console.error('FriendCardComponent: data input is undefined');
+      console.error('UserCardComponent: data input is undefined');
     }
-  }
+  } 
 
   removeFriend() {
     this.profileService.followUser(this.data!.username);
-    
   }
 }

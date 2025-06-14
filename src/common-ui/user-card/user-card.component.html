@@ -1,15 +1,20 @@
-<img class="avatar" [src]="this.data!.img | img" alt="">
+<img
+  class="avatar"
+  [src]="this.data!.img | img"
+  alt=""
+  [routerLink]="['/profile', this.data!.username]"
+/>
 <div class="friend-info">
-  <h2 class="username">{{this.data!.username}}</h2>
-  <h3 class="name">{{this.data!.name}}</h3>
+  <h2 class="username">{{ this.data!.username }}</h2>
+  <h3 class="name">{{ this.data!.name }}</h3>
 </div>
 
 <div class="actionBtns">
   <button
-  class="btn btn-primary"
-  [routerLink]="['/chats']"
-  [queryParams]="{username: this.data!.username}">
-  
+    class="btn btn-primary"
+    [routerLink]="['/chats']"
+    [queryParams]="{ username: this.data!.username }"
+  >
     <svg icon="comments"></svg>
     Chat
   </button>

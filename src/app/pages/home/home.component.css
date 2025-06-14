@@ -3,6 +3,7 @@
   height: 100%;
 
   display: block;
+  position: relative;
 }
 
 .home-history-holder {
@@ -25,17 +26,23 @@
   grid-template-rows: repeat(auto-fill, minmax(fit-content, 1fr));
   justify-items: center;
 
-  grid-gap: 4rem;
-
   width: 100%;
   height: 90%;
 
-  padding: 1rem;
-  padding-top: 5dvh;
+  padding-top: 3dvh;  
+  padding-bottom: 5dvh;
 
   background: transparent;
+  border-collapse: collapse;
 
   overflow: auto;
+  &>* {
+    border-bottom: 1px solid var(--primary-color);
+  };
+
+}
+.home-posts-holder::-webkit-scrollbar {
+  display: none;
 }
 
 .home-posts-holder::-webkit-scrollbar {

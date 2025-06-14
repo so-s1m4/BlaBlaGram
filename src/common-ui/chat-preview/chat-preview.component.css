@@ -71,3 +71,8 @@
   font-weight: 900;
 }
 
+@media (max-width: 1000px) {
+  :host {
+    background: transparent;
+  }
+}
