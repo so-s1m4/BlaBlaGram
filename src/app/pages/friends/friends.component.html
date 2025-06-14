@@ -2,6 +2,10 @@
   <div class="friends-header">
     <h1>Friends</h1>
   </div>
+  <app-search
+    [placeholder]="'Search friends...'"
+    (search)="searchFriends($event)"
+  ></app-search>
   <div class="friends-list">
     @for (friend of this.friends; track friend.id) {
     <app-friend-card [data]="friend"></app-friend-card>

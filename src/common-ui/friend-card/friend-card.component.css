@@ -15,8 +15,8 @@
   background: var(--secondary-color);
   border-radius: 1rem;
 
-  padding-top: .2rem;
-  padding-bottom: .2rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
 }
 
 .avatar {
@@ -68,15 +68,14 @@
   svg {
     width: 100%;
     height: 100%;
-  } 
-
+  }
 }
 
 .block-btn:hover {
   cursor: pointer;
   color: red;
   background: transparent;
-  
+
   box-shadow: 10 10 20px rgba(255, 0, 0, 0.2);
 }
 
@@ -88,7 +87,7 @@
 
     justify-content: space-between;
 
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
   }
 
   .avatar {
@@ -105,10 +104,13 @@
   }
   .actionBtns {
     flex-direction: column;
+    align-items: space-around;
+    button {
+      transform: scale(0.8);
+    }
   }
 
   .block-btn {
     display: none;
   }
-
 }

@@ -13,16 +13,34 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
   padding: 10px;
   padding-top: 20px;
+  padding-bottom: 2px;
+
   background: var(--dark-color);
+
+  gap: 0.7rem;
+}
+.friends-header {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-color);
+  font-weight: bold;
+}
+app-search {
+  width: 100%;
+  height: 3rem;
 }
 
 .friends-list {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  overflow-x:visible;
+  overflow-x: visible;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
@@ -35,7 +53,6 @@
   height: 100%;
   overflow: hidden;
 }
-
 
 @media (max-width: 1000px) {
   :host {

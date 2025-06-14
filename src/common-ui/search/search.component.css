@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+
+  color: var(--primary-color);
+}
+
+.input.search {
+  width: 100%;
+  height: 100%;
+}
+
+.btn.search {
+  height: 100%;
+  width: 10rem;
+  max-width: 25%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
