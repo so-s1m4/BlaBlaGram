@@ -52,6 +52,7 @@ export class ProfileComponent implements OnInit {
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     description: new FormControl('', [Validators.required]),
   });
+  window = window;
 
   constructor(private router: ActivatedRoute) {}
 

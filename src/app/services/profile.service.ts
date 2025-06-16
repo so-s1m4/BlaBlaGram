@@ -37,10 +37,10 @@ export class ProfileService {
     } else {
       return {
         id: 1,
-        name: 'SomeBody9',
-        username: 'Doaosdja',
+        name: 'Anastasia Sipos',
+        username: 'hexe666',
         img: 'assets/img/avatar.webp',
-        description: 'akljsdb jgasdhg vahgsdv havshgd h',
+        description: 'HAHAHA, mach ein profile über mich! :D',
         bg: 'bg1.avif',
         border: 'border1.png',
       };
@@ -108,6 +108,15 @@ export class ProfileService {
         username: 'Doaosdja',
         img: 'assets/img/avatar.webp',
         description: 'akljsdb jgasdhg vahgsdv havshgd h',
+        bg: 'bg1.avif',
+        border: 'border1.png',
+      },
+      {
+        id: 666,
+        name: 'Anastasia',
+        username: 'Sipos',
+        img: 'assets/img/avatar.webp',
+        description: 'HAHAHA, mach ein profile über mich! :D',
         bg: 'bg1.avif',
         border: 'border1.png',
       },

@@ -5,22 +5,22 @@ import { catchError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService{
+export class AuthService {
   private isAuthed: null | boolean = null;
-  
+
   onInit() {
     this.isAuthed = !!localStorage.getItem('token');
   }
 
-  
   httpClient = inject(HttpClient);
 
-  private apiUrl = 'https://api.example.com/';
+  private apiUrl = 'http://localhost:8000/api/auth/';
   constructor() {}
 
-  login(payload: { username: string; password: string }) {
+  login(payload: { email: string; password: string }) {
+    console.log('Login payload:', payload);
     this.httpClient
-      .post(`${this.apiUrl}login`, payload)
+      .post(`${this.apiUrl}signin`, payload)
       .pipe(
         catchError((error) => {
           console.error('Login error', error);
@@ -28,11 +28,10 @@ export class AuthService{
         })
       )
       .subscribe((response) => {
-        localStorage.setItem('token', 'token');
         console.log('Login successful', response);
       });
-    this.isAuthed = true;
-    return this.isAuthed;
+    // this.isAuthed = true;
+    // return this.isAuthed;
   }
 
   getIsAuthed() {

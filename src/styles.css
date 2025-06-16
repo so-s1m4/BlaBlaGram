@@ -24,8 +24,8 @@ body {
   background-color: var(--dark-color);
   color: var(--light-color);
 
-  width: 100dvw;
-  height: 100dvh;
+  width: 100svw;
+  height: 100svh;
   overflow: hidden;
 }
 
@@ -162,57 +162,51 @@ svg * {
     --dark-color: white; /* #0a0a0a */
     --light-color: #0a0a0a;
     --primary-color: #71d302;
-    --secondary-color: #f2f2f2;
+    --secondary-color: #f7f7f7;
     --gray-color: #999999;
     --lightgray-color: #666666;
   }
 
-  
-.btn {
-  cursor: pointer;
-  width: 100%;
-  font-weight: 800;
-  line-height: 1.5rem;
-  border: 1px solid var(--primary-color);
-  padding: 0.5rem 1rem;
-  background: transparent;
-  color: var(--primary-color);
+  .btn {
+    cursor: pointer;
+    width: 100%;
+    font-weight: 800;
+    line-height: 1.5rem;
+    border: 1px solid var(--primary-color);
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--primary-color);
 
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 
-  svg {
-    width: inherit;
-    height: inherit;
-    fill: var(--primary-color);
-    margin-right: 0.5rem;
+    svg {
+      width: inherit;
+      height: inherit;
+      fill: var(--primary-color);
+      margin-right: 0.5rem;
+    }
   }
-}
-.btn:hover {
-  background-color: var(--primary-color);
-  color: var(--dark-color);
-}
+  .btn:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-color);
+  }
 
-.btn:active {
-  transition: all 0.1s ease-in;
-  transform: scale(0.95);
-}
+  .btn:active {
+    transition: all 0.1s ease-in;
+    transform: scale(0.95);
+  }
 
-.btn:disabled {
-  display: none;
-  cursor: not-allowed;
-}
+  .btn:disabled {
+    display: none;
+    cursor: not-allowed;
+  }
 
-.btn-danger {
-  color: red;
-  border-color: red;
-}
-.btn-danger:hover {
-  background-color: red;
-  color: var(--light-color);
-}
-  svg {
-    fill: #0a0a0a;
-    color: #0a0a0a;
-    stroke: #0a0a0a;
+  .btn-danger {
+    color: red;
+    border-color: red;
+  }
+  .btn-danger:hover {
+    background-color: red;
+    color: var(--light-color);
   }
 }

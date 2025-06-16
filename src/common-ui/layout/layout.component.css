@@ -9,13 +9,16 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 15%;
-  min-width: 200px;
+  width: 20%;
+  min-width: 270px;
   height: 100%;
 
-  background: var(--secondary-color);
+  background: var(--dark-color);
 
   padding: 0 1vw;
+  border: 0px;
+
+  border-right: 2px solid var(--primary-color);
 }
 .sidebar .title {
   font-size: min(2rem, 24px);
@@ -65,15 +68,65 @@
   color: var(--primary-color);
 }
 
+.notifications {
+  position: absolute;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  display: none;
+
+  border-right: 1px solid var(--primary-color);
+
+  z-index: 1000000;
+}
+.notifications.showed {
+  display: block;
+}
+
+@media (min-width: 800px) {
+  :host {
+    flex-direction: row;
+  }
+
+  .sidebar.collapsed {
+    width: 100px;
+    align-items: center;
+    padding: 0;
+    min-width: initial;
+    border-right: 2px solid var(--primary-color);
+    .buttons {
+      padding: 0;
+      button {
+        padding: 0;
+      }
+    }
+  }
+  .sidebar.collapsed + .notifications.showed {
+    left: 90px;
+  }
+  .sidebar.collapsed .title,
+  .sidebar.collapsed span {
+    display: none;
+  }
+}
+
 @media (max-width: 800px) {
   :host {
     flex-direction: column-reverse;
   }
+
+  .title {
+    display: none;
+  }
   .sidebar {
+    border: 0px;
+
     border-top: 2px solid var(--primary-color);
 
     width: 100%;
-    height: 8rem;
+    height: 4rem;
     display: flex;
     .buttons {
       display: flex;

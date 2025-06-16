@@ -1,21 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SvgIconComponent } from '../../app/utils/svg.component';
+import { NotificationsComponent } from '../../app/pages/notifications/notifications.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, SvgIconComponent],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    SvgIconComponent,
+    NotificationsComponent,
+    CommonModule,
+  ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
 })
-export class LayoutComponent {
+export class LayoutComponent{
   router: Router = inject(Router);
 
   pages = [
-    { name: 'home', icon: 'home', title: "Home" },
-    { name: 'chats', icon: 'chats', title: "Chats" },
-    { name: 'friends', icon: 'friends', title: "Friends" },
-    { name: 'profile', icon: 'person', title: "Profile" },
+    { name: 'home', icon: 'home', title: 'Home page', isRoute: true },
+    { name: 'chats', icon: 'chats', title: 'Messages', isRoute: true },
+    { name: 'friends', icon: 'friends', title: 'Friends', isRoute: true },
+    {
+      name: 'notifications',
+      icon: 'heart',
+      title: 'News',
+      isRoute: false,
+      onclick: this.openNotifications.bind(this),
+    },
+    { name: 'profile', icon: 'person', title: 'Profile', isRoute: true },
   ];
-
+  isCollapsed: boolean = false;
+  showNotifications: boolean = false;
+  openNotifications() {
+    this.isCollapsed = !this.isCollapsed;
+    this.showNotifications = !this.showNotifications;
+  }
+  window = window;
 }

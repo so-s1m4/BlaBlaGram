@@ -15,7 +15,7 @@ export class LoginPage {
 
 
   form = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.minLength(3)]),
     password: new FormControl('', [Validators.required])
   });
 
@@ -32,10 +32,8 @@ export class LoginPage {
     event.preventDefault();
 
     this.authService.login(
-      this.form.value as { username: string; password: string }
+      this.form.value as { email: string; password: string }
     )
-
-    localStorage.setItem('token', 'token');
     
     this.router.navigate(['']);
   }
