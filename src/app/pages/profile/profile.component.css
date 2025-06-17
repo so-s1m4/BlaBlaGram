@@ -349,6 +349,34 @@
 
   transition: background-color 0.3s ease-in-out;
 }
+
+.createPostBtn, 
+.createPostBtn * {
+  width: 80px;
+  height: 80px;
+}
+.createPostBtn {
+  position: absolute;
+  bottom: 4rem;
+  right: 2rem;
+
+  background-color: var(--dark-color);
+  color: var(--primary-color);
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  padding: 1rem;
+}
+.createPostBtn:hover {
+  background-color: var(--primary-color);
+  color: var(--dark-color);
+}
 @media (max-width: 1200px) {
   .profile-container {
     width: 100%;

@@ -1,1 +1,21 @@
-<p>notifications works!</p>
+@if (!loading) {
+<h3>Today</h3>
+<div class="holder">
+  @for (notification of this.today; track notification.id) {
+  <app-notify [data]="notification"></app-notify>
+  }
+</div>
+<h3>Yesterday</h3>
+<div class="holder">
+  @for (notification of this.yesterday; track notification.id) {
+  <app-notify [data]="notification"></app-notify>
+  }
+</div>
+<h3>This Week</h3>
+
+<div class="holder">
+  @for (notification of this.thisWeek; track notification.id) {
+  <app-notify [data]="notification"></app-notify>
+  }
+</div>
+}

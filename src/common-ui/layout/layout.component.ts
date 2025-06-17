@@ -1,4 +1,4 @@
-import { Component, inject} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { NotificationsComponent } from '../../app/pages/notifications/notifications.component';
@@ -16,13 +16,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
-export class LayoutComponent{
+export class LayoutComponent implements OnInit {
   router: Router = inject(Router);
 
   pages = [
     { name: 'home', icon: 'home', title: 'Home page', isRoute: true },
-    { name: 'chats', icon: 'chats', title: 'Messages', isRoute: true },
-    { name: 'friends', icon: 'friends', title: 'Friends', isRoute: true },
     {
       name: 'notifications',
       icon: 'heart',
@@ -30,6 +28,8 @@ export class LayoutComponent{
       isRoute: false,
       onclick: this.openNotifications.bind(this),
     },
+    { name: 'chats', icon: 'chats', title: 'Messages', isRoute: true },
+    { name: 'friends', icon: 'friends', title: 'Friends', isRoute: true },
     { name: 'profile', icon: 'person', title: 'Profile', isRoute: true },
   ];
   isCollapsed: boolean = false;
@@ -39,4 +39,9 @@ export class LayoutComponent{
     this.showNotifications = !this.showNotifications;
   }
   window = window;
+
+  ngOnInit(): void {
+    // @ts-ignore
+    console.log(this.window.isDesktop());
+  }
 }

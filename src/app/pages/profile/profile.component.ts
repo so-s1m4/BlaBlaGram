@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { PostComponent } from '../../../common-ui/post/post.component';
 import { ProfileService } from '../../services/profile.service';
@@ -31,6 +31,7 @@ import { BorderPipe } from '../../utils/border.pipe';
     SvgIconComponent,
     BgPipe,
     BorderPipe,
+    RouterLink
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],

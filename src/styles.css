@@ -6,6 +6,7 @@
   --light-color: white;
   --primary-color: #9cce2b;
   --secondary-color: #111111;
+  --dark-gray-color: #222222;
   --gray-color: #666666;
   --lightgray-color: #999999;
 }
@@ -165,6 +166,7 @@ svg * {
     --secondary-color: #f7f7f7;
     --gray-color: #999999;
     --lightgray-color: #666666;
+    --dark-gray-color: #eeeeee;
   }
 
   .btn {

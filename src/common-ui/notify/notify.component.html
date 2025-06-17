@@ -1,0 +1,37 @@
+<div class="notify" [ngClass]="{ unread: this.data?.isRead === false }">
+  <div class="profile-preview" [routerLink]="['/profile', this.data?.data.user?.username]">
+    <img
+      class="profile-image"
+      [src]="this.data?.data.user?.avatar"
+      alt="Profile Picture"
+    />
+  </div>
+  <div class="notify-content">
+    <div class="notify-body">
+      @switch (this.data?.data.type) { @case ('like') {
+      <span class="notify-text">
+        <strong>{{ this.data?.data.user?.username }}</strong> liked your post.
+      </span>
+      } @case ('follow') {
+      <span class="notify-text">
+        <strong>{{ this.data?.data.user?.username }}</strong> started following
+        you.
+      </span>
+      } @case ('comment') {
+      <span class="notify-text">
+        <strong>{{ this.data?.data.user?.username }}</strong> commented on your
+        post.
+      </span>
+      } }
+    </div>
+  </div>
+  @if (this.data?.data.post) {
+    <div class="post-preview">
+      <img
+        class="post-image"
+        [src]="this.data?.data.post.image"
+        alt="Post Preview"
+      />
+    </div>
+  }
+</div>

@@ -12,7 +12,7 @@
         <div class="profile-avatar">
           <img [src]="this.data!.img | img" alt="" class="profile-avatar-img" />
           <img
-            [src]="this.data! .border | border"
+            [src]="this.data!.border | border"
             alt=""
             class="profile-border"
           />
@@ -23,14 +23,16 @@
           <div class="description">{{ this.data!.description }}</div>
         </div>
         @if (this.isItMyProfile){
-          <button class="btn editBtn" (click)="this.editProfile($event)">
-            <svg icon="pen"></svg>
-          </button>
+        <button class="btn editBtn" (click)="this.editProfile($event)">
+          <svg icon="pen"></svg>
+        </button>
         }
       </div>
     </div>
-    @if (this.isItMyProfile) {
-    <div class="createPost">
+    <div
+      class="createPost"
+      *ngIf="this.isItMyProfile && this.window.isDesktop()"
+    >
       <h2>Create Post</h2>
       <form
         class="createPostForm"
@@ -68,11 +70,16 @@
         <button class="btn btn-primary" type="submit">Create Post</button>
       </form>
     </div>
-    } @for (post of this.posts; track post.id) {
+    @for (post of this.posts; track post.id) {
     <app-post [data]="post"></app-post>
     }
   </div>
 </div>
+
+<div class="createPostBtn" *ngIf="!window.isDesktop()" [routerLink]="['/create-post']">
+  <svg icon="plus" class="createPostIcon" (click)="this.createPost($event)"></svg>
+</div>
+
 <div
   class="edit-profile-wrapper"
   [ngStyle]="{ display: isItMyProfile && isEditing ? 'flex' : 'none' }"
