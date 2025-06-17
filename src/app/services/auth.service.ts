@@ -30,8 +30,8 @@ export class AuthService {
       .subscribe((response) => {
         console.log('Login successful', response);
       });
-    // this.isAuthed = true;
-    // return this.isAuthed;
+    this.isAuthed = true;
+    return this.isAuthed;
   }
 
   getIsAuthed() {
