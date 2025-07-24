@@ -15,7 +15,7 @@ export class LoginPage {
 
 
   form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(3)]),
     password: new FormControl('', [Validators.required])
   });
 
@@ -32,9 +32,13 @@ export class LoginPage {
     event.preventDefault();
 
     this.authService.login(
-      this.form.value as { email: string; password: string }
-    )
-    
-    this.router.navigate(['']);
+      this.form.value as { username: string; password: string }
+    ).then((isAuthed) => {
+      if (isAuthed) {
+        this.router.navigate(['']);
+      } else {
+        alert('Invalid username or password');
+      }
+    });
   }
 }

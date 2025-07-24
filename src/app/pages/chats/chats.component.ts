@@ -22,30 +22,35 @@ export class ChatsComponent implements OnInit {
 
   private chats: any[];
   chatsService = inject(ChatsService);
-  selectChat(chat: any) {+
-    console.log('Selected chat:', chat);
-    this.currentChat = chat.profile.username;
 
-
+  selectChat(chat: any) {
+    this.currentChat = chat._id;
 
     this.router.navigate(['chats'], {
-      queryParams: { username: this.currentChat },
+      queryParams: { id: this.currentChat },
     });
   }
   closeChat() {
     this.currentChat = null;
     this.router.navigate(['chats']);
   }
+  setChats(chats: any[]) {
+    this.chats = chats.map((item) => ({
+      ...item,
+      lastMessage: {
+        ...item.lastMessage[0],
+        updatedAt: new Date(item.lastMessage[0].updatedAt),
+      },
+    }));
+  }
   ngOnInit(): void {
-    this.chats = this.chatsService.getChats();
+    this.chatsService.chats(this.setChats.bind(this));
+
     this.aRoute.queryParamMap.subscribe((params) => {
-      this.currentChat = params.get('username')?.trim();
+      this.currentChat = params.get('id')?.trim();
     });
   }
-
   get getChats(): any[] {
     return this.chats;
   }
 }
-
-

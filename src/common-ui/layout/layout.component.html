@@ -1,21 +1,22 @@
-<div class="sidebar" [ngClass]="{ collapsed: this.isCollapsed }">
-  <h1 class="title">Bla Bla Gram</h1>
-  <div class="buttons">
-    @for (link of this.pages; track link.name) {
-    <button
-      class="button page-link"
-      [name]="link.name"
-      (click)="link.onclick! ? link.onclick() : null"
-      [routerLink]="link.isRoute ? link.name : null"
-    >
-      <svg [icon]="link.icon"></svg><span>{{ link.title }}</span>
-    </button>
-    }
+<div class="title-bar">
+  <app-titlebar></app-titlebar>
+</div>
+<div class="app">
+  <div class="sidebar" [ngClass]="{ collapsed: this.isCollapsed }">
+    <h1 class="title">Bla Bla Gram</h1>
+    <div class="buttons">
+      @for (link of this.pages; track link.name) {
+      <button class="button page-link" [name]="link.name" (click)="link.onclick! ? link.onclick() : null"
+        [routerLink]="link.isRoute ? link.name : null">
+        <svg [icon]="link.icon"></svg><span>{{ link.title }}</span>
+      </button>
+      }
+    </div>
   </div>
-</div>
-<div class="notifications" [ngClass]="{ showed: this.showNotifications }">
-  <app-notifications></app-notifications>
-</div>
-<div class="content">
-  <router-outlet></router-outlet>
+  <div class="notifications" [ngClass]="{ showed: this.showNotifications }">
+    <app-notifications></app-notifications>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 </div>

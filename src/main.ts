@@ -43,8 +43,14 @@ declare global {
   interface Window {
     isDesktop: () => boolean;
   }
+  interface Window {
+    electronAPI: {
+      minimize: () => void;
+      maximize: () => void;
+      close: () => void;
+    };
+  }
 }
-
 
 bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)

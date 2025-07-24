@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { NotificationsComponent } from '../../app/pages/notifications/notifications.component';
 import { CommonModule } from '@angular/common';
+import { TitlebarComponent } from "../titlebar/titlebar.component";
 
 @Component({
   selector: 'app-layout',
@@ -12,7 +13,8 @@ import { CommonModule } from '@angular/common';
     SvgIconComponent,
     NotificationsComponent,
     CommonModule,
-  ],
+    TitlebarComponent
+],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })

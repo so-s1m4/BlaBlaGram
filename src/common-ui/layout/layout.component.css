@@ -1,6 +1,6 @@
-:host {
+.app {
   display: flex;
-  height: 100dvh;
+  height: 98dvh;
   width: 100dvw;
   position: relative;
 }
@@ -96,7 +96,7 @@
 }
 
 @media (min-width: 800px) {
-  :host {
+  .app {
     flex-direction: row;
   }
   .sidebar.collapsed {
@@ -125,7 +125,7 @@
 }
 
 @media (max-width: 800px) {
-  :host {
+  .app {
     flex-direction: column-reverse;
   }
   .title {

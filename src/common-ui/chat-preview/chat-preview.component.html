@@ -1,23 +1,23 @@
-<img class="avatar" [src]="chat.profile.img" alt="" />
+<img class="avatar" [src]="API_URL + '/public/' + chat.members[0].userId.img[0].path" alt="" />
 <div class="chat-info">
   <div class="username">
-    {{ chat.profile.username }}
+    {{ chat.members[0].userId.username }}
   </div>
   <div class="message-preview">
     <div class="message-preview-text">
       {{ chat.lastMessage.text }}
     </div>
     <div class="message-preview-time">
-      {{ chat.lastMessage.time.toLocaleTimeString() }}
+      {{ chat.lastMessage.updatedAt.toLocaleDateString() }}
     </div>
   </div>
 </div>
-@if (chat.unreadMessages > 0) {
+@if (chat.unreadmessages > 0) {
   <div class="unread-messages">
-    @if (chat.unreadMessages > 99) {
+    @if (chat.unreadmessages > 99) {
       99+
     } @else {
-      {{ chat.unreadMessages }}
+      {{ chat.unreadmessages }}
     }
   </div>
 }

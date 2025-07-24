@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { WebSocketService } from './web-socket.service';
 
 export type ProfileData = {
   id: number;
@@ -16,35 +17,12 @@ export type ProfileData = {
 })
 export class ProfileService {
   httpClient = inject(HttpClient);
-  private apiUrl = 'https://api.example.com/';
+
+  webSocketService = inject(WebSocketService);
   constructor() {}
 
   public async getProfile(userId: string | null): Promise<ProfileData | null> {
-    if (!userId) {
-      return null;
-    }
-    if (userId === 'me') {
-      return {
-        id: 2,
-        name: 'John Doe3',
-        username: 'johndoe',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      };
-    } else {
-      return {
-        id: 1,
-        name: 'Anastasia Sipos',
-        username: 'hexe666',
-        img: 'assets/img/avatar.webp',
-        description: 'HAHAHA, mach ein profile über mich! :D',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      };
-    }
+    return Promise.resolve(null);
   }
 
   banUser(username: string): Promise<void> {

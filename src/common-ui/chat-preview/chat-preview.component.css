@@ -4,6 +4,7 @@
   height: 60px;
   display: flex;
 
+  align-items: center;
   background-color: var(--secondary-color);
 
   position: relative;
@@ -19,8 +20,8 @@
 }
 
 .avatar {
-  width: auto;
-  height: 100%;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background-color: var(--primary-color);
 }

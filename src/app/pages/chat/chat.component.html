@@ -1,23 +1,26 @@
+@if (!this.chatData || !authService.me) {
+<div class="loading">Loading...</div>
+} @else {
+
+
 <div class="header">
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
-  <img [src]="chatData.profile.img" class="avatar" alt="" />
+  <!-- <img [src]="chatData.profile.img" class="avatar" alt="" /> -->
   <div class="header-info">
-    <h2 class="name">{{ chatData.profile.username }}</h2>
+    <!-- <h2 class="name">{{ chatData.profile.username }}</h2> -->
   </div>
 </div>
 <div class="messages-holder">
-  @for (message of chatData.messages; track message.id; let last = $last) {
-  <div
-    [ngClass]="{
+  @for (message of this.chatData; track message._id; let last = $last) {
+  <div [ngClass]="{
       message: true,
-      'message-sender': message.sender.id === chatData.profile.id
-    }"
-  >
-    <img [src]="message.sender.img" class="message-avatar" alt="" />
+      'message-sender': message.senderId._id !== me?._id,
+    }">
+    <img [src]="API_URL + '/public/' + message.senderId.img[0]" class="message-avatar" alt="" />
     <div class="message-info">
-      <h3 class="message-sender">{{ message.sender.username }}</h3>
+      <h3 class="message-sender">{{ message.senderId.username }}</h3>
       <p class="message-text">{{ message.text }}</p>
     </div>
   </div>
@@ -25,6 +28,8 @@
 </div>
 
 <div class="input-holder">
-  <textarea class="input" placeholder="Type a message..."></textarea>
+  <textarea id="message-input" class="input" placeholder="Type a message..."></textarea>
   <button class="btn" (click)="sendMessage()">Send</button>
 </div>
+
+}
