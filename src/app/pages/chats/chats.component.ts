@@ -38,8 +38,8 @@ export class ChatsComponent implements OnInit {
     this.chats = chats.map((item) => ({
       ...item,
       lastMessage: {
-        ...item.lastMessage[0],
-        updatedAt: new Date(item.lastMessage[0].updatedAt),
+        ...item.lastMessage,
+        updatedAt: new Date(item.lastMessage.updatedAt),
       },
     }));
   }

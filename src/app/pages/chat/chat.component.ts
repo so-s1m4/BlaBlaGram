@@ -67,6 +67,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   setChatData(chatData: any): void {
+    console.log(chatData);
     this.me = this.authService.me;
     this.chatData$ = chatData;
   }

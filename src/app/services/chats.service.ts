@@ -18,6 +18,7 @@ export class ChatsService {
     this.webSocketService.send("spaces:getList", (ok: boolean, err: string, res: any) => {
       if (ok) {
         this.chats$ = res.map((chat: any) => chat.spaceId);
+        console.log(this.chats$)
         callback(this.chats$);
       } else {
         console.error('Error receiving chats:', err);
@@ -26,6 +27,10 @@ export class ChatsService {
   }
 
   chats(callback: (chats: any[]) => void):void {
+    if (this.chats$.length > 0) {
+      callback(this.chats$);
+      return;
+    }
     this.updateChats(callback);
   }
 
@@ -36,7 +41,7 @@ export class ChatsService {
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res
-          callback(data);
+          callback({chat: this.chats$.find((chat: any) => chat._id === chatId), messages: data});
         } else {
           console.error('Error receiving chats:', err);
         }

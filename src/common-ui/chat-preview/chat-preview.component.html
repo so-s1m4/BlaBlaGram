@@ -1,7 +1,7 @@
-<img class="avatar" [src]="API_URL + '/public/' + chat.members[1].userId.img[0].path" alt="" />
+<img class="avatar" [src]="API_URL + '/public/' + chat.img[0].path" alt="" />
 <div class="chat-info">
   <div class="username">
-    {{ chat.members[1].userId.username }}
+    {{ chat.title }}
   </div>
   <div class="message-preview">
     <div class="message-preview-text">

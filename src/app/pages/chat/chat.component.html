@@ -7,13 +7,13 @@
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
-  <!-- <img [src]="chatData.profile.img" class="avatar" alt="" /> -->
+  <img [src]="API_URL + '/public/' + chatData.chat.img[0].path" class="avatar" alt="" />
   <div class="header-info">
-    <!-- <h2 class="name">{{ chatData.profile.username }}</h2> -->
+    <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
 </div>
 <div class="messages-holder">
-  @for (message of this.chatData; track message._id; let last = $last) {
+  @for (message of this.chatData.messages; track message._id; let last = $last) {
   <div [ngClass]="{
       message: true,
       'message-sender': message.senderId._id !== me?._id,
