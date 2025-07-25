@@ -40,22 +40,26 @@ export class ChatComponent implements OnInit, OnChanges {
 
   sendMessage(): void {
     this.webSocketService.send(
-      "communication:chats:create",
+      'communication:chats:create',
       {
         spaceId: this.chatId,
         // @ts-ignore
         text: document.getElementById('message-input')?.value || '',
       },
       (ok: any, err: any, data: any) => {
-        if (ok){
-          this.webSocketService.send("communication:chats:close", { communicationId: data._id }, this.loadChat.bind(this));
+        if (ok) {
+          this.webSocketService.send(
+            'communication:chats:close',
+            { communicationId: data._id },
+            this.loadChat.bind(this)
+          );
         } else {
-          console.error("Error sending message:", err);
+          console.error('Error sending message:', err);
         }
       }
-    )
+    );
     //@ts-ignore
-    document.getElementById('message-input').value = ""
+    document.getElementById('message-input').value = '';
   }
 
   goBack(): void {
@@ -76,8 +80,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.loadChat();
-    this.webSocketService.on('communication:newMessage', (data)=>{
-      this.chatData$.push(data)
+    this.webSocketService.on('communication:newMessage', (data) => {
+      this.chatData$.push(data);
     });
   }
   ngOnChanges(): void {
