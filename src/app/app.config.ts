@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IMAGE_CONFIG } from '@angular/common';
 
-export const API_URL = 'http://localhost:8001';
+export const API_URL = 'https://blablagram.m0sk1tu4.codes';
 
 export const appConfig: ApplicationConfig = {
   providers: [

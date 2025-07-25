@@ -108,6 +108,7 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
       return false;
     }
     this.chatData$.messages.push(data);
+    this.scrollToBottom();
     return true;
   }
 
