@@ -5,7 +5,6 @@ import { AuthGuard } from './guards/auth-guard.module';
 import { LayoutComponent } from '../common-ui/layout/layout.component';
 import { ChatsComponent } from './pages/chats/chats.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { ModerateComponent } from './pages/moderate/moderate.component';
 import { FriendsComponent } from './pages/friends/friends.component';
 import { CreatePostMobileComponent } from './pages/create-post-mobile/create-post-mobile.component';
 import { MobileGuard } from './guards/mobile-guard.module';
@@ -45,13 +44,9 @@ export const routes: Routes = [
         component: ProfileComponent,
       },
       {
-        path: 'moderate',
-        component: ModerateComponent, // Placeholder for moderation component
-      },
-      {
         path: 'create-post',
         component: CreatePostMobileComponent,
-        canActivate: [MobileGuard]
+        canActivate: [MobileGuard],
       },
     ],
   },

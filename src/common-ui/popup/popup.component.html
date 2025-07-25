@@ -1,0 +1,10 @@
+<div class="content">
+  @if (data.type === 'newMessage') {
+    <img [src]="API_URL + '/public/' + data.img[0].path" alt="">
+    <div class="data">
+      <p class="title">{{ data.title }}</p>
+      <p class="text">{{ data.message }}</p>
+    </div>
+  }
+</div>
+<div class="line"></div>

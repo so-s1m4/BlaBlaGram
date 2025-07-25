@@ -1,6 +1,6 @@
 .app {
   display: flex;
-  height: 98dvh;
+  height: 100vh;
   width: 100dvw;
   position: relative;
 }
@@ -83,6 +83,22 @@
 
 .notifications.showed {
   display: block;
+}
+
+.popups-holder {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  
+  width: 30rem;
+  height: fit-content;
+  max-height: 30vh;
+
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+
+  z-index: 1000000;
 }
 
 .content > app-chats + .sidebar {

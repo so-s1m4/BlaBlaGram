@@ -4,6 +4,7 @@ import {
   inject,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -14,6 +15,7 @@ import { SvgIconComponent } from '../../utils/svg.component';
 import { API_URL } from '../../app.config';
 import { AuthService } from '../../services/auth.service';
 import { WebSocketService } from '../../services/web-socket.service';
+import { LayoutComponent } from '../../../common-ui/layout/layout.component';
 
 @Component({
   selector: 'app-chat',
@@ -21,11 +23,12 @@ import { WebSocketService } from '../../services/web-socket.service';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit, OnChanges {
+export class ChatComponent implements OnInit, OnChanges, OnDestroy {
   API_URL = API_URL;
 
   constructor(private router: ActivatedRoute) {}
 
+  layout = inject(LayoutComponent);
   chatService = inject(ChatsService);
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
@@ -38,28 +41,34 @@ export class ChatComponent implements OnInit, OnChanges {
   @Input() chatId: string | undefined = '';
   @Output('closeChat') close = new EventEmitter<void>();
 
+  scrollToBottom(): void {
+    const messagesHolder = document.getElementById('messages-holder');
+    if (messagesHolder) {
+      messagesHolder.scrollTo({
+        top: messagesHolder.scrollHeight,
+      });
+    }
+  }
+
   sendMessage(): void {
-    this.webSocketService.send(
-      'communication:chats:create',
-      {
-        spaceId: this.chatId,
-        // @ts-ignore
-        text: document.getElementById('message-input')?.value || '',
-      },
+    this.chatService.sendMessage(
+      this.chatId!,
+      //@ts-ignore
+      document.getElementById('message-input')!.value || '',
       (ok: any, err: any, data: any) => {
         if (ok) {
-          this.webSocketService.send(
-            'communication:chats:close',
-            { communicationId: data._id },
-            this.loadChat.bind(this)
-          );
-        } else {
-          console.error('Error sending message:', err);
+          this.scrollToBottom();
         }
       }
     );
     //@ts-ignore
     document.getElementById('message-input').value = '';
+  }
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
   }
 
   goBack(): void {
@@ -67,26 +76,54 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   setChatData(chatData: any): void {
-    console.log(chatData);
     this.me = this.authService.me;
     this.chatData$ = chatData;
+    this.scrollToBottom();
   }
 
-  public async loadChat(): Promise<void> {
+  loadChat() {
     if (!this.chatId) {
-      return Promise.resolve();
+      return;
     }
+    this.chatService.selectChat(this.chatId!);
     this.chatService.getChatById(this.chatId, this.setChatData.bind(this));
+  }
+
+  public onNewMessage(data: any): boolean {
+    if (data.spaceId !== this.chatId) {
+      const popUpData = {
+        type: 'newMessage',
+        title:
+          this.chatService
+            .chats()!
+            .find((chat: any) => chat._id === data.spaceId)?.title ||
+          'New Message',
+        chatId: data.spaceId,
+        message: data.text,
+      };
+
+      console.log('New message not for current chat:', data);
+
+      this.layout.showPopUp(popUpData);
+      return false;
+    }
+    this.chatData$.messages.push(data);
+    return true;
   }
 
   ngOnInit(): void {
     this.loadChat();
-    this.webSocketService.on('communication:newMessage', (data) => {
-      this.chatData$.push(data);
+    this.webSocketService.on('communication:newMessage', (data: any) => {
+      this.onNewMessage(data);
     });
   }
+
   ngOnChanges(): void {
     this.loadChat();
+  }
+
+  ngOnDestroy(): void {
+    this.chatService.selectChat('');
   }
 
   get chatData(): any {

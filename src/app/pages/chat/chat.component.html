@@ -12,7 +12,7 @@
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
 </div>
-<div class="messages-holder">
+<div id="messages-holder" class="messages-holder">
   @for (message of this.chatData.messages; track message._id; let last = $last) {
   <div [ngClass]="{
       message: true,
@@ -28,8 +28,7 @@
 </div>
 
 <div class="input-holder">
-  <textarea id="message-input" class="input" placeholder="Type a message..."></textarea>
-  <button class="btn" (click)="sendMessage()">Send</button>
+  <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
+  <button id="send-btn" class="btn" (click)="sendMessage()">Send</button>
 </div>
-
 }
