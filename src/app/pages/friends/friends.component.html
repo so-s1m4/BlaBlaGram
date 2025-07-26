@@ -7,7 +7,7 @@
     (search)="searchFriends($event)"
   ></app-search>
   <div class="friends-list">
-    @for (friend of this.friends; track friend.id) {
+    @for (friend of this.friends; track friend) {
     <app-user-card [data]="friend"></app-user-card>
     }
   </div>
