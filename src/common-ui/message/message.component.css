@@ -1,20 +1,20 @@
 .photo-grid {
-  display: flex;
+  display: block;
   position: relative;
   width: 100px;
   max-height: fit-content;
   min-height: fit-content;
 }
 
-.photo:nth-child(1) {
+.photowrapper:nth-child(1) {
   position: relative;
   width: 100px;
   height: fit-content;
-  min-height: 250px;
+  min-height: 100px;
   object-fit: contain;
   border-radius: 8px;
 }
-.photo:nth-child(n + 2) {
+.photowrapper:nth-child(n + 2) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -24,11 +24,31 @@
   left: 0;
   transform-origin: bottom center;
 }
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  position: relative;
+}
 
-.photo:hover {
+
+.photowrapper:hover {
   transform: scale(1.05);
   z-index: 2;
 }
+
+.photowrapper svg {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  z-index: 3;
+
+  right: 0;
+
+  color: red;
+}
+
 
 .message {
   max-width: 100%;
@@ -134,9 +154,16 @@
   }
 }
 
+.message-sender .context-menu {
+  right: 0;
+  left: 0;
+  transform: translateX(120%);
+}
+
 .context-menu.showed {
   display: flex;
 }
+
 
 @media (max-width: 800px) {
   .message-avatar {

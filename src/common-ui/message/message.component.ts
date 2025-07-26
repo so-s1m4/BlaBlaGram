@@ -43,6 +43,12 @@ export class MessageComponent {
       communicationId: this.data._id,
     });
   }
+  deleteMedia(mediaId: string) {
+    console.log('delete media', mediaId);
+    this.webSocketService.send('communication:chat:deleteMedia', {
+      mediaId,
+    }, (ok: any, err: any, data: any)=>{console.log(ok, err, data)});
+  }
 
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.isEditing && !event.shiftKey) {
@@ -58,7 +64,7 @@ export class MessageComponent {
       ) || []
     );
   }
-  
+
   openContextMenu($event: Event) {
     $event.preventDefault();
     this.contextMenuShow = !this.contextMenuShow;
