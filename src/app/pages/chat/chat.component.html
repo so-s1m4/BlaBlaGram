@@ -17,7 +17,7 @@
   <div [ngClass]="{
       message: true,
       'message-sender': message.senderId._id !== me?._id,
-    }">
+    }" (contextmenu)="onMessageContextMenu($event, message)" [attr.data-id]="message._id">
     <img [src]="API_URL + '/public/' + message.senderId.img[0].path" class="message-avatar" alt="" />
     <div class="message-info">
       <h3 class="message-sender">{{ message.senderId.username }}</h3>

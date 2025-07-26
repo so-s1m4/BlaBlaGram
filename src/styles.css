@@ -20,6 +20,8 @@
   font-family: "JetBrains Mono", monospace;
   font-optical-sizing: auto;
   font-style: normal;
+
+  user-select: none;
 }
 body {
   background-color: var(--dark-color);

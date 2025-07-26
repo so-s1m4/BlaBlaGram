@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   Component,
   EventEmitter,
   inject,
@@ -23,7 +24,7 @@ import { LayoutComponent } from '../../../common-ui/layout/layout.component';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit, OnChanges, OnDestroy {
+export class ChatComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked {
   API_URL = API_URL;
 
   constructor(private router: ActivatedRoute) {}
@@ -74,7 +75,6 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
   goBack(): void {
     this.close.emit();
   }
-
   setChatData(chatData: any): void {
     this.me = this.authService.me;
     this.chatData$ = chatData;
@@ -91,25 +91,15 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
 
   public onNewMessage(data: any): boolean {
     if (data.spaceId !== this.chatId) {
-      const popUpData = {
-        type: 'newMessage',
-        title:
-          this.chatService
-            .chats()!
-            .find((chat: any) => chat._id === data.spaceId)?.title ||
-          'New Message',
-        chatId: data.spaceId,
-        message: data.text,
-      };
-
-      console.log('New message not for current chat:', data);
-
-      this.layout.showPopUp(popUpData);
       return false;
     }
     this.chatData$.messages.push(data);
-    this.scrollToBottom();
+    setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
+  }
+  onMessageContextMenu(event: MouseEvent, message: any): void {
+    event.preventDefault();
+    
   }
 
   ngOnInit(): void {
@@ -125,6 +115,10 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatService.selectChat('');
+  }
+
+  ngAfterViewChecked(): void {
+      this.scrollToBottom();
   }
 
   get chatData(): any {

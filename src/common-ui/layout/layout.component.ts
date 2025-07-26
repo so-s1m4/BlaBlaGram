@@ -16,7 +16,7 @@ import { PopupComponent } from '../popup/popup.component';
     SvgIconComponent,
     NotificationsComponent,
     CommonModule,
-    PopupComponent
+    PopupComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -59,9 +59,8 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatsService.chats()
+    this.chatsService.chats();
     this.webSocketService.on('communication:newMessage', (data: any) => {
-      console.log('New message received:', data);
       if (this.chatsService.currentChatId !== data.spaceId) {
         const popUpData = {
           type: 'newMessage',

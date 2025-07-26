@@ -1,4 +1,4 @@
-<img class="avatar" [src]="API_URL + '/public/' + chat.img[0].path" alt="" />
+<img class="avatar" [src]="chat.img[0].path | img" alt="" />
 <div class="chat-info">
   <div class="username">
     {{ chat.title }}

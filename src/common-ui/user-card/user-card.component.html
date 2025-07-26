@@ -1,6 +1,6 @@
 <img
   class="avatar"
-  [src]="this.data!.img | img"
+  [src]="this.data!.img[0].path | img"
   alt=""
   [routerLink]="['/profile', this.data!.username]"
 />
@@ -12,8 +12,7 @@
 <div class="actionBtns">
   <button
     class="btn btn-primary"
-    [routerLink]="['/chats']"
-    [queryParams]="{ username: this.data!.username }"
+    (click)="this.openChat(this.data!._id)"
   >
     <svg icon="comments"></svg>
     Chat

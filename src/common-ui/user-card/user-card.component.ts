@@ -5,6 +5,7 @@ import {
 } from '../../app/services/profile.service';
 import { ImgPipe } from '../../app/utils/img.pipe';
 import { SvgIconComponent } from '../../app/utils/svg.component';
+import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -16,6 +17,7 @@ import { RouterLink } from '@angular/router';
 export class UserCardComponent {
   @Input() data: ProfileData | undefined;
 
+  router = inject(Router)
   profileService = inject(ProfileService);
 
   ngOnInit() {
@@ -23,6 +25,12 @@ export class UserCardComponent {
       console.error('UserCardComponent: data input is undefined');
     }
   } 
+
+  openChat(userId: string) {
+    this.profileService.openChat(userId, (data: any) => {
+      this.router.navigate(['/chats'], { queryParams: { id: data._id } });
+    });
+  }
 
   removeFriend() {
     this.profileService.followUser(this.data!.username);

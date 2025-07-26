@@ -1,6 +1,6 @@
 .app {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   width: 100dvw;
   position: relative;
 }
@@ -180,5 +180,9 @@
     height: 100%;
     border: none;
     border-bottom: 1px solid var(--primary-color);
+  }
+
+  .popups-holder { 
+    display: none;
   }
 }

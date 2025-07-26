@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProfileData, ProfileService } from '../../services/profile.service';
 import { UserCardComponent } from '../../../common-ui/user-card/user-card.component';
-import { SearchComponent } from "../../../common-ui/search/search.component";
+import { SearchComponent } from '../../../common-ui/search/search.component';
 
 @Component({
   selector: 'app-friends',
@@ -10,9 +10,9 @@ import { SearchComponent } from "../../../common-ui/search/search.component";
   styleUrl: './friends.component.css',
 })
 export class FriendsComponent implements OnInit {
-searchFriends($event: Event) {
-throw new Error('Method not implemented.');
-}
+  searchFriends($event: Event) {
+    throw new Error('Method not implemented.');
+  }
   constructor() {}
 
   private friendsList: ProfileData[] = [];
@@ -22,7 +22,9 @@ throw new Error('Method not implemented.');
   profileService = inject(ProfileService);
 
   async ngOnInit(): Promise<void> {
-    this.friendsList = await this.profileService.getFriendsList();
+    this.profileService.getFriendsList((data: any) => {
+      this.friendsList = data;
+    });
     this.pendingRequests = await this.profileService.getPendingRequests();
     this.blockedUsers = await this.profileService.getBlockedUsers();
   }

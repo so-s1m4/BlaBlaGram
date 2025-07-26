@@ -1,10 +1,14 @@
 <div class="content">
-  @if (data.type === 'newMessage') {
-    <img [src]="API_URL + '/public/' + data.img[0].path" alt="">
+  <div class="header">@if (data.type === 'newMessage') {
+    <p>You become a new message</p>
+    }
+  </div>
+  <div class="body">
+    <img class="avatar" [src]="data.img | img" alt="">
     <div class="data">
       <p class="title">{{ data.title }}</p>
       <p class="text">{{ data.message }}</p>
     </div>
-  }
+  </div>
 </div>
 <div class="line"></div>

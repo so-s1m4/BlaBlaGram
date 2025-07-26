@@ -1,15 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WebSocketService } from './web-socket.service';
+import { API_URL } from '../app.config';
+import { AuthService } from './auth.service';
 
 export type ProfileData = {
-  id: number;
-  name: string;
+  _id: string;
   username: string;
-  img: string;
-  description: string;
-  bg: string;
-  border: string;
+  img: { path: string; size: number }[];
+  name: string;
 };
 
 @Injectable({
@@ -19,6 +18,7 @@ export class ProfileService {
   httpClient = inject(HttpClient);
 
   webSocketService = inject(WebSocketService);
+  authService = inject(AuthService);
   constructor() {}
 
   public async getProfile(userId: string | null): Promise<ProfileData | null> {
@@ -49,172 +49,32 @@ export class ProfileService {
     });
   }
 
-  async getFriendsList(): Promise<ProfileData[]> {
-    return [
-      {
-        id: 1,
-        name: 'SomeBody',
-        username: 'Doaosdja',
-        img: 'assets/img/avatar.webp',
-        description: 'akljsdb jgasdhg vahgsdv havshgd h',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 2,
-        name: 'John Doe',
-        username: 'johndoe',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 3,
-        name: 'Jane Smith',
-        username: 'janesmith',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 1,
-        name: 'SomeBody',
-        username: 'Doaosdja',
-        img: 'assets/img/avatar.webp',
-        description: 'akljsdb jgasdhg vahgsdv havshgd h',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 666,
-        name: 'Anastasia',
-        username: 'Sipos',
-        img: 'assets/img/avatar.webp',
-        description: 'HAHAHA, mach ein profile über mich! :D',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 2,
-        name: 'John Doe',
-        username: 'johndoe',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 3,
-        name: 'Jane Smith',
-        username: 'janesmith',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 1,
-        name: 'SomeBody',
-        username: 'Doaosdja',
-        img: 'assets/img/avatar.webp',
-        description: 'akljsdb jgasdhg vahgsdv havshgd h',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 2,
-        name: 'John Doe',
-        username: 'johndoe',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 3,
-        name: 'Jane Smith',
-        username: 'janesmith',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-    ];
+  openChat(userId: string, callback: (data: any) => void) {
+    this.webSocketService.send(
+      'spaces:chats:create',
+      { userId },
+      (ok: any, err: any, data: any) => {
+        if(ok) {
+          callback(data)
+        }
+      }
+    );
+  }
+
+  async getFriendsList(callback: any): Promise<ProfileData[]> {
+    //@ts-ignore
+    return this.httpClient
+      .get<ProfileData[]>(`${API_URL}/api/users/me/friends`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.token}`,
+        },
+      })
+      .subscribe((data: any) => callback(data.data));
   }
   async getPendingRequests(): Promise<ProfileData[]> {
-    return [
-      {
-        id: 4,
-        name: 'Alice Johnson',
-        username: 'alicejohnson',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 5,
-        name: 'Bob Brown',
-        username: 'bobbrown',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 6,
-        name: 'Charlie Green',
-        username: 'charliegreen',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-    ];
+    return [];
   }
   async getBlockedUsers(): Promise<ProfileData[]> {
-    return [
-      {
-        id: 7,
-        name: 'David White',
-        username: 'davidwhite',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 8,
-        name: 'Eve Black',
-        username: 'eveblack',
-        img: 'assets/img/avatar.webp',
-        description:
-          'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-      {
-        id: 9,
-        name: 'Frank Blue',
-        username: 'frankblue',
-        img: 'assets/img/avatar.webp',
-        description:
-          'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.',
-        bg: 'bg1.avif',
-        border: 'border1.png',
-      },
-    ];
+    return [];
   }
 }
