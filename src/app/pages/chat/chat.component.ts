@@ -1,5 +1,5 @@
 import {
-  AfterViewChecked,
+  AfterContentInit,
   Component,
   EventEmitter,
   inject,
@@ -17,14 +17,17 @@ import { API_URL } from '../../app.config';
 import { AuthService } from '../../services/auth.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { LayoutComponent } from '../../../common-ui/layout/layout.component';
+import { MessageComponent } from '../../../common-ui/message/message.component';
 
 @Component({
   selector: 'app-chat',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, MessageComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked {
+export class ChatComponent
+  implements OnInit, OnChanges, OnDestroy, AfterContentInit
+{
   API_URL = API_URL;
 
   constructor(private router: ActivatedRoute) {}
@@ -54,8 +57,12 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy, AfterViewChe
   sendMessage(): void {
     this.chatService.sendMessage(
       this.chatId!,
-      //@ts-ignore
-      document.getElementById('message-input')!.value || '',
+      {
+        //@ts-ignore
+        message: document.getElementById('message-input')!.value || undefined,
+        //@ts-ignore
+        files: document.getElementById('files-input')!.files || [],
+      },
       (ok: any, err: any, data: any) => {
         if (ok) {
           this.scrollToBottom();
@@ -89,23 +96,31 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy, AfterViewChe
     this.chatService.getChatById(this.chatId, this.setChatData.bind(this));
   }
 
-  public onNewMessage(data: any): boolean {
+  onNewMessage(data: any): boolean {
     if (data.spaceId !== this.chatId) {
       return false;
     }
+    console.log(data);
     this.chatData$.messages.push(data);
     setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
-  }
-  onMessageContextMenu(event: MouseEvent, message: any): void {
-    event.preventDefault();
-    
   }
 
   ngOnInit(): void {
     this.loadChat();
     this.webSocketService.on('communication:newMessage', (data: any) => {
       this.onNewMessage(data);
+    });
+    this.webSocketService.on('communication:editMessage', (data: any) => {
+      console.log('Updated message');
+      if (data.spaceId === this.chatId) {
+        const message = this.chatData$.messages.find(
+          (msg: any) => msg._id === data._id
+        );
+        if (message) {
+          message.text = data.text;
+        }
+      }
     });
   }
 
@@ -117,11 +132,17 @@ export class ChatComponent implements OnInit, OnChanges, OnDestroy, AfterViewChe
     this.chatService.selectChat('');
   }
 
-  ngAfterViewChecked(): void {
-      this.scrollToBottom();
+  ngAfterContentInit(): void {
+    console.log('AfterViewChecked called');
+    this.scrollToBottom();
   }
 
   get chatData(): any {
     return this.chatData$;
+  }
+
+  stopPropagation(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

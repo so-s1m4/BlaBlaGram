@@ -14,20 +14,18 @@
 </div>
 <div id="messages-holder" class="messages-holder">
   @for (message of this.chatData.messages; track message._id; let last = $last) {
-  <div [ngClass]="{
-      message: true,
-      'message-sender': message.senderId._id !== me?._id,
-    }" (contextmenu)="onMessageContextMenu($event, message)" [attr.data-id]="message._id">
-    <img [src]="API_URL + '/public/' + message.senderId.img[0].path" class="message-avatar" alt="" />
-    <div class="message-info">
-      <h3 class="message-sender">{{ message.senderId.username }}</h3>
-      <p class="message-text">{{ message.text }}</p>
-    </div>
-  </div>
+    <app-message [data] = "message" [isSender]="message.senderId._id !== me?._id"></app-message>
   }
 </div>
 
 <div class="input-holder">
+  <div class="attachFileBtn">
+    <label for="files-input" class="btn attachFile">
+      <svg icon="attach"></svg>
+    </label>
+
+    <input id="files-input" type="file" class="attachFile" multiple hidden/>
+  </div>
   <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
   <button id="send-btn" class="btn" (click)="sendMessage()">Send</button>
 </div>

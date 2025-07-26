@@ -1,0 +1,49 @@
+<div [ngClass]="{
+      message: true,
+      'message-sender': isSender,
+    }" [attr.data-id]="data._id">
+  <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="message-avatar" alt="" />
+
+  <div class="wrapper" style="display: flex; flex-direction: column; width: fit-content; align-items: flex-end;">
+    <div class="photo-grid">
+      @for (media of imageMedia; track media._id; let i = $index) {
+      <img
+      [src]="API_URL + '/mediaserver/public/' + media.path"
+      class="photo"
+      href="google.com"
+      [ngStyle]="{
+        transform: 'rotate(' + (i > 0 ? (-(90/(imageMedia.length-1))*(i-1)+'deg') : '0deg') + ')',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.6)',
+        cursor: 'pointer',
+      }" /> 
+
+      }
+    </div>
+    <div class=" message-info" (contextmenu)="openContextMenu($event)" (click)="openContextMenu($event)">
+      <h3 class="message-sender">{{ data.senderId.username }}</h3>
+
+      @if (isEditing) {
+      <textarea (keypress)="onKeyPress($event)" class="message-edit" [value]="data.text" (change)="changeText($event)"
+        placeholder="Edit your message..."> </textarea>
+      }
+      @else {
+      <p class="message-text">{{ data.text }}</p>
+      }
+      <div (contextmenu)="stopPropagation($event)" class="media-holder" *ngIf="data.media && data.media.length > 0">
+        @for (media of data.media; track media._id) {
+        @if (!media.mime.startsWith('image/')) {
+        <div class="media-item">
+          <a [href]="API_URL + '/mediaserver/public/' + media.path" target="_blank" class="media-link">
+            <p>{{ media.path }}</p>
+          </a>
+        </div>
+        }}
+      </div>
+      <div class="context-menu" [ngClass]="{ showed: contextMenuShow }">
+        <div class="context-menu-item" (click)="editMessage()"> <svg icon="pen" /> Edit</div>
+        <div class="context-menu-item" (click)="deleteMessage()"> <svg icon="trashcan" /> Delete</div>
+      </div>
+    </div>
+
+  </div>
+</div>
