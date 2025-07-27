@@ -91,39 +91,44 @@ export class ChatComponent
     if (mediaList.length === 0) {
       return;
     }
-    const wrapper = document.createElement('div');
-    wrapper.className = 'media-wrapper';
+    const wrapper = (() => {
+      let wrapper = document.createElement('div');
+      wrapper.className = 'media-wrapper';
 
-    wrapper.style.position = 'absolute';
-    wrapper.style.top = '0';
-    wrapper.style.left = '0';
-    wrapper.style.width = '100dvw';
-    wrapper.style.height = '100dvh';
-    wrapper.style.zIndex = '1000';
+      wrapper.style.position = 'absolute';
+      wrapper.style.top = '0';
+      wrapper.style.left = '0';
+      wrapper.style.width = '100dvw';
+      wrapper.style.height = '100dvh';
+      wrapper.style.zIndex = '1000';
 
-    wrapper.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-    wrapper.style.display = 'flex';
-    wrapper.style.gap = '2rem';
-    wrapper.style.justifyContent = 'flex-start';
-    wrapper.style.alignItems = 'center';
-    wrapper.style.overflow = 'auto';
-    wrapper.style.padding = '3rem';
+      wrapper.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+      wrapper.style.display = 'flex';
+      wrapper.style.gap = '2rem';
+      wrapper.style.justifyContent = 'flex-start';
+      wrapper.style.alignItems = 'center';
+      wrapper.style.overflow = 'auto';
+      wrapper.style.padding = '3rem';
+      return wrapper;
+    })();
+    const closeButton = (() => {
+      let closeButton = document.createElement('button');
+      closeButton.textContent = 'X';
+      closeButton.style.backgroundColor = 'transparent';
+      closeButton.style.fontSize = '2.5rem';
+      closeButton.style.color = 'var(--primary-color)';
+      closeButton.style.border = 'none';
+      closeButton.style.cursor = 'pointer';
 
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'X';
-    closeButton.style.backgroundColor = 'transparent';
-    closeButton.style.fontSize = '2.5rem';
-    closeButton.style.color = 'var(--primary-color)';
-    closeButton.style.border = 'none';
-    closeButton.style.cursor = 'pointer';
-
-    closeButton.style.position = 'fixed';
-    closeButton.style.top = '25px';
-    closeButton.style.right = '25px';
-    closeButton.style.zIndex = '1001';
-    closeButton.onclick = () => {
-      document.body.removeChild(wrapper);
-    };
+      closeButton.style.position = 'fixed';
+      closeButton.style.top = '25px';
+      closeButton.style.right = '25px';
+      closeButton.style.zIndex = '1001';
+      closeButton.onclick = () => {
+        document.body.removeChild(wrapper);
+      };
+      return closeButton;
+    })();
     wrapper.appendChild(closeButton);
 
     mediaList.forEach((media: any) => {
@@ -136,8 +141,11 @@ export class ChatComponent
       mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
 
       mediaElement.style.borderRadius = '10px';
-      mediaElement.style.width = '80vw';
+      mediaElement.style.maxWidth = '80vw';
       mediaElement.style.height = 'auto';
+
+      mediaElement.style.maxHeight = '80vh';
+
       mediaElement.style.objectFit = 'cover';
 
       mediaElement.onclick = () => {
@@ -166,7 +174,12 @@ export class ChatComponent
       };
 
       deleteButton.onclick = () => {
-        // this.deleteMedia(media._id);
+        this.deleteMedia(comId, media._id);
+        mediaList = mediaList.filter((item: any) => item._id !== media._id);
+        mediaWrapper.remove();
+        if (mediaList.length === 0) {
+          document.body.removeChild(wrapper);
+        }
       };
 
       mediaWrapper.appendChild(mediaElement);
@@ -178,6 +191,25 @@ export class ChatComponent
     document.body.appendChild(wrapper);
   }
 
+  deleteMedia(comId: string, mediaId: string): void {
+    this.webSocketService.send(
+      'communication:chat:deleteMedia',
+      {
+        mediaId,
+      },
+      (ok: any, err: any, data: any) => {
+        if (!ok) {
+          console.error('Failed to delete media:', err);
+          return;
+        }
+        let msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
+        if (!msg) {
+          return;
+        }
+        msg.media = msg.media.filter((media: any) => media._id !== mediaId);
+      }
+    );
+  }
   // Files
   deleteFile(file: any): void {
     this.filesList = this.filesList.filter((f) => f !== file);
@@ -236,6 +268,7 @@ export class ChatComponent
           (msg: any) => msg._id === data._id
         );
         if (message) {
+          message.media = data.media || [];
           message.text = data.text;
         }
       }
