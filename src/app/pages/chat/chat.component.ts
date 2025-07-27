@@ -30,6 +30,7 @@ export class ChatComponent
 {
   API_URL = API_URL;
 
+  URL = URL;
   constructor(private router: ActivatedRoute) {}
 
   layout = inject(LayoutComponent);
@@ -40,6 +41,7 @@ export class ChatComponent
 
   me: any = this.authService.me;
 
+  filesList: { name: string; size: number; file: File }[] = [];
   private chatData$: any;
 
   @Input() chatId: string | undefined = '';
@@ -61,7 +63,7 @@ export class ChatComponent
         //@ts-ignore
         message: document.getElementById('message-input')!.value || undefined,
         //@ts-ignore
-        files: document.getElementById('files-input')!.files || [],
+        files: this.filesList.map((file) => file.file) || [],
       },
       (ok: any, err: any, data: any) => {
         if (ok) {
@@ -69,6 +71,8 @@ export class ChatComponent
         }
       }
     );
+
+    this.filesList = [];
     //@ts-ignore
     document.getElementById('message-input').value = '';
   }
@@ -76,6 +80,22 @@ export class ChatComponent
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.sendMessage();
+    }
+  }
+
+  deleteFile(file: any): void {
+    this.filesList = this.filesList.filter((f) => f !== file);
+  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const files = Array.from(input.files);
+      let newFiles = files.map((file) => ({
+        name: file.name,
+        size: file.size,
+        file: file,
+      }));
+      this.filesList.push(...newFiles);
     }
   }
 
@@ -125,10 +145,13 @@ export class ChatComponent
   }
 
   ngOnChanges(): void {
+    this.filesList = [];
+    this.chatData$ = null;
     this.loadChat();
   }
 
   ngOnDestroy(): void {
+    this.filesList = [];
     this.chatService.selectChat('');
   }
 

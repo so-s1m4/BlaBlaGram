@@ -13,11 +13,10 @@
     <div class="photo-grid">
       @for (media of imageMedia; track media._id; let i = $index) {
       <div class="photowrapper" [ngStyle]="{
-        transform: 'translateX('+ ((isSender ? 1 : -1)*(i-1)*2) +'px)' ,
+        transform: 'translateX('+ ((isSender ? 1 : -1)*(i-1)*2) +'px)' + ' translateY(' + ((i-1)*2) + 'px)',
       }">
         <img [src]="API_URL + '/mediaserver/public/' + media.path" class="photo" href="google.com" alt="" />
       </div>
-
       }
     </div>
     <div class=" message-info" (contextmenu)="openContextMenu($event)" (click)="openContextMenu($event)">
@@ -30,10 +29,12 @@
       @else {
       <p class="message-text">{{ data.text }}</p>
       }
-      <div (contextmenu)="stopPropagation($event)" class="media-holder" *ngIf="data.media && data.media.length > 0">
+      <div (click)="stopPropagation($event)" (contextmenu)="stopPropagation($event)" class="media-holder"
+        *ngIf="data.media && data.media.length > 0">
         @for (media of data.media; track media._id) {
         @if (!media.mime.startsWith('image/')) {
         <div class="media-item">
+          <svg icon="file"></svg>
           <a [href]="API_URL + '/mediaserver/public/' + media.path" target="_blank" class="media-link">
             <p>{{ media.path }}</p>
           </a>

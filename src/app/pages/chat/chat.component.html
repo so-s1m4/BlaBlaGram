@@ -14,17 +14,29 @@
 </div>
 <div id="messages-holder" class="messages-holder">
   @for (message of this.chatData.messages; track message._id; let last = $last) {
-    <app-message [data] = "message" [isSender]="message.senderId._id !== me?._id"></app-message>
+  <app-message [data]="message" [isSender]="message.senderId._id !== me?._id"></app-message>
   }
 </div>
 
 <div class="input-holder">
+  <div class="filesPopUp" *ngIf="filesList.length">
+    @for (file of filesList; track file.name) {
+    <div class="fileItem">
+      @if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
+      <img [src]="URL.createObjectURL(file.file)" class="fileImage" />
+      } @else {
+      <svg icon="file"></svg>
+      <span class="fileSize">{{ file.size }}</span>
+      }
+      <div class="deleteBtn" (click)="deleteFile(file)"><svg icon="plus"></svg></div>
+    </div>
+    }
+  </div>
   <div class="attachFileBtn">
     <label for="files-input" class="btn attachFile">
       <svg icon="attach"></svg>
     </label>
-
-    <input id="files-input" type="file" class="attachFile" multiple hidden/>
+    <input (change)="onFileSelected($event)" id="files-input" type="file" class="attachFile" multiple hidden />
   </div>
   <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
   <button id="send-btn" class="btn" (click)="sendMessage()">Send</button>
