@@ -70,6 +70,7 @@
   border-radius: 1rem;
 
   width: fit-content;
+  max-width: 60%;
   text-align: right;
   gap: 1rem;
   position: relative;
