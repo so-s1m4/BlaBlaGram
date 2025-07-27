@@ -4,15 +4,17 @@
     }" [attr.data-id]="data._id">
   <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="message-avatar" alt="" />
 
-  <div class="wrapper" style="display: flex; flex-direction: column; width: fit-content; align-items: flex-end;">
+  <div class="wrapper" [style]="{
+    'display': 'flex',
+    'flex-direction': 'column',
+    'width': 'fit-content',
+    'align-items': isSender ? 'flex-start' : 'flex-end'
+  }">
     <div class="photo-grid">
       @for (media of imageMedia; track media._id; let i = $index) {
       <div class="photowrapper" [ngStyle]="{
-        transform: 'rotate(' + (i > 0 ? (((isSender? 1 : -1)*(90/(imageMedia.length-1))*(i-1))+'deg') : '0deg') + ')',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.6)',
-        cursor: 'pointer',
+        transform: 'translateX('+ ((isSender ? 1 : -1)*(i-1)*2) +'px)' ,
       }">
-        @if (!isSender) {<svg icon="trashcan" (click)="deleteMedia(media._id)"></svg>}
         <img [src]="API_URL + '/mediaserver/public/' + media.path" class="photo" href="google.com" alt="" />
       </div>
 

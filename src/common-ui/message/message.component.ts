@@ -57,7 +57,7 @@ export class MessageComponent {
     }
   }
 
-  get imageMedia() {
+  get imageMedia() {  
     return (
       this.data?.media?.filter((media: any) =>
         media.mime.startsWith('image/')
