@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { API_URL } from '../../app/app.config';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { WebSocketService } from '../../app/services/web-socket.service';
@@ -15,10 +15,9 @@ export class MessageComponent {
 
   webSocketService = inject(WebSocketService);
 
-  @Input()
-  @Input()
-  data: any;
+  @Input() data: any;
   @Input() isSender: boolean = false;
+  @Output() openMedia: EventEmitter<string> = new EventEmitter<string>();
 
   isEditing: boolean = false;
 
@@ -45,9 +44,15 @@ export class MessageComponent {
   }
   deleteMedia(mediaId: string) {
     console.log('delete media', mediaId);
-    this.webSocketService.send('communication:chat:deleteMedia', {
-      mediaId,
-    }, (ok: any, err: any, data: any)=>{console.log(ok, err, data)});
+    this.webSocketService.send(
+      'communication:chat:deleteMedia',
+      {
+        mediaId,
+      },
+      (ok: any, err: any, data: any) => {
+        console.log(ok, err, data);
+      }
+    );
   }
 
   onKeyPress(event: KeyboardEvent) {
@@ -57,7 +62,7 @@ export class MessageComponent {
     }
   }
 
-  get imageMedia() {  
+  get imageMedia() {
     return (
       this.data?.media?.filter((media: any) =>
         media.mime.startsWith('image/')

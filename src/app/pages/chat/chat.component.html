@@ -14,7 +14,8 @@
 </div>
 <div id="messages-holder" class="messages-holder">
   @for (message of this.chatData.messages; track message._id; let last = $last) {
-  <app-message [data]="message" [isSender]="message.senderId._id !== me?._id"></app-message>
+  <app-message (openMedia)="openMedia(message._id)" [data]="message"
+    [isSender]="message.senderId._id !== me?._id"></app-message>
   }
 </div>
 
