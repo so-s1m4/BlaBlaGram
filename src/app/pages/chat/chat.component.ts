@@ -136,8 +136,8 @@ export class ChatComponent
       mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
 
       mediaElement.style.borderRadius = '10px';
-      mediaElement.style.width = 'auto';
-      mediaElement.style.height = '80vh';
+      mediaElement.style.width = '80vw';
+      mediaElement.style.height = 'auto';
       mediaElement.style.objectFit = 'cover';
 
       mediaElement.onclick = () => {
