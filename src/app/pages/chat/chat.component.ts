@@ -175,6 +175,7 @@ export class ChatComponent
 
       deleteButton.onclick = () => {
         this.deleteMedia(comId, media._id);
+
         mediaList = mediaList.filter((item: any) => item._id !== media._id);
         mediaWrapper.remove();
         if (mediaList.length === 0) {
@@ -193,9 +194,9 @@ export class ChatComponent
 
   deleteMedia(comId: string, mediaId: string): void {
     this.webSocketService.send(
-      'communication:chat:deleteMedia',
+      'communication:chat:deleteMedias',
       {
-        mediaId,
+        media: [mediaId],
       },
       (ok: any, err: any, data: any) => {
         if (!ok) {
@@ -249,7 +250,6 @@ export class ChatComponent
     if (data.spaceId !== this.chatId) {
       return false;
     }
-    console.log(data);
     this.chatData$.messages.push(data);
     setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
@@ -262,15 +262,20 @@ export class ChatComponent
       this.onNewMessage(data);
     });
     this.webSocketService.on('communication:editMessage', (data: any) => {
-      console.log('Updated message');
       if (data.spaceId === this.chatId) {
         const message = this.chatData$.messages.find(
           (msg: any) => msg._id === data._id
         );
         if (message) {
-          message.media = data.media || [];
           message.text = data.text;
         }
+      }
+    });
+    this.webSocketService.on('communication:deleteMedia', (data: any) => {
+      if (data.communicationId.spaceId === this.chatId) {
+        const message = this.chatData$.messages
+          .find((msg: any) => msg._id === data.communicationId._id)
+        message.media = message.media.filter((media: any) => media._id !== data._id);
       }
     });
   }
@@ -284,7 +289,6 @@ export class ChatComponent
     this.chatService.selectChat('');
   }
   ngAfterContentInit(): void {
-    console.log('AfterViewChecked called');
     this.scrollToBottom();
   }
   get chatData(): any {

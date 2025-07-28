@@ -48,7 +48,7 @@ export class ChatsService implements OnInit {
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:chats:getList',
-      { spaceId: chatId, limit: 10000 },
+      { spaceId: chatId, limit: 100 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
@@ -104,17 +104,13 @@ export class ChatsService implements OnInit {
             payl.append('file', file);
             payl.append('communicationId', data._id);
             payl.append('type', 'file');
-            
+
             this.httpClient
-              .post(
-                API_URL + '/mediaserver/media',
-                payl,
-                {
-                  headers: {
-                    Authorization: 'Bearer ' + this.authService.token,
-                  },
-                }
-              )
+              .post(API_URL + '/mediaserver/media', payl, {
+                headers: {
+                  Authorization: 'Bearer ' + this.authService.token,
+                },
+              })
               .subscribe((res) => {
                 console.log(res);
                 filesUploaded++;
