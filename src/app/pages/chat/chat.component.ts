@@ -96,7 +96,7 @@ export class ChatComponent
           const uploadBar = (() => {
             const uploadBar = document.createElement('div');
             uploadBar.className = 'upload-bar';
-            uploadBar.style.width = '0%';
+            uploadBar.style.width = '100%';
             uploadBar.style.height = 'fit-content';
             uploadBar.style.display = 'flex';
             uploadBar.style.alignItems = 'center';
@@ -161,6 +161,7 @@ export class ChatComponent
             comId,
             (event) => {
               if (event.type === HttpEventType.UploadProgress) {
+                console.log(event.loaded, event.total);
                 if (event.total) {
                   const percentDone = Math.round(
                     (100 * event.loaded) / event.total
@@ -168,12 +169,11 @@ export class ChatComponent
                   line.style.width = percentDone + '%';
                 }
               } else if (event.type === HttpEventType.Response) {
-                uploadBar.style.width = '100%';
                 numberUploadedFiles++;
 
                 setTimeout(() => {
                   uploadBar.remove();
-                }, 1000);
+                }, 100000);
 
                 if (numberUploadedFiles === files.length) {
                   this.chatService.commitCommunication(
