@@ -42,10 +42,21 @@ export class ChatComponent
   me: any = this.authService.me;
 
   filesList: { name: string; size: number; file: File }[] = [];
+  isSelectMode = false;
   private chatData$: any;
 
   @Input() chatId: string | undefined = '';
   @Output('closeChat') close = new EventEmitter<void>();
+
+
+  // Actions
+
+  toggleSelectMode(): void {
+    this.isSelectMode = !this.isSelectMode; // Toggle select mode
+  }
+  openChatSettings(): void {
+
+  }
 
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
@@ -81,7 +92,6 @@ export class ChatComponent
       this.sendMessage();
     }
   }
-
   // Media
   openMedia(comId: string): void {
     let mediaList =
@@ -191,7 +201,6 @@ export class ChatComponent
 
     document.body.appendChild(wrapper);
   }
-
   deleteMedia(comId: string, mediaId: string): void {
     this.webSocketService.send(
       'communication:chat:deleteMedias',
@@ -227,7 +236,6 @@ export class ChatComponent
       this.filesList.push(...newFiles);
     }
   }
-
   goBack(): void {
     this.close.emit();
   }
@@ -244,7 +252,6 @@ export class ChatComponent
     this.chatService.selectChat(this.chatId!);
     this.chatService.getChatById(this.chatId, this.setChatData.bind(this));
   }
-
   // Event handlers
   onNewMessage(data: any): boolean {
     if (data.spaceId !== this.chatId) {
@@ -254,7 +261,6 @@ export class ChatComponent
     setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
   }
-
   // Lifecycle hooks
   ngOnInit(): void {
     this.loadChat();

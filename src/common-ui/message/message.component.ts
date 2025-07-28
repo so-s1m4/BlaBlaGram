@@ -16,6 +16,7 @@ export class MessageComponent {
   webSocketService = inject(WebSocketService);
 
   @Input() data: any;
+  @Input() selectMode: boolean = false;
   @Input() isSender: boolean = false;
   @Output() openMedia: EventEmitter<string> = new EventEmitter<string>();
 
