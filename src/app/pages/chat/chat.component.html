@@ -18,6 +18,9 @@
     <button class="btn" (click)="openChatSettings()">
       <svg icon="hex"></svg>
     </button>
+    <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
+      <svg icon="trashcan"></svg>
+    </button>
   </div>
 </div>
 <div id="messages-holder" class="messages-holder">

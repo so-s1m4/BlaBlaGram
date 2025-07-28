@@ -48,7 +48,7 @@ export class ChatsService implements OnInit {
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:chats:getList',
-      { spaceId: chatId, limit: 100 },
+      { spaceId: chatId, limit: 999 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
@@ -125,6 +125,19 @@ export class ChatsService implements OnInit {
           }
         } else {
           console.error('Error sending message:', err);
+        }
+      }
+    );
+  }
+
+  deleteMessages(messages: string[]): void {
+    this.webSocketService.send(
+      'communication:chat:deleteMessages',
+      { messages },
+      (ok: any, err: any, data: any) => {
+        if (!ok) {
+          console.error('Failed to delete messages:', err);
+          return;
         }
       }
     );

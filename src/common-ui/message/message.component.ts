@@ -24,6 +24,10 @@ export class MessageComponent {
 
   contextMenuShow: boolean = false;
 
+  selectMessage($event: Event): void {
+    this.data.isSelected = !this.data.isSelected || true;
+  }
+
   changeText(event$: Event) {
     //@ts-ignore
     let newText = event$.target.value;

@@ -43,19 +43,28 @@ export class ChatComponent
 
   filesList: { name: string; size: number; file: File }[] = [];
   isSelectMode = false;
-  private chatData$: any;
 
+  private chatData$: any;
   @Input() chatId: string | undefined = '';
   @Output('closeChat') close = new EventEmitter<void>();
-
 
   // Actions
 
   toggleSelectMode(): void {
     this.isSelectMode = !this.isSelectMode; // Toggle select mode
   }
-  openChatSettings(): void {
+  openChatSettings(): void {}
 
+  deleteSelectedMessages($event: Event){
+    $event.stopPropagation();
+
+    let messagesToDelete = this.chatData$.messages.map((msg: any) => {
+      if (msg.isSelected) {
+        return msg._id;
+      }
+    }).filter((id: any) => id);
+
+    this.chatService.deleteMessages(messagesToDelete);
   }
 
   scrollToBottom(): void {
@@ -279,9 +288,19 @@ export class ChatComponent
     });
     this.webSocketService.on('communication:deleteMedia', (data: any) => {
       if (data.communicationId.spaceId === this.chatId) {
-        const message = this.chatData$.messages
-          .find((msg: any) => msg._id === data.communicationId._id)
-        message.media = message.media.filter((media: any) => media._id !== data._id);
+        const message = this.chatData$.messages.find(
+          (msg: any) => msg._id === data.communicationId._id
+        );
+        message.media = message.media.filter(
+          (media: any) => media._id !== data._id
+        );
+      }
+    });
+    this.webSocketService.on('communication:deleteMessage', (data: any) => {
+      if (data.spaceId === this.chatId) {
+        this.chatData$.messages = this.chatData$.messages.filter(
+          (msg: any) => msg._id !== data._id
+        );
       }
     });
   }
