@@ -173,12 +173,10 @@ export class ChatComponent
 
                 setTimeout(() => {
                   uploadBar.remove();
-                }, 100000);
+                }, 100);
 
                 if (numberUploadedFiles === files.length) {
-                  this.chatService.commitCommunication(
-                    comId
-                  )
+                  this.chatService.commitCommunication(comId);
                   this.scrollToBottom();
                 }
               }
