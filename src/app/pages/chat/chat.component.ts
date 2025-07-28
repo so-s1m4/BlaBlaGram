@@ -18,6 +18,7 @@ import { AuthService } from '../../services/auth.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { LayoutComponent } from '../../../common-ui/layout/layout.component';
 import { MessageComponent } from '../../../common-ui/message/message.component';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-chat',
@@ -55,14 +56,16 @@ export class ChatComponent
   }
   openChatSettings(): void {}
 
-  deleteSelectedMessages($event: Event){
+  deleteSelectedMessages($event: Event) {
     $event.stopPropagation();
 
-    let messagesToDelete = this.chatData$.messages.map((msg: any) => {
-      if (msg.isSelected) {
-        return msg._id;
-      }
-    }).filter((id: any) => id);
+    let messagesToDelete = this.chatData$.messages
+      .map((msg: any) => {
+        if (msg.isSelected) {
+          return msg._id;
+        }
+      })
+      .filter((id: any) => id);
 
     this.chatService.deleteMessages(messagesToDelete);
   }
@@ -76,22 +79,114 @@ export class ChatComponent
     }
   }
   sendMessage(): void {
-    this.chatService.sendMessage(
+    //@ts-ignore
+    const message = document.getElementById('message-input')!.value;
+
+    this.chatService.createCommunication(
       this.chatId!,
-      {
-        //@ts-ignore
-        message: document.getElementById('message-input')!.value || undefined,
-        //@ts-ignore
-        files: this.filesList.map((file) => file.file) || [],
-      },
-      (ok: any, err: any, data: any) => {
-        if (ok) {
-          this.scrollToBottom();
+      message,
+      (ok, err, data) => {
+        const comId = data._id;
+        const files = this.filesList;
+        let numberUploadedFiles = 0;
+
+        this.filesList = [];
+
+        for (let file of files) {
+          const uploadBar = (() => {
+            const uploadBar = document.createElement('div');
+            uploadBar.className = 'upload-bar';
+            uploadBar.style.width = '0%';
+            uploadBar.style.height = 'fit-content';
+            uploadBar.style.display = 'flex';
+            uploadBar.style.alignItems = 'center';
+            uploadBar.style.gap = '1rem';
+            uploadBar.style.padding = '1rem';
+            return uploadBar;
+          })();
+          if (
+            file.name.endsWith('.png') ||
+            file.name.endsWith('.jpg') ||
+            file.name.endsWith('.jpeg')
+          ) {
+            const img = (() => {
+              let img = document.createElement('img');
+              img.className = 'imgForUploadBar';
+              img.style.width = '5vh';
+              img.style.height = '5vh';
+              img.style.objectFit = 'cover';
+              img.style.borderRadius = '8px';
+              img.style.border = '1px solid var(--primary-color)';
+
+              img.src = URL.createObjectURL(file.file);
+              return img;
+            })();
+            uploadBar.appendChild(img);
+          } else {
+            const svg = document.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'svg'
+            );
+            svg.classList.add('file-icon');
+            svg.style.width = '5vh';
+            svg.style.height = '5vh';
+            svg.style.color = 'var(--primary-color)';
+
+            const use = document.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'use'
+            );
+            use.setAttributeNS(
+              'http://www.w3.org/1999/xlink',
+              'xlink:href',
+              '/assets/svg/file.svg#file'
+            );
+            svg.appendChild(use);
+
+            uploadBar.appendChild(svg);
+          }
+
+          const line = document.createElement('div');
+          line.className = 'line';
+          line.style.width = '2%';
+          line.style.height = '5px';
+          line.style.backgroundColor = 'var(--primary-color)';
+          line.style.borderRadius = '8px';
+
+          uploadBar.appendChild(line);
+
+          document.getElementById('upload-bars-holder')?.appendChild(uploadBar);
+          this.chatService.sendFileToCommunication(
+            file.file,
+            comId,
+            (event) => {
+              if (event.type === HttpEventType.UploadProgress) {
+                if (event.total) {
+                  const percentDone = Math.round(
+                    (100 * event.loaded) / event.total
+                  );
+                  line.style.width = percentDone + '%';
+                }
+              } else if (event.type === HttpEventType.Response) {
+                uploadBar.style.width = '100%';
+                numberUploadedFiles++;
+
+                setTimeout(() => {
+                  uploadBar.remove();
+                }, 1000);
+
+                if (numberUploadedFiles === files.length) {
+                  this.chatService.commitCommunication(
+                    comId
+                  )
+                  this.scrollToBottom();
+                }
+              }
+            }
+          );
         }
       }
     );
-
-    this.filesList = [];
     //@ts-ignore
     document.getElementById('message-input').value = '';
   }
@@ -243,6 +338,7 @@ export class ChatComponent
         file: file,
       }));
       this.filesList.push(...newFiles);
+      this.filesList = this.filesList.slice(0, 10); // Limit to 10 files
     }
   }
   goBack(): void {

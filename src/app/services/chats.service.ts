@@ -17,15 +17,14 @@ export class ChatsService implements OnInit {
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
 
-  updateChats(callback: any) {
+  deleteMessages(messages: string[]): void {
     this.webSocketService.send(
-      'spaces:getList',
-      (ok: boolean, err: string, res: any) => {
-        if (ok) {
-          this.chats$ = res.map((chat: any) => chat.spaceId);
-          callback(this.chats$);
-        } else {
-          console.error('Error receiving chats:', err);
+      'communication:chat:deleteMessages',
+      { messages },
+      (ok: any, err: any, data: any) => {
+        if (!ok) {
+          console.error('Failed to delete messages:', err);
+          return;
         }
       }
     );
@@ -44,11 +43,24 @@ export class ChatsService implements OnInit {
     }
     this.updateChats(callback);
   }
+  updateChats(callback: any) {
+    this.webSocketService.send(
+      'spaces:getList',
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          this.chats$ = res.map((chat: any) => chat.spaceId);
+          callback(this.chats$);
+        } else {
+          console.error('Error receiving chats:', err);
+        }
+      }
+    );
+  }
 
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:chats:getList',
-      { spaceId: chatId, limit: 999 },
+      { spaceId: chatId, limit: 50 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
@@ -63,10 +75,6 @@ export class ChatsService implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.chats();
-  }
-
   selectChat(chatId: string): void {
     this.currentChatId$ = chatId;
   }
@@ -75,71 +83,69 @@ export class ChatsService implements OnInit {
     return this.currentChatId$;
   }
 
-  async sendMessage(
+  createCommunication(
     chatId: string,
-    upload: { message: string; files: any[] },
-    callback: any
-  ): Promise<void> {
+    text: string,
+    callback?: (ok: any, err: any, data: any) => void
+  ): void {
     this.webSocketService.send(
       'communication:chats:create',
-      {
-        spaceId: chatId,
-        // @ts-ignore
-        text: upload.message || '',
-      },
+      { spaceId: chatId, text },
       (ok: any, err: any, data: any) => {
         if (ok) {
-          let filesUploaded = 0;
-          if (!upload.files || upload.files.length === 0) {
-            this.webSocketService.send(
-              'communication:chats:close',
-              { communicationId: data._id },
-              callback
-            );
-            return;
-          }
-
-          for (const file of upload.files || []) {
-            let payl = new FormData();
-            payl.append('file', file);
-            payl.append('communicationId', data._id);
-            payl.append('type', 'file');
-
-            this.httpClient
-              .post(API_URL + '/mediaserver/media', payl, {
-                headers: {
-                  Authorization: 'Bearer ' + this.authService.token,
-                },
-              })
-              .subscribe((res) => {
-                console.log(res);
-                filesUploaded++;
-                if (filesUploaded === upload.files.length) {
-                  this.webSocketService.send(
-                    'communication:chats:close',
-                    { communicationId: data._id },
-                    callback
-                  );
-                }
-              });
-          }
+          callback?.(ok, null, data);
         } else {
-          console.error('Error sending message:', err);
+          console.error('Error creating communication:', err);
+          callback?.(null, err, null);
         }
       }
     );
   }
+  async sendFileToCommunication(
+    file: File,
+    communicationId: string,
+    callback?: (ok: any, err: any, data: any) => void
+  ): Promise<void> {
+    let payl = new FormData();
+    payl.append('file', file);
+    payl.append('communicationId', communicationId);
+    payl.append('type', 'file');
 
-  deleteMessages(messages: string[]): void {
+    this.httpClient
+      .post(API_URL + '/mediaserver/media', payl, {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.token,
+        },
+        reportProgress: true,
+        observe: 'events',
+      })
+      .subscribe(
+        (event) => {
+          callback?.(event, null, null);
+        },
+        (err) => {
+          console.error('Error sending file:', err);
+          callback?.(false, err, null);
+        }
+      );
+  }
+  commitCommunication(
+    communicationId: string,
+    callback?: (ok: any, err: any, data: any) => void
+  ) {
     this.webSocketService.send(
-      'communication:chat:deleteMessages',
-      { messages },
+      'communication:chats:close',
+      { communicationId },
       (ok: any, err: any, data: any) => {
         if (!ok) {
-          console.error('Failed to delete messages:', err);
-          return;
+          console.error('Error closing communication:', err);
         }
+        callback?.(ok, err, data);
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.chats();
   }
 }

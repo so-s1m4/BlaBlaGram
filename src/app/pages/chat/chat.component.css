@@ -17,8 +17,8 @@
   gap: 2rem;
 
   padding: 1rem;
-  padding-bottom: .2rem;
-  padding-top: .2rem;
+  padding-bottom: 0.2rem;
+  padding-top: 0.2rem;
 
   background: var(--secondary-color);
 
@@ -102,6 +102,21 @@
     min-width: fit-content;
     height: 100%;
   }
+}
+
+.upload-bars-holder {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-height: 15vh;
+  height: fit-content;
+  background: var(--secondary-color);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 10;
+  transform: translateY(-100%);
 }
 
 .filesPopUp {
