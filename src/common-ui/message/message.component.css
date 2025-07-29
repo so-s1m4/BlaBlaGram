@@ -54,12 +54,15 @@
   right: 0;
 }
 .wrapper .username {
-  display: none;
-  text-align: left;
+  display: block;
+  text-align: right;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-align: right;
 }
 .message-sender .wrapper .username {
   display: block;
-  font-weight: bold;
+  font-weight: initial;
   color: var(--primary-color);
 }
 
