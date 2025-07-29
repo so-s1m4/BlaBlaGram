@@ -1,4 +1,4 @@
-<div [ngClass]="{
+<!-- <div [ngClass]="{
       message: true,
       'message-sender': isSender,
     }" [attr.data-id]="data._id">
@@ -19,7 +19,7 @@
       </div>
       }
     </div>
-    <div class=" message-info" (contextmenu)="openContextMenu($event)" (click)="openContextMenu($event)">
+    <div class="message-info" (contextmenu)="openContextMenu($event)" (click)="openContextMenu($event)">
       <h3 class="message-sender">{{ data.senderId.username }}</h3>
 
       @if (isEditing) {
@@ -47,6 +47,64 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div> -->
+
+<div [ngClass]="{
+      message: true,
+      'message-sender': isSender,
+    }" [attr.data-id]="data._id">
+  <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="avatar" alt="" />
+
+  <div class="wrapper">
+    <div class="username">
+      {{ isSender ? data.senderId.username : "You" }}
+    </div>
+
+    <div class="photo-holder" (click)="openMedia.emit()" [ngStyle]="
+    isSender ? 
+    {
+      'margin-right': 2*imageMedia.length + 'px',
+      'margin-bottom': 1*imageMedia.length + 'px',
+    } :
+    {
+      'margin-left': 2*imageMedia.length + 'px',
+      'margin-bottom': 1*imageMedia.length + 'px',
+    }">
+      @for (media of imageMedia; track media._id; let i = $index) {
+      <div class="photo-wrapper" [ngStyle]="{
+            transform: 'translateX('+ ((isSender ? 1 : -1)*(i-1)*2) +'px)' + ' translateY(' + ((i-1)*1) + 'px)',
+          }">
+        <img [src]="API_URL + '/mediaserver/public/' + media.path" class="photo" href="google.com" alt="" />
+      </div>
+      }
+    </div>
+
+    <div class="text">
+      @if (isEditing) {
+      <textarea (keypress)="onKeyPress($event)" class="message-edit" [value]="data.text" (change)="changeText($event)"
+        placeholder="Edit your message..."> </textarea>
+      }
+      @else {
+      <p>{{ data.text }}</p>
+      }
+    </div>
+
+    <div (click)="stopPropagation($event)" (contextmenu)="stopPropagation($event)" class="media-holder"
+      *ngIf="data.media && data.media.length > 0">
+      @for (media of data.media; track media._id) {
+      @if (!media.mime.startsWith('image/')) {
+      <div class="media-item">
+        <svg icon="file"></svg>
+        <a [href]="API_URL + '/mediaserver/public/' + media.path" target="_blank" class="media-link">
+          <p>{{ media.path }}</p>
+        </a>
+      </div>
+      }}
+    </div>
   </div>
 
   <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"

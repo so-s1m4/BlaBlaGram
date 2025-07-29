@@ -5,19 +5,19 @@
   </div>
   <div class="message-preview">
     <div class="message-preview-text">
-      {{ chat.lastMessage?.text }}
+      {{ chat.lastMessage?.text || 'No messages yet' }}
     </div>
     <div class="message-preview-time">
-      {{ chat.lastMessage?.updatedAt.toTimeString("HH:mm").split(" ")[0] }}
+      {{ chat.lastMessage?.updatedAt?.toTimeString("HH:mm").split(" ")[0] || '' }}
     </div>
   </div>
 </div>
 @if (chat.unreadmessages > 0) {
-  <div class="unread-messages">
-    @if (chat.unreadmessages > 99) {
-      99+
-    } @else {
-      {{ chat.unreadmessages }}
-    }
-  </div>
+<div class="unread-messages">
+  @if (chat.unreadmessages > 99) {
+  99+
+  } @else {
+  {{ chat.unreadmessages }}
+  }
+</div>
 }

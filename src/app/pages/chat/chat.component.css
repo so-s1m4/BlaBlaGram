@@ -80,6 +80,10 @@
   padding-bottom: 3rem;
 }
 
+.messages-holder::-webkit-scrollbar {
+  width: 0.1rem;
+}
+
 .input-holder {
   display: flex;
 

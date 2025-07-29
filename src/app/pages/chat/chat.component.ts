@@ -69,7 +69,6 @@ export class ChatComponent
 
     this.chatService.deleteMessages(messagesToDelete);
   }
-
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
     if (messagesHolder) {
@@ -82,6 +81,10 @@ export class ChatComponent
     //@ts-ignore
     const message = document.getElementById('message-input')!.value;
 
+    if (!message.trim() && this.filesList.length === 0) {
+      return;
+    }
+
     this.chatService.createCommunication(
       this.chatId!,
       message,
@@ -91,6 +94,12 @@ export class ChatComponent
         let numberUploadedFiles = 0;
 
         this.filesList = [];
+
+        if (files.length === 0) {
+          this.chatService.commitCommunication(comId);
+          this.scrollToBottom();
+          return;
+        }
 
         for (let file of files) {
           const uploadBar = (() => {
@@ -161,7 +170,6 @@ export class ChatComponent
             comId,
             (event) => {
               if (event.type === HttpEventType.UploadProgress) {
-                console.log(event.loaded, event.total);
                 if (event.total) {
                   const percentDone = Math.round(
                     (100 * event.loaded) / event.total

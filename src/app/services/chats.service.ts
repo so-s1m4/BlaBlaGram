@@ -60,7 +60,7 @@ export class ChatsService implements OnInit {
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:chats:getList',
-      { spaceId: chatId, limit: 50 },
+      { spaceId: chatId, limit: 100 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();

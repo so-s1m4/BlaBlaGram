@@ -39,7 +39,7 @@ export class ChatsComponent implements OnInit {
       ...item,
       lastMessage: {
         ...item.lastMessage,
-        updatedAt: new Date(item.lastMessage.updatedAt),
+        updatedAt: new Date(item.lastMessage?.updatedAt),
       },
     }));
   }

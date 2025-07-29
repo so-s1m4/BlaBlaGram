@@ -3,6 +3,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { API_URL } from '../../app/app.config';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { WebSocketService } from '../../app/services/web-socket.service';
+import { ChatsService } from '../../app/services/chats.service';
 
 @Component({
   selector: 'app-message',
@@ -14,6 +15,7 @@ export class MessageComponent {
   API_URL = API_URL;
 
   webSocketService = inject(WebSocketService);
+  chatService = inject(ChatsService);
 
   @Input() data: any;
   @Input() selectMode: boolean = false;
@@ -43,9 +45,7 @@ export class MessageComponent {
     this.contextMenuShow = false;
   }
   deleteMessage() {
-    this.webSocketService.send('communication:chats:delete', {
-      communicationId: this.data._id,
-    });
+    this.chatService.deleteMessages([this.data._id]);
   }
   deleteMedia(mediaId: string) {
     console.log('delete media', mediaId);

@@ -12,14 +12,14 @@
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
   <div class="header-actions">
+    <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
+      <svg icon="trashcan"></svg>
+    </button>
     <button class="btn" (click)="toggleSelectMode()">
       <svg icon="select"></svg>
     </button>
     <button class="btn" (click)="openChatSettings()">
       <svg icon="hex"></svg>
-    </button>
-    <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
-      <svg icon="trashcan"></svg>
     </button>
   </div>
 </div>
