@@ -58,7 +58,7 @@
   <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
   <button id="send-btn" class="btn" (click)="sendMessage()">Send</button>
   } @else {
-  <textarea id="message-input" class="input" [value]="messageTextForEdit" placeholder="Type a message..."></textarea>
+  <textarea id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)" placeholder="Type a message..."></textarea>
   <button id="send-btn" class="btn" (click)="editMessage()">Save</button>
   }
 

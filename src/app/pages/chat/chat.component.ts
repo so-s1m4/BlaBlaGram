@@ -83,7 +83,11 @@ export class ChatComponent
   onKeyPress(event: KeyboardEvent): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      this.sendMessage();
+      if (this.editMode) {
+        this.editMessage();
+      } else {
+        this.sendMessage();
+      }
     }
   }
   toggleEditMessage(msgId: string) {
@@ -239,6 +243,9 @@ export class ChatComponent
     ) as HTMLInputElement;
     const text = inputElement.value;
 
+    if (text.length == 0) {
+      this.toggleEditMessage(this.messageIdForEdit!);
+    }
     if (inputElement) {
       this.webSocketService.send(
         'communication:chats:update',
@@ -256,6 +263,7 @@ export class ChatComponent
           );
           if (msg) {
             msg.text = text;
+            msg.editedAt = new Date().toISOString();
           }
           this.toggleEditMessage(this.messageIdForEdit!);
         }
@@ -429,7 +437,7 @@ export class ChatComponent
     event.preventDefault();
     event.stopPropagation();
 
-    const targetData: { type: string; id: string, my:boolean } = JSON.parse(
+    const targetData: { type: string; id: string; my: boolean } = JSON.parse(
       (event.currentTarget as HTMLElement).getAttribute('data') as string
     ) as any;
     if (!targetData) {
@@ -481,7 +489,6 @@ export class ChatComponent
           },
         ];
       }
-
     } else if (targetData.type === 'media') {
       this.contextMenuItems = [
         {
@@ -511,6 +518,8 @@ export class ChatComponent
           (msg: any) => msg._id === data._id
         );
         if (message) {
+          console.log('Message edited:', data);
+          message.editedAt = data.editedAt;
           message.text = data.text;
         }
       }

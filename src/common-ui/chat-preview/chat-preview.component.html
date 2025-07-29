@@ -8,7 +8,7 @@
       {{ chat.lastMessage?.text || 'No messages yet' }}
     </div>
     <div class="message-preview-time">
-      {{ chat.lastMessage?.updatedAt?.toTimeString("HH:mm").split(" ")[0] || '' }}
+      {{ (chat.lastMessage?.editedAt | date: 'shortTime') || "" }}
     </div>
   </div>
 </div>

@@ -1,12 +1,11 @@
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
-    }" [attr.data-id]="data._id"
-    (click) = "onclick.emit()"  
->
-  <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="avatar" alt=""/>
+    }" [attr.data-id]="data._id" (click)="onclick.emit()">
+  <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="avatar" alt="" />
 
-  <div class="wrapper" (contextmenu)="onContextMenu($event)" [attr.data] = "JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+  <div class="wrapper" (contextmenu)="onContextMenu($event)"
+    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
     <div class="username">
       {{ isSender ? data.senderId.username : "You" }}
     </div>
@@ -44,13 +43,24 @@
       *ngIf="data.media && data.media.length > 0">
       @for (media of data.media; track media._id) {
       @if (!media.mime.startsWith('image/')) {
-      <div class="media-item" (contextmenu)="onContextMenu($event)" [attr.data] = "JSON.stringify({type: 'media', id: media._id})">
+      <div class="media-item" (contextmenu)="onContextMenu($event)"
+        [attr.data]="JSON.stringify({type: 'media', id: media._id})">
         <svg icon="file"></svg>
         <a [href]="API_URL + '/mediaserver/public/' + media.path" target="_blank" class="media-link">
           <p>{{ media.path }}</p>
         </a>
       </div>
       }}
+    </div>
+
+    <div class="footer">
+      @if (data.editedAt.split(".")[0] == data.createdAt.split(".")[0]) {
+      <p>Sent at</p>
+      <p>{{ data.createdAt | date: 'shortTime' }}</p>
+      } @else {
+      <p>Edited at</p>
+      <p>{{ data.editedAt | date: 'shortTime' }}</p>
+      }
     </div>
   </div>
 
