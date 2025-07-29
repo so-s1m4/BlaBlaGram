@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: 60%;
+  max-width: 45%;
   background: var(--secondary-color);
   padding: 1rem;
   border-radius: 0.5rem;
@@ -64,6 +64,7 @@
   display: block;
   font-weight: initial;
   color: var(--primary-color);
+  text-align: left;
 }
 
 .media-holder {
@@ -116,6 +117,8 @@
   display: flex;
   justify-content: space-between;
 
+  font-size: 12px;
+  color: var(--gray-color);
   gap: .5rem;
 }
 
