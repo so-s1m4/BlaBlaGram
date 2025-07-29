@@ -29,6 +29,23 @@ export class ChatsService implements OnInit {
       }
     );
   }
+  deleteMedia(mediaId: string, callback?: any): void {
+    this.webSocketService.send(
+      'communication:chat:deleteMedias',
+      {
+        media: [mediaId],
+      },
+      (ok: any, err: any, data: any) => {
+        if (!ok) {
+          console.error('Failed to delete media:', err);
+          return;
+        }
+
+        callback?.();
+        
+      }
+    );
+  }
 
   chats(callback?: (chats: any[]) => void): void | any[] {
     if (this.chats$.length > 0) {

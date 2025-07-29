@@ -19,10 +19,16 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { LayoutComponent } from '../../../common-ui/layout/layout.component';
 import { MessageComponent } from '../../../common-ui/message/message.component';
 import { HttpEventType } from '@angular/common/http';
+import { ContextMenuComponent } from '../../../common-ui/context-menu/context-menu.component';
 
 @Component({
   selector: 'app-chat',
-  imports: [CommonModule, SvgIconComponent, MessageComponent],
+  imports: [
+    CommonModule,
+    SvgIconComponent,
+    MessageComponent,
+    ContextMenuComponent,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
@@ -40,6 +46,18 @@ export class ChatComponent
   authService = inject(AuthService);
   route: Router = inject(Router);
 
+  editMode = false;
+  messageIdForEdit: string | null = null;
+  messageTextForEdit: string | null = null;
+
+  contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
+  contextMenuStyle: {
+    top: string;
+    left: string;
+    display: string;
+    transform?: string;
+  } = { top: '0', left: '0', display: 'none' };
+
   me: any = this.authService.me;
 
   filesList: { name: string; size: number; file: File }[] = [];
@@ -50,25 +68,10 @@ export class ChatComponent
   @Output('closeChat') close = new EventEmitter<void>();
 
   // Actions
-
   toggleSelectMode(): void {
     this.isSelectMode = !this.isSelectMode; // Toggle select mode
   }
   openChatSettings(): void {}
-
-  deleteSelectedMessages($event: Event) {
-    $event.stopPropagation();
-
-    let messagesToDelete = this.chatData$.messages
-      .map((msg: any) => {
-        if (msg.isSelected) {
-          return msg._id;
-        }
-      })
-      .filter((id: any) => id);
-
-    this.chatService.deleteMessages(messagesToDelete);
-  }
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
     if (messagesHolder) {
@@ -77,6 +80,26 @@ export class ChatComponent
       });
     }
   }
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
+  }
+  toggleEditMessage(msgId: string) {
+    if (this.messageIdForEdit === msgId) {
+      this.messageIdForEdit = null;
+      this.editMode = false;
+      this.messageTextForEdit = null;
+    } else {
+      this.messageIdForEdit = msgId;
+      this.editMode = true;
+      this.messageTextForEdit = this.chatData?.messages.find(
+        (msg: any) => msg._id === msgId
+      ).text;
+    }
+  }
+  // Messages
   sendMessage(): void {
     //@ts-ignore
     const message = document.getElementById('message-input')!.value;
@@ -196,10 +219,47 @@ export class ChatComponent
     //@ts-ignore
     document.getElementById('message-input').value = '';
   }
-  onKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      this.sendMessage();
+  deleteSelectedMessages($event: Event) {
+    $event.stopPropagation();
+
+    let messagesToDelete = this.chatData$.messages
+      .map((msg: any) => {
+        if (msg.isSelected) {
+          return msg._id;
+        }
+      })
+      .filter((id: any) => id);
+
+    this.chatService.deleteMessages(messagesToDelete);
+  }
+
+  editMessage() {
+    const inputElement = document.getElementById(
+      'message-input'
+    ) as HTMLInputElement;
+    const text = inputElement.value;
+
+    if (inputElement) {
+      this.webSocketService.send(
+        'communication:chats:update',
+        {
+          communicationId: this.messageIdForEdit,
+          text,
+        },
+        (ok: any, err: any, data: any) => {
+          if (err) {
+            console.error('Error updating message:', err);
+            return;
+          }
+          const msg = this.chatData$.messages.find(
+            (msg: any) => msg._id === this.messageIdForEdit
+          );
+          if (msg) {
+            msg.text = text;
+          }
+          this.toggleEditMessage(this.messageIdForEdit!);
+        }
+      );
     }
   }
   // Media
@@ -312,23 +372,13 @@ export class ChatComponent
     document.body.appendChild(wrapper);
   }
   deleteMedia(comId: string, mediaId: string): void {
-    this.webSocketService.send(
-      'communication:chat:deleteMedias',
-      {
-        media: [mediaId],
-      },
-      (ok: any, err: any, data: any) => {
-        if (!ok) {
-          console.error('Failed to delete media:', err);
-          return;
-        }
-        let msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
-        if (!msg) {
-          return;
-        }
-        msg.media = msg.media.filter((media: any) => media._id !== mediaId);
+    this.chatService.deleteMedia(mediaId, () => {
+      let msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
+      if (!msg) {
+        return;
       }
-    );
+      msg.media = msg.media.filter((media: any) => media._id !== mediaId);
+    });
   }
   // Files
   deleteFile(file: any): void {
@@ -371,6 +421,83 @@ export class ChatComponent
     this.chatData$.messages.push(data);
     setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
+  }
+  closeContextMenu() {
+    this.contextMenuStyle.display = 'none';
+  }
+  openContextMenu(event: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const targetData: { type: string; id: string, my:boolean } = JSON.parse(
+      (event.currentTarget as HTMLElement).getAttribute('data') as string
+    ) as any;
+    if (!targetData) {
+      return;
+    }
+    const scrollableElement = document.getElementById('messages-holder')!;
+
+    const scrollRect = scrollableElement.getBoundingClientRect();
+    const x = event.clientX - scrollRect.left + scrollableElement.scrollLeft;
+    const y = event.clientY - scrollRect.top + scrollableElement.scrollTop;
+
+    this.contextMenuStyle = {
+      display: 'flex',
+      left: x + 'px',
+      top: y + 'px',
+    };
+    if (x / (scrollRect.right - scrollRect.left) > 0.5) {
+      this.contextMenuStyle.transform = 'translateX(-100%)';
+    }
+    if (targetData.type === 'message') {
+      if (targetData.my) {
+        this.contextMenuItems = [
+          {
+            label: 'Edit',
+            svg: 'pen',
+            action: () => {
+              this.toggleEditMessage(targetData.id);
+              this.closeContextMenu();
+            },
+          },
+          {
+            label: 'Delete',
+            svg: 'trashcan',
+            action: () => {
+              this.closeContextMenu();
+              this.chatService.deleteMessages([targetData.id]);
+            },
+          },
+        ];
+      } else {
+        this.contextMenuItems = [
+          {
+            label: 'Delete',
+            svg: 'trashcan',
+            action: () => {
+              this.closeContextMenu();
+              this.chatService.deleteMessages([targetData.id]);
+            },
+          },
+        ];
+      }
+
+    } else if (targetData.type === 'media') {
+      this.contextMenuItems = [
+        {
+          label: 'Delete',
+          svg: 'trashcan',
+          action: () => {
+            this.closeContextMenu();
+            this.chatService.deleteMedia(targetData.id);
+          },
+        },
+      ];
+    }
+
+    if (!targetData) {
+      return;
+    }
   }
   // Lifecycle hooks
   ngOnInit(): void {

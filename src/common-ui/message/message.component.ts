@@ -13,6 +13,7 @@ import { ChatsService } from '../../app/services/chats.service';
 })
 export class MessageComponent {
   API_URL = API_URL;
+  JSON = JSON;
 
   webSocketService = inject(WebSocketService);
   chatService = inject(ChatsService);
@@ -21,10 +22,10 @@ export class MessageComponent {
   @Input() selectMode: boolean = false;
   @Input() isSender: boolean = false;
   @Output() openMedia: EventEmitter<string> = new EventEmitter<string>();
+  @Output() openContextMenu = new EventEmitter();
+  @Output() onclick = new EventEmitter();
 
   isEditing: boolean = false;
-
-  contextMenuShow: boolean = false;
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected || true;
@@ -39,10 +40,6 @@ export class MessageComponent {
       communicationId: this.data._id,
       text: newText,
     });
-  }
-  editMessage() {
-    this.isEditing = !this.isEditing;
-    this.contextMenuShow = false;
   }
   deleteMessage() {
     this.chatService.deleteMessages([this.data._id]);
@@ -63,8 +60,11 @@ export class MessageComponent {
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.isEditing && !event.shiftKey) {
       this.isEditing = false;
-      this.contextMenuShow = false;
     }
+  }
+  onContextMenu(event: Event) {
+    event.preventDefault();
+    this.openContextMenu.emit(event);
   }
 
   get imageMedia() {
@@ -73,16 +73,6 @@ export class MessageComponent {
         media.mime.startsWith('image/')
       ) || []
     );
-  }
-
-  openContextMenu($event: Event) {
-    $event.preventDefault();
-    this.contextMenuShow = !this.contextMenuShow;
-
-    //@ts-ignore
-    $event!.currentTarget!.querySelectorAll('.context-menu')[0].style.left = 0;
-    //@ts-ignore
-    $event!.currentTarget!.querySelectorAll('.context-menu')[0].style.top = 0;
   }
 
   stopPropagation($event: Event) {

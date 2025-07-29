@@ -20,7 +20,7 @@ export class WebSocketService {
     });
 
     this.socket.on('connect', () => {
-      console.log('[WS] Connected:', this.socket.id);
+      console.log('[WS] Connected');
     });
 
     this.socket.on('disconnect', () => {
@@ -40,11 +40,15 @@ export class WebSocketService {
       });
     } else {
       // event, data, and callback provided
-      this.socket.emit(event, dataOrCallback, (ok: any, err: any, data: any) => {
-        if (callback) {
-          callback(ok, err, data);
+      this.socket.emit(
+        event,
+        dataOrCallback,
+        (ok: any, err: any, data: any) => {
+          if (callback) {
+            callback(ok, err, data);
+          }
         }
-      });
+      );
     }
   }
 
