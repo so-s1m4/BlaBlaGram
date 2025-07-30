@@ -139,6 +139,9 @@ export class MessageComponent implements AfterViewInit {
     event.preventDefault();
     this.openContextMenu.emit(event);
   }
+  onMediaGallery() {
+    this.openMedia.emit(this.data._id);
+  }
 
   get imageMedia() {
     return (

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-media-gallery',
@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class MediaGalleryComponent {
 
+  @Input() media: any[] = [];
+  @Output() close = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<{comId: string, mediaId: string}>();
+
+  
 }

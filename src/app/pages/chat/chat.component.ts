@@ -20,6 +20,7 @@ import { LayoutComponent } from '../../../common-ui/layout/layout.component';
 import { MessageComponent } from '../../../common-ui/message/message.component';
 import { HttpEventType } from '@angular/common/http';
 import { ContextMenuComponent } from '../../../common-ui/context-menu/context-menu.component';
+import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-gallery.component';
 
 @Component({
   selector: 'app-chat',
@@ -28,6 +29,7 @@ import { ContextMenuComponent } from '../../../common-ui/context-menu/context-me
     SvgIconComponent,
     MessageComponent,
     ContextMenuComponent,
+    MediaGalleryComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -61,6 +63,9 @@ export class ChatComponent
   me: any = this.authService.me;
 
   filesList: { name: string; size: number; file: File }[] = [];
+
+  mediaToShow: any[] = [];
+
   isSelectMode = false;
 
   private chatData$: any;
@@ -271,141 +276,25 @@ export class ChatComponent
   }
   // Media
   openMedia(comId: string): void {
-    let mediaList =
-      this.chatData$.messages
-        .find((msg: any) => msg._id === comId)
-        ?.media.filter(
-          (item: any) =>
-            item.mime.startsWith('image/') || item.mime.startsWith('video/')
-        ) || [];
-    if (mediaList.length === 0) {
-      return;
-    }
-    const wrapper = (() => {
-      let wrapper = document.createElement('div');
-      wrapper.className = 'media-wrapper';
-
-      wrapper.style.position = 'absolute';
-      wrapper.style.top = '0';
-      wrapper.style.left = '0';
-      wrapper.style.width = '100dvw';
-      wrapper.style.height = '100dvh';
-      wrapper.style.zIndex = '1000';
-
-      wrapper.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-      wrapper.style.display = 'flex';
-      wrapper.style.gap = '2rem';
-      wrapper.style.justifyContent = 'flex-start';
-      wrapper.style.alignItems = 'center';
-      wrapper.style.overflow = 'auto';
-      wrapper.style.padding = '3rem';
-      return wrapper;
-    })();
-    const closeButton = (() => {
-      let closeButton = document.createElement('button');
-      closeButton.textContent = 'X';
-      closeButton.style.backgroundColor = 'transparent';
-      closeButton.style.fontSize = '2.5rem';
-      closeButton.style.color = 'var(--primary-color)';
-      closeButton.style.border = 'none';
-      closeButton.style.cursor = 'pointer';
-
-      closeButton.style.position = 'fixed';
-      closeButton.style.top = '25px';
-      closeButton.style.right = '25px';
-      closeButton.style.zIndex = '1001';
-      closeButton.onclick = () => {
-        document.body.removeChild(wrapper);
-      };
-      return closeButton;
-    })();
-    wrapper.appendChild(closeButton);
-
-    mediaList.forEach((media: any) => {
-      const mediaWrapper = document.createElement('div');
-      mediaWrapper.style.position = 'relative';
-      mediaWrapper.style.width = 'fit-content';
-      mediaWrapper.style.maxHeight = '80vh';
-
-      let mediaElement: HTMLImageElement | HTMLVideoElement;
-      if (media.mime.startsWith('video/')) {
-        mediaElement = document.createElement('video');
-        mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
-
-        mediaElement.style.borderRadius = '10px';
-        mediaElement.style.maxWidth = '80vw';
-        mediaElement.style.height = 'auto';
-
-        mediaElement.style.maxHeight = '80vh';
-
-        mediaElement.style.objectFit = 'cover';
-
-        mediaElement.onclick = () => {
-          window.open(mediaElement.src, '_blank');
-        };
-      } else {
-        mediaElement = document.createElement('img');
-        mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
-
-        mediaElement.style.borderRadius = '10px';
-        mediaElement.style.maxWidth = '80vw';
-        mediaElement.style.height = 'auto';
-
-        mediaElement.style.maxHeight = '80vh';
-
-        mediaElement.style.objectFit = 'cover';
-
-        mediaElement.onclick = () => {
-          window.open(mediaElement.src, '_blank');
-        };
-      }
-
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.style.position = 'absolute';
-      deleteButton.style.bottom = '10px';
-      deleteButton.style.right = '10px';
-      deleteButton.style.zIndex = '1001';
-      deleteButton.style.backgroundColor = 'red';
-      deleteButton.style.color = 'white';
-      deleteButton.style.border = 'none';
-      deleteButton.style.padding = '5px 10px';
-      deleteButton.style.cursor = 'pointer';
-      deleteButton.style.borderRadius = '5px';
-      deleteButton.onmouseover = () => {
-        deleteButton.style.backgroundColor = 'white';
-        deleteButton.style.color = 'red';
-      };
-      deleteButton.onmouseout = () => {
-        deleteButton.style.backgroundColor = 'red';
-        deleteButton.style.color = 'white';
-      };
-
-      deleteButton.onclick = () => {
-        this.deleteMedia(comId, media._id);
-
-        mediaList = mediaList.filter((item: any) => item._id !== media._id);
-        mediaWrapper.remove();
-        if (mediaList.length === 0) {
-          document.body.removeChild(wrapper);
-        }
-      };
-
-      mediaWrapper.appendChild(mediaElement);
-      mediaWrapper.appendChild(deleteButton);
-
-      wrapper.appendChild(mediaWrapper);
-    });
-
-    document.body.appendChild(wrapper);
+    const msg = this.chatData$.messages.find(
+      (msg: any) => msg._id === comId
+    );
+    const media = msg?.media || [];
+    this.mediaToShow = media
+    this.closeContextMenu();
   }
-  deleteMedia(comId: string, mediaId: string): void {
-    this.chatService.deleteMedia(mediaId, () => {
-      let msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
+  closeMedia(): void {
+    this.mediaToShow = [];
+  }
+  deleteMedia(data: { comId: string; mediaId: string }): void {
+    this.chatService.deleteMedia(data.mediaId, () => {
+      let msg = this.chatData$.messages.find(
+        (msg: any) => msg._id === data.comId
+      );
       if (!msg) {
         return;
       }
-      msg.media = msg.media.filter((media: any) => media._id !== mediaId);
+      msg.media = msg.media.filter((media: any) => media._id !== data.mediaId);
     });
   }
   // Files

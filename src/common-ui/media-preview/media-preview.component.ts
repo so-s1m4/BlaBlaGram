@@ -3,15 +3,18 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { API_URL } from '../../app/app.config';
+import { SvgIconComponent } from '../../app/utils/svg.component';
 
 @Component({
   selector: 'app-media-preview',
-  imports: [CommonModule],
+  imports: [CommonModule, SvgIconComponent],
   templateUrl: './media-preview.component.html',
   styleUrl: './media-preview.component.css',
 })
@@ -20,6 +23,7 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
   API_URL = API_URL;
 
   @Input() imageMedia: any[] = [];
+  @Output() openMedia = new EventEmitter<void>();
 
   imageToShow: any[] = [];
 
@@ -42,58 +46,58 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
       switch (this.imageMedia.length) {
         case 1:
           holder.style.gridTemplateAreas = `"a"`;
-          holder.style.width = 'min(300px, 50vw)';
+          holder.style.width = 'min(300px, 70vw)';
           holder.style.height = 'min(400px, 30vh)';
           break;
         case 2:
           holder.style.gridTemplateAreas = `"a b"`;
           holder.style.gridTemplateColumns = '60% 40%';
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           break;
         case 3:
           holder.style.gridTemplateAreas = `"a b" "a c"`;
           holder.style.gridTemplateColumns = '75% 25%';
-          holder.style.width = 'min(416px, 50vw)';
+          holder.style.width = 'min(416px, 70vw)';
           holder.style.height = '420px';
           break;
         case 4:
           holder.style.gridTemplateAreas = `"a b" "a c" "a d"`;
           holder.style.gridTemplateColumns = '70% 30%';
-          holder.style.width = 'min(352px, 50vw)';
+          holder.style.width = 'min(352px, 70vw)';
           holder.style.height = '420px';
           break;
         case 5:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e"`;
           holder.style.gridTemplateRows = '60% 40%';
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '466px';
           break;
         case 6:
           holder.style.gridTemplateAreas = `"a b c" "d e f"`;
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '373px';
           break;
         case 7:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c c d d d" "e e f f g g"`;
           holder.style.gridTemplateRows = '38% 38% 25%';
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '746px';
           break;
         case 8:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e" "f f g g h h"`;
           holder.style.gridTemplateRows = '44% 28% 28%';
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '653px';
           break;
         case 9:
           holder.style.gridTemplateAreas = `"a b c" "d e f" "g h i"`;
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '560px';
           break;
         case 10:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c c d d d" "e e f f g g" "h h i i j j"`;
           holder.style.gridTemplateRows = '30% 30% 20% 20%';
-          holder.style.width = 'min(420px, 50vw)';
+          holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '933px';
           break;
       }

@@ -1,3 +1,14 @@
-<div #holder id="holder" class="holder">
-  <img class="media-item" *ngFor="let media of imageToShow" [src]="API_URL + '/mediaserver/public/' + media.path" [ngStyle]="{'grid-area': media.gridArea}" />
+<div #holder id="holder" class="holder" (click)="openMedia.emit()">
+  @for (media of this.imageToShow; track media._id) {
+
+  @if (media.mime.startsWith('image/')) {
+  <img class="media-item" [src]="API_URL + '/mediaserver/public/' + media.path"
+    [ngStyle]="{'grid-area': media.gridArea}" />
+  } @else {
+  <div class="media-item" [ngStyle]="{'grid-area': media.gridArea, 'position': 'relative'}">
+    <video [src]="API_URL + '/mediaserver/public/' + media.path" style="width: 100%; height: 100%; display: block; object-fit: cover; filter: blur(2px)" muted></video>
+    <svg icon="video" style="color: var(--dark-color); width: 3rem; height: 3rem; z-index: 3; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;"></svg>
+  </div>
+  }
+  }
 </div>
