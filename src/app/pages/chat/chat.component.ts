@@ -236,7 +236,6 @@ export class ChatComponent
 
     this.chatService.deleteMessages(messagesToDelete);
   }
-
   editMessage() {
     const inputElement = document.getElementById(
       'message-input'
@@ -275,7 +274,10 @@ export class ChatComponent
     let mediaList =
       this.chatData$.messages
         .find((msg: any) => msg._id === comId)
-        ?.media.filter((item: any) => item.mime.startsWith('image/')) || [];
+        ?.media.filter(
+          (item: any) =>
+            item.mime.startsWith('image/') || item.mime.startsWith('video/')
+        ) || [];
     if (mediaList.length === 0) {
       return;
     }
@@ -325,20 +327,38 @@ export class ChatComponent
       mediaWrapper.style.width = 'fit-content';
       mediaWrapper.style.maxHeight = '80vh';
 
-      const mediaElement = document.createElement('img');
-      mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
+      let mediaElement: HTMLImageElement | HTMLVideoElement;
+      if (media.mime.startsWith('video/')) {
+        mediaElement = document.createElement('video');
+        mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
 
-      mediaElement.style.borderRadius = '10px';
-      mediaElement.style.maxWidth = '80vw';
-      mediaElement.style.height = 'auto';
+        mediaElement.style.borderRadius = '10px';
+        mediaElement.style.maxWidth = '80vw';
+        mediaElement.style.height = 'auto';
 
-      mediaElement.style.maxHeight = '80vh';
+        mediaElement.style.maxHeight = '80vh';
 
-      mediaElement.style.objectFit = 'cover';
+        mediaElement.style.objectFit = 'cover';
 
-      mediaElement.onclick = () => {
-        window.open(mediaElement.src, '_blank');
-      };
+        mediaElement.onclick = () => {
+          window.open(mediaElement.src, '_blank');
+        };
+      } else {
+        mediaElement = document.createElement('img');
+        mediaElement.src = API_URL + '/mediaserver/public/' + media.path;
+
+        mediaElement.style.borderRadius = '10px';
+        mediaElement.style.maxWidth = '80vw';
+        mediaElement.style.height = 'auto';
+
+        mediaElement.style.maxHeight = '80vh';
+
+        mediaElement.style.objectFit = 'cover';
+
+        mediaElement.onclick = () => {
+          window.open(mediaElement.src, '_blank');
+        };
+      }
 
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
@@ -433,21 +453,25 @@ export class ChatComponent
   closeContextMenu() {
     this.contextMenuStyle.display = 'none';
   }
-  openContextMenu(event: any): void {
-    event.preventDefault();
-    event.stopPropagation();
+  openContextMenu(data: {
+    currentTarget: any;
+    clientX: number;
+    clientY: number;
+  }): void {
+    console.log('Data', data);
 
-    const targetData: { type: string; id: string; my: boolean } = JSON.parse(
-      (event.currentTarget as HTMLElement).getAttribute('data') as string
-    ) as any;
+    const targetData: { type: string; id: string; my: boolean; path?: string } =
+      JSON.parse(
+        (data.currentTarget as HTMLElement).getAttribute('data') as string
+      ) as any;
     if (!targetData) {
       return;
     }
     const scrollableElement = document.getElementById('messages-holder')!;
 
     const scrollRect = scrollableElement.getBoundingClientRect();
-    const x = event.clientX - scrollRect.left + scrollableElement.scrollLeft;
-    const y = event.clientY - scrollRect.top + scrollableElement.scrollTop;
+    const x = data.clientX - scrollRect.left + scrollableElement.scrollLeft;
+    const y = data.clientY - scrollRect.top + scrollableElement.scrollTop;
 
     this.contextMenuStyle = {
       display: 'flex',
@@ -491,6 +515,15 @@ export class ChatComponent
       }
     } else if (targetData.type === 'media') {
       this.contextMenuItems = [
+        {
+          label: 'Download',
+          svg: 'download',
+          action: () => {
+            window.location.href =
+              API_URL + '/mediaserver/public/' + targetData.path;
+            this.closeContextMenu();
+          },
+        },
         {
           label: 'Delete',
           svg: 'trashcan',

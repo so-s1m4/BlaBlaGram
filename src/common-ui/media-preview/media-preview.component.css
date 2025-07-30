@@ -1,0 +1,19 @@
+:host {
+  width: fit-content;
+  height: fit-content;
+}
+
+.holder {
+  background: var(--gray-color);
+  display: grid;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.media-item {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  overflow: hidden;
+}

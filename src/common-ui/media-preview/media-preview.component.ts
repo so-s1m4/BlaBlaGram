@@ -1,0 +1,112 @@
+import { CommonModule } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { API_URL } from '../../app/app.config';
+
+@Component({
+  selector: 'app-media-preview',
+  imports: [CommonModule],
+  templateUrl: './media-preview.component.html',
+  styleUrl: './media-preview.component.css',
+})
+export class MediaPreviewComponent implements AfterViewInit, OnInit {
+  @ViewChild('holder') holder!: ElementRef<HTMLDivElement>;
+  API_URL = API_URL;
+
+  @Input() imageMedia: any[] = [];
+
+  imageToShow: any[] = [];
+
+  ngOnInit(): void {
+    this.imageToShow = this.imageMedia.map((media, index) => ({
+      ...media,
+      gridArea: String.fromCharCode(97 + index),
+    }));
+  }
+
+  setupGridTemplateAreas() {
+    let holder: ElementRef<HTMLDivElement> | HTMLElement = this.holder;
+    if (!holder) {
+      return;
+    }
+
+    holder = holder.nativeElement;
+
+    if (this.imageMedia.length) {
+      switch (this.imageMedia.length) {
+        case 1:
+          holder.style.gridTemplateAreas = `"a"`;
+          holder.style.width = 'min(300px, 50vw)';
+          holder.style.height = 'min(400px, 30vh)';
+          break;
+        case 2:
+          holder.style.gridTemplateAreas = `"a b"`;
+          holder.style.gridTemplateColumns = '60% 40%';
+          holder.style.width = 'min(420px, 50vw)';
+          break;
+        case 3:
+          holder.style.gridTemplateAreas = `"a b" "a c"`;
+          holder.style.gridTemplateColumns = '75% 25%';
+          holder.style.width = 'min(416px, 50vw)';
+          holder.style.height = '420px';
+          break;
+        case 4:
+          holder.style.gridTemplateAreas = `"a b" "a c" "a d"`;
+          holder.style.gridTemplateColumns = '70% 30%';
+          holder.style.width = 'min(352px, 50vw)';
+          holder.style.height = '420px';
+          break;
+        case 5:
+          holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e"`;
+          holder.style.gridTemplateRows = '60% 40%';
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '466px';
+          break;
+        case 6:
+          holder.style.gridTemplateAreas = `"a b c" "d e f"`;
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '373px';
+          break;
+        case 7:
+          holder.style.gridTemplateAreas = `"a a a b b b" "c c c d d d" "e e f f g g"`;
+          holder.style.gridTemplateRows = '38% 38% 25%';
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '746px';
+          break;
+        case 8:
+          holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e" "f f g g h h"`;
+          holder.style.gridTemplateRows = '44% 28% 28%';
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '653px';
+          break;
+        case 9:
+          holder.style.gridTemplateAreas = `"a b c" "d e f" "g h i"`;
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '560px';
+          break;
+        case 10:
+          holder.style.gridTemplateAreas = `"a a a b b b" "c c c d d d" "e e f f g g" "h h i i j j"`;
+          holder.style.gridTemplateRows = '30% 30% 20% 20%';
+          holder.style.width = 'min(420px, 50vw)';
+          holder.style.height = '933px';
+          break;
+      }
+    }
+  }
+  ngAfterViewInit() {
+    this.setupGridTemplateAreas();
+    window.addEventListener('resize', this.onResize.bind(this));
+  }
+  onResize() {
+    this.setupGridTemplateAreas();
+  }
+  ngOnChanges() {
+    this.setupGridTemplateAreas();
+  }
+}
