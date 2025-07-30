@@ -1,12 +1,12 @@
-<div class="wrapper">
+<div #wrapper class="wrapper">
   <div class="gallery-header">
-    <button (click)="onClose()" class="close-button">Close</button>
+    <button (click)="onClose()" class="close-button"><svg icon="arrowBack"></svg></button>
   </div>
   <div class="gallery-content">
-    <div class="media-viewer">
+    <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
       @if (selectedMedia) {
       @if (selectedMedia.mime.startsWith('video/')) {
-      <video [src]="API_URL +'/mediaserver/public/' + selectedMedia.path" controls autoplay></video>
+      <video [src]="API_URL + '/mediaserver/public/' + selectedMedia.path" controls autoplay></video>
       } @else if (selectedMedia.mime.startsWith('image/')) {
       <img [src]="API_URL +'/mediaserver/public/' + selectedMedia.path" alt="Selected Media" />
       } @else {
@@ -34,5 +34,11 @@
       }
     </div>
     }
+
+    <div class="action-buttons-holder">
+      <button class="actBtn">
+        <svg icon="trashcan"></svg>
+      </button>
+    </div>
   </div>
 </div>
