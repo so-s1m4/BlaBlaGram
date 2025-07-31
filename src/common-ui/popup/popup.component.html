@@ -1,6 +1,15 @@
 <div class="content">
-  <div class="header">@if (data.type === 'newMessage') {
-    <p>You become a new message</p>
+  <div class="header">
+    @if (data.type === 'newMessage') {
+      <p>You become a new message</p>
+    } @else if (data.type === "newRequest"){
+      <p>You become a new request to be a friends with: </p>
+    } @else if (data.type === "acceptRequest"){
+      <p>You have a new friend</p>
+    } @else if (data.type === "declineRequest"){
+      <p>He has declined your request</p>
+    } @else if (data.type === "newChat"){
+      <p>He has started chat with you</p>
     }
   </div>
   <div class="body">

@@ -4,6 +4,7 @@ import { UserCardComponent } from '../../../common-ui/user-card/user-card.compon
 import { SearchComponent } from '../../../common-ui/search/search.component';
 import { FriendsService } from '../../services/friends.service';
 import { AuthService } from '../../services/auth.service';
+import { WebSocketService } from '../../services/web-socket.service';
 
 @Component({
   selector: 'app-friends',
@@ -16,6 +17,7 @@ export class FriendsComponent implements OnInit {
   constructor() {}
 
   profileService = inject(ProfileService);
+  webSocketService=inject(WebSocketService);
 
   whatToShow = "friends";
 
@@ -35,7 +37,28 @@ export class FriendsComponent implements OnInit {
     this.friendsService.getPendingRequests((data: any)=>{
       this.incomingReq$ = data.filter((item: any)=> item.sender_id.id !== this.authService.me.id);
       this.myReq$ = data.filter((item: any)=> item.sender_id.id === this.authService.me.id);
-    });    
+    });
+
+    
+    this.webSocketService.on("friends:newRequest", (data: any)=>{
+      this.incomingReq$.push(data)
+    })
+    this.webSocketService.on("friends:requestAccepted", (data: any)=>{
+      if (data.sender_id.id === this.authService.me.id){
+        this.myReq$ = this.myReq$.filter((item: any)=> item.id != data.id)
+        this.friends.push(data.receiver_id)
+      } else {
+        this.friends.push(data.sender_id)
+        this.incomingReq$ = this.incomingReq$.filter((item: any)=> item.id != data.id)
+      }
+    })
+    this.webSocketService.on("friends:requestCanceled", (data: any)=>{
+      if (data.sender_id.id === this.authService.me.id){
+        this.myReq$ = this.myReq$.filter((item: any)=> item.id != data.id)
+      } else {
+        this.incomingReq$ = this.incomingReq$.filter((item: any)=> item.id != data.id)
+      }
+    })
   }
   onChange($event: any){
     this.whatToShow = $event?.currentTarget?.value

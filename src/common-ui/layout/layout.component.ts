@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../app/services/web-socket.service';
 import { ChatsService } from '../../app/services/chats.service';
 import { PopupComponent } from '../popup/popup.component';
+import { AuthService } from '../../app/services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -25,6 +26,7 @@ export class LayoutComponent implements OnInit {
 
   webSocketService = inject(WebSocketService);
   chatsService = inject(ChatsService);
+  authService = inject(AuthService);
 
   pages = [
     {
@@ -100,9 +102,49 @@ export class LayoutComponent implements OnInit {
         this.showPopUp(popUpData);
       }
     });
-    
+
+    this.webSocketService.on("space:addedToNew", (data: any)=>{
+      if (data.sender_id.id === this.authService.me.id) return;
+      const popUpData = {
+          type: 'newChat',
+          img: data.sender_id || [],
+          title: data.sender_id.username || "Somebody",
+        };
+        this.showPopUp(popUpData);
+    })
     this.webSocketService.on("friends:newRequest", (data: any)=>{
-      console.log(data)
+      if (data.sender_id.id === this.authService.me.id) return;
+      const popUpData = {
+          type: 'newRequest',
+          img: data.sender_id,
+          title: data.sender_id.username,
+          message: data.text,
+        };
+        this.showPopUp(popUpData);
+    })
+    this.webSocketService.on("friends:requestAccepted", (data: any)=>{
+      if (data.receiver_id.id === this.authService.me.id) {
+        return;
+      }
+      const popUpData = {
+          type: 'acceptRequest',
+          img: data.sender_id,
+          title: data.sender_id.username,
+          message: "",
+        };
+        this.showPopUp(popUpData);
+    })
+    this.webSocketService.on("friends:requestCanceled", (data: any)=>{
+      if (data.receiver_id.id === this.authService.me.id) {
+        return;
+      }
+      const popUpData = {
+          type: 'declineRequest',
+          img: data.receiver_id,
+          title: data.receiver_id.username,
+          message: "",
+        };
+        this.showPopUp(popUpData);
     })
 
   }

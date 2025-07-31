@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--text-color);
+  color: var(--light-color);
   font-weight: bold;
 }
 app-search {
@@ -53,6 +53,14 @@ app-search {
   height: 100%;
   overflow: hidden;
 }
+
+.select {
+  background: var(--dark-color);
+  color: var(--primary-color);
+  padding: .5rem;
+  border-radius: 1rem;
+}
+
 
 @media (max-width: 1000px) {
   :host {

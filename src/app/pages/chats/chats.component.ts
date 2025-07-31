@@ -3,6 +3,8 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from '../../../common-ui/chat-preview/chat-preview.component';
 import { ChatsService } from '../../services/chats.service';
 import { ChatComponent } from '../chat/chat.component';
+import { WebSocketService } from '../../services/web-socket.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-chats',
@@ -17,6 +19,7 @@ export class ChatsComponent implements OnInit {
   }
   router = inject(Router);
   aRoute = inject(ActivatedRoute);
+  webSocketService = inject(WebSocketService);
 
   currentChat: any = null;
 
@@ -49,7 +52,12 @@ export class ChatsComponent implements OnInit {
     this.aRoute.queryParamMap.subscribe((params) => {
       this.currentChat = params.get('id')?.trim();
     });
+    this.webSocketService.on("space:addedToNew", (data: any)=>{
+      this.chatsService.chats(this.setChats.bind(this));
+    })
   }
+
+  
   get getChats(): any[] {
     return this.chats;
   }

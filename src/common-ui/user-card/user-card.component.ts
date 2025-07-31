@@ -42,7 +42,7 @@ export class UserCardComponent implements OnInit {
   }
   sendRequest(){
     const input = document.getElementById("message-req-input") as HTMLInputElement
-    this.friendsService.sendRequest(this.data.id, input.value)
+    this.friendsService.sendRequest(this.data.id, input.value || "Hello!")
     input.value = ""
     this.isSent = true;
   }
