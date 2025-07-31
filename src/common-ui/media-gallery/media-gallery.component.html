@@ -1,6 +1,12 @@
 <div #wrapper class="wrapper">
   <div class="gallery-header">
     <button (click)="onClose()" class="close-button"><svg icon="arrowBack"></svg></button>
+  
+    <div class="action-buttons-holder">
+      <button class="actBtn" (click) = "onDelete()">
+        <svg icon="trashcan"></svg>
+      </button>
+    </div>
   </div>
   <div class="gallery-content">
     <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
@@ -34,11 +40,5 @@
       }
     </div>
     }
-
-    <div class="action-buttons-holder">
-      <button class="actBtn" (click) = "onDelete()">
-        <svg icon="trashcan"></svg>
-      </button>
-    </div>
   </div>
 </div>

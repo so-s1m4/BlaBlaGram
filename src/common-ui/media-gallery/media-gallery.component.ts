@@ -47,7 +47,6 @@ export class MediaGalleryComponent implements OnInit {
       this.onClose()
     }
     this.goBack()
-    
   }
 
   private swipeCoord?: [number, number];

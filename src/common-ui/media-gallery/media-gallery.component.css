@@ -24,6 +24,8 @@
   display: flex;
   align-items: center;
 
+  position: relative;
+
 }
 .close-button {
   position: relative;
@@ -129,7 +131,7 @@
   transform: translateY(-50%);
 
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: .5rem;
 }
 .actBtn {
