@@ -40,7 +40,7 @@ export class AuthService {
         .post(`${API_URL}/api/users/login`, payload)
         .toPromise();
 
-      const token = response?.token;
+      const token = response?.data;
       if (token) {
         localStorage.setItem('token', token);
         this.isAuthed = true;
@@ -72,6 +72,8 @@ export class AuthService {
           },
         })
         .toPromise();
+
+      
 
       return response;
     } catch (error) {

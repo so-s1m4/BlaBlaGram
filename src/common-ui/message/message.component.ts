@@ -15,10 +15,11 @@ import { SvgIconComponent } from '../../app/utils/svg.component';
 import { WebSocketService } from '../../app/services/web-socket.service';
 import { ChatsService } from '../../app/services/chats.service';
 import { MediaPreviewComponent } from "../media-preview/media-preview.component";
+import { ImgPipe } from '../../app/utils/img.pipe';
 
 @Component({
   selector: 'app-message',
-  imports: [CommonModule, SvgIconComponent, MediaPreviewComponent],
+  imports: [CommonModule, SvgIconComponent, MediaPreviewComponent, ImgPipe],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })

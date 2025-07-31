@@ -2,7 +2,7 @@
       message: true,
       'message-sender': isSender,
     }" [attr.data-id]="data._id" (click)="onclick.emit()">
-  <img [src]="API_URL + '/public/' + data.senderId.img[0].path" class="avatar" alt="" />
+  <img [src]="data.senderId.img[0] | img" class="avatar" alt="" />
 
   <div #wrapper class="wrapper" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">

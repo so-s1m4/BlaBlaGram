@@ -27,7 +27,7 @@ export type PostData = {
 
 @Component({
   selector: 'app-post',
-  imports: [SvgIconComponent, CommonModule, CommentComponent, ImgPipe],
+  imports: [SvgIconComponent, CommonModule, CommentComponent],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css',
 })
@@ -67,9 +67,7 @@ export class PostComponent {
 
   async followUser(event: Event): Promise<void> {
     event.stopPropagation();
-    await this.profileService.followUser(this.data.username).then((res) => {
-      this.data.isFollowing = true;
-    });
+    
   }
 
   public sendComment(event: Event) {

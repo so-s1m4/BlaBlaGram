@@ -87,7 +87,7 @@ export class LayoutComponent implements OnInit {
           img:
             this.chatsService
               .chats()!
-              .find((chat: any) => chat._id === data.spaceId)?.img[0].path ||
+              .find((chat: any) => chat._id === data.spaceId) ||
             'assets/images/default-chat.png',
           title:
             this.chatsService

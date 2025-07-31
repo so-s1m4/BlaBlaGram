@@ -7,7 +7,7 @@
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
-  <img [src]="API_URL + '/public/' + chatData.chat.img[0].path" class="avatar" alt="" />
+  <img [src]="chatData.chat.img[0] | img" class="avatar" alt="" />
   <div class="header-info">
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
@@ -27,7 +27,7 @@
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
   @for (message of this.chatData.messages; track message._id; let last = $last) {
   <app-message (onclick)="closeContextMenu()" [selectMode]="isSelectMode" (openMedia)="openMedia(message._id)"
-    [data]="message" [isSender]="message.senderId._id !== me?._id" (openContextMenu)="openContextMenu($event)">
+    [data]="message" [isSender]="message.senderId._id !== me?.id" (openContextMenu)="openContextMenu($event)">
   </app-message>
   }
 </div>

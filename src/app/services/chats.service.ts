@@ -19,7 +19,7 @@ export class ChatsService implements OnInit {
 
   deleteMessages(messages: string[]): void {
     this.webSocketService.send(
-      'communication:chat:deleteMessages',
+      'communication:chats:deleteMessages',
       { messages },
       (ok: any, err: any, data: any) => {
         if (!ok) {
@@ -31,7 +31,7 @@ export class ChatsService implements OnInit {
   }
   deleteMedia(mediaId: string, callback?: any): void {
     this.webSocketService.send(
-      'communication:chat:deleteMedias',
+      'communication:chats:deleteMedias',
       {
         media: [mediaId],
       },
@@ -76,7 +76,7 @@ export class ChatsService implements OnInit {
 
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
-      'communication:chats:getList',
+      'communication:getList',
       { spaceId: chatId, limit: 100 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
@@ -151,9 +151,10 @@ export class ChatsService implements OnInit {
     callback?: (ok: any, err: any, data: any) => void
   ) {
     this.webSocketService.send(
-      'communication:chats:close',
+      'communication:close',
       { communicationId },
       (ok: any, err: any, data: any) => {
+        console.log(ok, err, data)
         if (!ok) {
           console.error('Error closing communication:', err);
         }

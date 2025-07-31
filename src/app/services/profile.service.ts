@@ -25,28 +25,23 @@ export class ProfileService {
     return Promise.resolve(null);
   }
 
-  banUser(username: string): Promise<void> {
-    // Simulate an API call to ban a user
-    return new Promise((resolve) => {
-      console.log(`User ${username} has been banned.`);
-      resolve();
-    });
-  }
-
-  unbanUser(username: string): Promise<void> {
-    // Simulate an API call to unban a user
-    return new Promise((resolve) => {
-      console.log(`User ${username} has been unbanned.`);
-      resolve();
-    });
-  }
-
-  followUser(username: string): Promise<void> {
-    // Simulate an API call to follow a user
-    return new Promise((resolve) => {
-      console.log(`You are now following ${username}.`);
-      resolve();
-    });
+  getUsersStartsWith(data: string, callback?: Function){
+    this.httpClient.get(
+      API_URL + "/api/users",
+      {
+        headers:{
+          Authorization: "Bearer " + this.authService.token
+        },
+        params:{
+          startsWith: data
+        }
+      }
+    ).subscribe((res: any)=>{
+      const filtered = res.data.filter((item: any)=>{
+        return item.id !== this.authService.me.id
+      })
+      callback?.(filtered)
+    })
   }
 
   openChat(userId: string, callback: (data: any) => void) {
@@ -59,17 +54,6 @@ export class ProfileService {
         }
       }
     );
-  }
-
-  async getFriendsList(callback: any): Promise<ProfileData[]> {
-    //@ts-ignore
-    return this.httpClient
-      .get<ProfileData[]>(`${API_URL}/api/users/me/friends`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.token}`,
-        },
-      })
-      .subscribe((data: any) => callback(data.data));
   }
   async getPendingRequests(): Promise<ProfileData[]> {
     return [];

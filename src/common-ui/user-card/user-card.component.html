@@ -1,26 +1,80 @@
+@if (this.type == "user"){
 <img
   class="avatar"
-  [src]="this.data!.img[0].path | img"
+  [src]="this.data!.img[0] | img"
   alt=""
   [routerLink]="['/profile', this.data!.username]"
 />
+} @else if (this.type == "inc_request"){
+  <img
+  class="avatar"
+  [src]="this.data!.sender_id.img[0] | img"
+  alt=""
+  [routerLink]="['/profile', this.data!.username]"
+/>
+} @else if (this.type == "my_request"){
+  <img
+  class="avatar"
+  [src]="this.data!.receiver_id.img[0] | img"
+  alt=""
+  [routerLink]="['/profile', this.data!.username]"
+/>
+}
+
 <div class="friend-info">
+  @if (this.type == "user"){
   <h2 class="username">{{ this.data!.username }}</h2>
   <h3 class="name">{{ this.data!.name }}</h3>
+  } @else if (this.type == "inc_request"){
+    <h2 class="username">{{ this.data!.sender_id.username }}</h2>
+    <h3 class="name">{{ this.data!.sender_id.name }}</h3>
+  } @else if (this.type == "my_request"){
+    <h2 class="username">{{ this.data!.receiver_id.username }}</h2>
+    <h3 class="name">{{ this.data!.receiver_id.name }}</h3>
+  }
 </div>
 
-<div class="actionBtns">
-  <button
-    class="btn btn-primary"
-    (click)="this.openChat(this.data!._id)"
-  >
-    <svg icon="comments"></svg>
-    Chat
-  </button>
-  <button class="btn btn-danger" (click)="this.removeFriend()">
-    <svg icon="trashcan"></svg>
-    Remove
-  </button>
+<div class="actionBtns" [ngStyle]="{
+  'flex-direction': this.data.isFriend ? 'row' : 'column'
+}">
+  @if (this.type == "user"){
+    @if (this.data.isFriend) {
+    <button
+        class="btn btn-primary"
+        (click)="this.openChat(this.data!._id)"
+      >
+      <svg icon="comments"></svg>
+      Chat
+    </button>
+    <button class="btn btn-danger" (click)="this.removeFriend()">
+      <svg icon="trashcan"></svg>
+      Remove
+    </button>
+    } @else {
+      <input id="message-req-input" placeholder="Some message?" style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100"/>
+      <button
+        class="btn btn-primary"
+        (click)="sendRequest()"
+      >
+      <svg icon="repost"></svg>
+      Send request
+    </button>
+    }
+  } @else if (this.type == "inc_request") {
+    <p>{{ this.data.text }}</p>
+    <button
+        class="btn btn-primary"
+        (click)="acceptRequest()"
+      >
+      <svg icon="plus"></svg>
+      Accept
+    </button>
+    <button class="btn btn-danger" (click)="declineRequest()">
+      <svg icon="trashcan"></svg>
+      Decline
+    </button>
+  }
+  
 </div>
 
 <button class="btn btn-danger block-btn" (click)="this.removeFriend()">

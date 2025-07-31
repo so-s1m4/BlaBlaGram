@@ -21,6 +21,7 @@ import { MessageComponent } from '../../../common-ui/message/message.component';
 import { HttpEventType } from '@angular/common/http';
 import { ContextMenuComponent } from '../../../common-ui/context-menu/context-menu.component';
 import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-gallery.component';
+import { ImgPipe } from '../../utils/img.pipe';
 
 @Component({
   selector: 'app-chat',
@@ -30,6 +31,7 @@ import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-ga
     MessageComponent,
     ContextMenuComponent,
     MediaGalleryComponent,
+    ImgPipe
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -347,8 +349,6 @@ export class ChatComponent
     clientX: number;
     clientY: number;
   }): void {
-    console.log('Data', data);
-
     const targetData: { type: string; id: string; my: boolean; path?: string } =
       JSON.parse(
         (data.currentTarget as HTMLElement).getAttribute('data') as string
@@ -440,7 +440,6 @@ export class ChatComponent
           (msg: any) => msg._id === data._id
         );
         if (message) {
-          console.log('Message edited:', data);
           message.editedAt = data.editedAt;
           message.text = data.text;
         }
