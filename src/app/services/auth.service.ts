@@ -43,6 +43,7 @@ export class AuthService {
       const token = response?.data;
       if (token) {
         localStorage.setItem('token', token);
+        this.token = token
         this.isAuthed = true;
         this.webSocketService.connect(token);
         this.getMeRequest().then((user) => {
@@ -67,6 +68,7 @@ export class AuthService {
 
       const token = response?.data;
       if (token) {
+        this.token = token
         localStorage.setItem('token', token);
         this.isAuthed = true;
         this.webSocketService.connect(token);

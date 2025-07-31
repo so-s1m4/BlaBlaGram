@@ -10,7 +10,8 @@
       {{ isSender ? data.senderId.username : "You" }}
     </div>
 
-    <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0" [imageMedia]="imageMedia"></app-media-preview>
+    <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
+      [imageMedia]="imageMedia"></app-media-preview>
 
     <div class="text">
       @if (isEditing) {

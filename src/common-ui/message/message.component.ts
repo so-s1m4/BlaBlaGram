@@ -14,7 +14,7 @@ import { API_URL } from '../../app/app.config';
 import { SvgIconComponent } from '../../app/utils/svg.component';
 import { WebSocketService } from '../../app/services/web-socket.service';
 import { ChatsService } from '../../app/services/chats.service';
-import { MediaPreviewComponent } from "../media-preview/media-preview.component";
+import { MediaPreviewComponent } from '../media-preview/media-preview.component';
 import { ImgPipe } from '../../app/utils/img.pipe';
 
 @Component({
@@ -102,7 +102,7 @@ export class MessageComponent implements AfterViewInit {
   isEditing: boolean = false;
 
   selectMessage($event: Event): void {
-    this.data.isSelected = !this.data.isSelected || true;
+    this.data.isSelected = !this.data.isSelected;
   }
 
   changeText(event$: Event) {
@@ -130,7 +130,6 @@ export class MessageComponent implements AfterViewInit {
       }
     );
   }
-
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.isEditing && !event.shiftKey) {
       this.isEditing = false;
@@ -146,8 +145,9 @@ export class MessageComponent implements AfterViewInit {
 
   get imageMedia() {
     return (
-      this.data?.media?.filter((media: any) =>
-        media.mime.startsWith('image/') || media.mime.startsWith('video/')
+      this.data?.media?.filter(
+        (media: any) =>
+          media.mime.startsWith('image/') || media.mime.startsWith('video/')
       ) || []
     );
   }

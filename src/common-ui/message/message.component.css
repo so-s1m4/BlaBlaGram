@@ -145,13 +145,4 @@
     width: 100%;
     height: auto;
   }
-
-  .message-select-box,
-  .message-sender .message-select-box {
-    left: 0;
-    right: initial;
-
-    width: 20px;
-    height: 20px;
-  }
 }

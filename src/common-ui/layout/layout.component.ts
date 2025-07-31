@@ -102,50 +102,39 @@ export class LayoutComponent implements OnInit {
         this.showPopUp(popUpData);
       }
     });
-
-    this.webSocketService.on("space:addedToNew", (data: any)=>{
+    this.webSocketService.on('friends:newRequest', (data: any) => {
       if (data.sender_id.id === this.authService.me.id) return;
       const popUpData = {
-          type: 'newChat',
-          img: data.sender_id || [],
-          title: data.sender_id.username || "Somebody",
-        };
-        this.showPopUp(popUpData);
-    })
-    this.webSocketService.on("friends:newRequest", (data: any)=>{
-      if (data.sender_id.id === this.authService.me.id) return;
-      const popUpData = {
-          type: 'newRequest',
-          img: data.sender_id,
-          title: data.sender_id.username,
-          message: data.text,
-        };
-        this.showPopUp(popUpData);
-    })
-    this.webSocketService.on("friends:requestAccepted", (data: any)=>{
+        type: 'newRequest',
+        img: data.sender_id,
+        title: data.sender_id.username,
+        message: data.text,
+      };
+      this.showPopUp(popUpData);
+    });
+    this.webSocketService.on('friends:requestAccepted', (data: any) => {
       if (data.receiver_id.id === this.authService.me.id) {
         return;
       }
       const popUpData = {
-          type: 'acceptRequest',
-          img: data.sender_id,
-          title: data.sender_id.username,
-          message: "",
-        };
-        this.showPopUp(popUpData);
-    })
-    this.webSocketService.on("friends:requestCanceled", (data: any)=>{
+        type: 'acceptRequest',
+        img: data.sender_id,
+        title: data.sender_id.username,
+        message: '',
+      };
+      this.showPopUp(popUpData);
+    });
+    this.webSocketService.on('friends:requestCanceled', (data: any) => {
       if (data.receiver_id.id === this.authService.me.id) {
         return;
       }
       const popUpData = {
-          type: 'declineRequest',
-          img: data.receiver_id,
-          title: data.receiver_id.username,
-          message: "",
-        };
-        this.showPopUp(popUpData);
-    })
-
+        type: 'declineRequest',
+        img: data.receiver_id,
+        title: data.receiver_id.username,
+        message: '',
+      };
+      this.showPopUp(popUpData);
+    });
   }
 }
