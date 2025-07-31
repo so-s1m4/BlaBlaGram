@@ -26,6 +26,8 @@ export class UserCardComponent implements OnInit {
   profileService = inject(ProfileService);
   friendsService = inject(FriendsService);
 
+  isSent = false;
+
   ngOnInit() {
     if (!this.data) {
       console.error('UserCardComponent: data input is undefined');
@@ -41,8 +43,9 @@ export class UserCardComponent implements OnInit {
   sendRequest(){
     const input = document.getElementById("message-req-input") as HTMLInputElement
     this.friendsService.sendRequest(this.data.id, input.value)
+    input.value = ""
+    this.isSent = true;
   }
-
   removeFriend() {
     
   }
@@ -51,5 +54,8 @@ export class UserCardComponent implements OnInit {
   }
   declineRequest(){
     this.friendsService.declineRequest(this.data.id)
+  }
+  deleteRequest(){
+    this.friendsService.deleteRequest(this.data.id)
   }
 }

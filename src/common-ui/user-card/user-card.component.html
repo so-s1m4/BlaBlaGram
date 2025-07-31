@@ -51,13 +51,16 @@
       Remove
     </button>
     } @else {
-      <input id="message-req-input" placeholder="Some message?" style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100"/>
+      @if (!isSent){
+        <input id="message-req-input" placeholder="Some message?" style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100"/>
+      }
       <button
         class="btn btn-primary"
         (click)="sendRequest()"
+        [disabled]="isSent"
       >
       <svg icon="repost"></svg>
-      Send request
+      {{isSent ? "Sent" : "Send request"}}
     </button>
     }
   } @else if (this.type == "inc_request") {
@@ -72,6 +75,11 @@
     <button class="btn btn-danger" (click)="declineRequest()">
       <svg icon="trashcan"></svg>
       Decline
+    </button>
+  } @else if (this.type == "my_request") {
+    <button class="btn btn-danger" (click)="deleteRequest()">
+      <svg icon="trashcan"></svg>
+      Delete
     </button>
   }
   

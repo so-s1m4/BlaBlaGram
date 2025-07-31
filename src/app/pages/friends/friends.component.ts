@@ -33,10 +33,8 @@ export class FriendsComponent implements OnInit {
       this.friendsList = data;
     });
     this.friendsService.getPendingRequests((data: any)=>{
-      this.incomingReq$ = data.filter((item: any)=> item.sender_id.id !== this.authService.me);
-      this.myReq$ = data.filter((item: any)=> item.sender_id.id === this.authService.me);
-
-      console.log(this.incomingReq)
+      this.incomingReq$ = data.filter((item: any)=> item.sender_id.id !== this.authService.me.id);
+      this.myReq$ = data.filter((item: any)=> item.sender_id.id === this.authService.me.id);
     });    
   }
   onChange($event: any){
