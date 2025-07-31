@@ -40,8 +40,14 @@ export class MediaGalleryComponent implements OnInit {
   onClose() {
     this.close.emit();
   }
-  onDelete(comId: string, mediaId: string) {
-    this.delete.emit({ comId, mediaId });
+  onDelete() {
+    this.media=this.media.filter((item)=> item._id !== this.selectedMedia._id)
+    this.delete.emit({ comId: this.selectedMedia.communicationId, mediaId: this.selectedMedia._id });
+    if (this.media.length == 0) {
+      this.onClose()
+    }
+    this.goBack()
+    
   }
 
   private swipeCoord?: [number, number];

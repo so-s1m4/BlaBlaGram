@@ -137,11 +137,17 @@
   width: auto;
   background: 0;
   border: 0;
+  cursor: pointer;
 
   svg {
     width: 3rem;
     height: 100%;
 
+    color: white;
+  }
+}
+.actBtn:hover {
+  svg {
     color: var(--primary-color);
   }
 }
