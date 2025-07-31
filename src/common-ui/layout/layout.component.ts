@@ -100,5 +100,10 @@ export class LayoutComponent implements OnInit {
         this.showPopUp(popUpData);
       }
     });
+    
+    this.webSocketService.on("friends:newRequest", (data: any)=>{
+      console.log(data)
+    })
+
   }
 }

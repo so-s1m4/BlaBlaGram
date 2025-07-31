@@ -35,8 +35,8 @@ export class UserCardComponent implements OnInit {
     this.data.isFriend = !!(this.friendsService.friends).find((item: any)=> item.id == this.data.id)
   } 
 
-  openChat(userId: string) {
-    this.profileService.openChat(userId, (data: any) => {
+  openChat() {
+    this.profileService.openChat(this.data.id, (data: any) => {
       this.router.navigate(['/chats'], { queryParams: { id: data._id } });
     });
   }

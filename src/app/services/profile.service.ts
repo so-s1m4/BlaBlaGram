@@ -45,12 +45,15 @@ export class ProfileService {
   }
 
   openChat(userId: string, callback: (data: any) => void) {
+    console.log(userId)
     this.webSocketService.send(
       'spaces:chats:create',
       { userId },
       (ok: any, err: any, data: any) => {
         if(ok) {
           callback(data)
+        } else {
+          console.error(err)
         }
       }
     );

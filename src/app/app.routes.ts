@@ -8,11 +8,16 @@ import { ChatsComponent } from './pages/chats/chats.component';
 import { FriendsComponent } from './pages/friends/friends.component';
 import { CreatePostMobileComponent } from './pages/create-post-mobile/create-post-mobile.component';
 import { MobileGuard } from './guards/mobile-guard.module';
+import { RegisterPage } from './pages/register/register.component';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginPage,
+  },
+  {
+    path: 'register',
+    component: RegisterPage,
   },
   {
     path: '',
