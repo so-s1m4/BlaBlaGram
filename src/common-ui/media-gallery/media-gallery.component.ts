@@ -62,7 +62,6 @@ export class MediaGalleryComponent implements OnInit {
     }
     this.selectedMedia = this.media[Math.min(currentIndex, this.media.length-1)];
   }
-
   private swipeCoord?: [number, number];
   private swipeTime?: number;
   swipe(e: TouchEvent, when: string): void {
@@ -94,7 +93,6 @@ export class MediaGalleryComponent implements OnInit {
       }
     }
   }
-
   ngOnInit() {
     if (this.media.length > 0) {
       this.selectedMedia = this.media[0];
