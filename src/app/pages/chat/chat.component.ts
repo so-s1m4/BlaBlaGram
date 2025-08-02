@@ -423,7 +423,6 @@ export class ChatComponent
     };
 
     const elem = data.currentTarget.getBoundingClientRect();
-    console.log(data.currentTarget)
     if (data.currentTarget.classList.contains('sender')) {
       this.emojiSelectorStyle = {
         display: 'flex',

@@ -1,23 +1,9 @@
 <div class="wrapper" [ngStyle]="style">
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <div class="reaction-item"><img
-      src="https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/41/26e39f62aa7b94e3b63a8acb608902.webp">
-  </div>
-  <button class="reactions-open-more">
-    <svg icon="plus" />
-  </button>
+    <div *ngFor="let em of firstLine" class="reaction-item"><img [src]="em.url">
+    </div>
+
+
+    <button class="reactions-open-more">
+        <svg icon="plus" />
+    </button>
 </div>
