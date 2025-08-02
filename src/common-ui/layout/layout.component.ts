@@ -144,12 +144,5 @@ export class LayoutComponent implements OnInit {
     this.webSocketService.on('friends:friendOffline', (data: any) => {
       this.friendsService.setFriendOffline(data.userId);
     });
-
-    window.addEventListener('pagehide', ()=>this.webSocketService.disconnect(), { passive: true });
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') this.webSocketService.disconnect();
-      else this.webSocketService.connect(this.authService.token!)
-    });
-    window.addEventListener('beforeunload', ()=>this.webSocketService.disconnect());
   } 
 }
