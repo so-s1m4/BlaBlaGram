@@ -105,8 +105,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
   @Output() onclick = new EventEmitter();
 
   isEditing: boolean = false;
-
   repliedOn: any;
+  showEmoji = false;
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
@@ -141,8 +141,13 @@ export class MessageComponent implements AfterViewInit, OnInit {
       this.isEditing = false;
     }
   }
+  onClick(){
+    this.showEmoji = false
+    this.onclick.emit()
+  }
   onContextMenu(event: Event) {
     event.preventDefault();
+    this.showEmoji = true;
     this.openContextMenu.emit(event);
   }
   onMediaGallery() {
@@ -159,7 +164,6 @@ export class MessageComponent implements AfterViewInit, OnInit {
   stopPropagation($event: Event) {
     $event.stopPropagation();
   }
-
   ngOnInit() {
     if (!this.data.repliedOn) {
       this.repliedOn = null;

@@ -4,7 +4,7 @@
   display: flex;
   z-index: 1000;
   background-color: var(--dark-gray-color);
-  padding: .5rem;
+  padding: 0.5rem;
   gap: 1rem;
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   height: 2rem;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   color: var(--white-color);
   cursor: pointer;
   border-radius: 4px;
@@ -29,3 +29,4 @@
   background-color: var(--gray-color);
   color: var(--primary-color);
 }
+

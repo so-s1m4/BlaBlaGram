@@ -23,6 +23,7 @@ import { ContextMenuComponent } from '../../../common-ui/context-menu/context-me
 import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-gallery.component';
 import { ImgPipe } from '../../utils/img.pipe';
 import { FriendsService } from '../../services/friends.service';
+import { EmojiSelectorComponent } from '../../../common-ui/emoji-selector/emoji-selector.component';
 
 @Component({
   selector: 'app-chat',
@@ -32,7 +33,8 @@ import { FriendsService } from '../../services/friends.service';
     MessageComponent,
     ContextMenuComponent,
     MediaGalleryComponent,
-    ImgPipe
+    ImgPipe,
+    EmojiSelectorComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -60,6 +62,13 @@ export class ChatComponent
 
   contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
   contextMenuStyle: {
+    top: string;
+    left: string;
+    display: string;
+    transform?: string;
+  } = { top: '0', left: '0', display: 'none' };
+
+  emojiSelectorStyle: {
     top: string;
     left: string;
     display: string;
@@ -283,12 +292,14 @@ export class ChatComponent
       );
     }
   }
-  replyOn(id: string){
-    if (id==="") {
+  replyOn(id: string) {
+    if (id === '') {
       this.repliedOn = null;
-      return
+      return;
     }
-    this.repliedOn = this.chatData$.messages.find((item: any)=>item._id == id)
+    this.repliedOn = this.chatData$.messages.find(
+      (item: any) => item._id == id
+    );
   }
   // Media
   openMedia(comId: string): void {
@@ -384,6 +395,7 @@ export class ChatComponent
   }
   closeContextMenu() {
     this.contextMenuStyle.display = 'none';
+    this.emojiSelectorStyle.display = 'none';
   }
   openContextMenu(data: {
     currentTarget: any;
@@ -397,6 +409,7 @@ export class ChatComponent
     if (!targetData) {
       return;
     }
+
     const scrollableElement = document.getElementById('messages-holder')!;
 
     const scrollRect = scrollableElement.getBoundingClientRect();
@@ -408,6 +421,24 @@ export class ChatComponent
       left: x + 'px',
       top: y + 'px',
     };
+
+    const elem = data.currentTarget.getBoundingClientRect();
+    console.log(data.currentTarget)
+    if (data.currentTarget.classList.contains('sender')) {
+      this.emojiSelectorStyle = {
+        display: 'flex',
+        left: elem.left - scrollRect.left + 'px',
+        top: elem.top + scrollableElement.scrollTop - scrollRect.top + 'px',
+      };
+    } else {
+      this.emojiSelectorStyle = {
+        display: 'flex',
+        // @ts-ignore
+        right: scrollRect.right - elem.right + 'px',
+        top: elem.top + scrollableElement.scrollTop - scrollRect.top + 'px',
+      };
+    }
+
     if (x / (scrollRect.right - scrollRect.left) > 0.5) {
       this.contextMenuStyle.transform = 'translateX(-100%)';
     }
@@ -445,18 +476,21 @@ export class ChatComponent
           ]
         );
       } else {
-        this.contextMenuItems.push(...[
-          {
-            label: 'Delete',
-            svg: 'trashcan',
-            action: () => {
-              this.closeContextMenu();
-              this.chatService.deleteMessages([targetData.id]);
+        this.contextMenuItems.push(
+          ...[
+            {
+              label: 'Delete',
+              svg: 'trashcan',
+              action: () => {
+                this.closeContextMenu();
+                this.chatService.deleteMessages([targetData.id]);
+              },
             },
-          },
-        ]);
+          ]
+        );
       }
     } else if (targetData.type === 'media') {
+      this.contextMenuItems = [];
       this.contextMenuItems.push(
         ...[
           {
@@ -513,12 +547,12 @@ export class ChatComponent
     });
     this.webSocketService.on('communication:deleteMessage', (data: any) => {
       if (data.spaceId === this.chatId) {
-        this.chatData$ = 
-        {
+        this.chatData$ = {
           ...this.chatData$,
           messages: this.chatData$.messages.filter(
-          (msg: any) => msg._id !== data._id
-        )};
+            (msg: any) => msg._id !== data._id
+          ),
+        };
       }
     });
   }

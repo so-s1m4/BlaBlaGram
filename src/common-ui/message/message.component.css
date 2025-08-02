@@ -138,6 +138,8 @@
   color: var(--primary-color);
 }
 
+
+
 @media (max-width: 800px) {
   .message {
     width: 100%;

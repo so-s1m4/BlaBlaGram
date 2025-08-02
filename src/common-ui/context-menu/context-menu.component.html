@@ -1,3 +1,6 @@
 <div class="wrapper" [ngStyle]="style">
-  <div class="item" *ngFor="let item of items" (click)="item!.action()"><svg *ngIf="item.svg" [icon]="item.svg"></svg>{{ item.label }}</div>
+  <div class="item" *ngFor="let item of items" (click)="item!.action()">
+    <svg *ngIf="item.svg" [icon]="item.svg"></svg>
+    <p>{{ item.label }}</p>
+  </div>
 </div>

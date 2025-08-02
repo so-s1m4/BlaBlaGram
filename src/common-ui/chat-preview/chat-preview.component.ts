@@ -29,7 +29,16 @@ export class ChatPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.friendsService.getFriendsList((friends: any) => {
-      this.friends = friends;
+      if (
+        friends.list.find(
+          (item: any) => item.id == this.chat.user1_id
+        )?.isOnline ||
+        friends.list.find(
+          (item: any) => item.id == this.chat.user2_id
+        )?.isOnline
+      ) {
+        this.isOnline = true;
+      }
     });
 
     this.webSocketService.on('friends:friendOnline', (data: any) => {

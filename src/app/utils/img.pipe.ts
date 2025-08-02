@@ -10,6 +10,7 @@ export class ImgPipe implements PipeTransform {
     if (!value) {
       return "https://www.htlstp.ac.at/lehrer/maus/@@images/1916921a-4a77-48d8-b37e-66094a3be83b.jpeg"
     }
+
     return API_URL + '/public/' + value.path;
   }
 

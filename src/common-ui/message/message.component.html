@@ -1,20 +1,23 @@
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
-    }" [attr.data-id]="data._id" (click)="onclick.emit()">
+    }" [attr.data-id]="data._id" (click)="onClick()">
   <img [src]="data.senderId.img[0] | img" class="avatar" alt="" />
 
-  <div #wrapper class="wrapper" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+  <div #wrapper class="wrapper" [ngClass]="{
+      'sender': isSender,
+    }" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+
     @if (this.repliedOn){
-      <div class="replied-on-holder">
-        <div class="replied-on-username">
-          {{ this.repliedOn.senderId.username }}
-        </div>
-        <div class="replied-on-text">
-          {{ this.repliedOn.text }}
-        </div>
+    <div class="replied-on-holder">
+      <div class="replied-on-username">
+        {{ this.repliedOn.senderId.username }}
       </div>
+      <div class="replied-on-text">
+        {{ this.repliedOn.text }}
+      </div>
+    </div>
     }
     <div class="username" *ngIf="this.showSender">
       {{ isSender ? data.senderId.username : "You" }}
