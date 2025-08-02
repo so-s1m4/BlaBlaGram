@@ -46,7 +46,7 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
       switch (this.imageMedia.length) {
         case 1:
           holder.style.gridTemplateAreas = `"a"`;
-          holder.style.width = 'min(300px, 70vw)';
+          holder.style.width = '100%';
           holder.style.height = 'min(400px, 30vh)';
           break;
         case 2:

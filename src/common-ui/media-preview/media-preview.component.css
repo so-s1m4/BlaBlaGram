@@ -1,6 +1,7 @@
 :host {
-  width: fit-content;
+  width: 100%;
   height: fit-content;
+  flex: 1 1;
 }
 
 .holder {
