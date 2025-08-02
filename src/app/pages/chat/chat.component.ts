@@ -22,6 +22,7 @@ import { HttpEventType } from '@angular/common/http';
 import { ContextMenuComponent } from '../../../common-ui/context-menu/context-menu.component';
 import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-gallery.component';
 import { ImgPipe } from '../../utils/img.pipe';
+import { FriendsService } from '../../services/friends.service';
 
 @Component({
   selector: 'app-chat',
@@ -47,12 +48,15 @@ export class ChatComponent
   layout = inject(LayoutComponent);
   chatService = inject(ChatsService);
   webSocketService = inject(WebSocketService);
+  friendsService = inject(FriendsService);
   authService = inject(AuthService);
   route: Router = inject(Router);
 
   editMode = false;
   messageIdForEdit: string | null = null;
   messageTextForEdit: string | null = null;
+
+  repliedOn: any = null;
 
   contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
   contextMenuStyle: {
@@ -69,6 +73,7 @@ export class ChatComponent
   mediaToShow: any[] = [];
 
   isSelectMode = false;
+  isOnline = false;
 
   private chatData$: any;
   @Input() chatId: string | undefined = '';
@@ -122,6 +127,7 @@ export class ChatComponent
     this.chatService.createCommunication(
       this.chatId!,
       message,
+      this.repliedOn?._id,
       (ok, err, data) => {
         const comId = data._id;
         const files = this.filesList;
@@ -227,6 +233,7 @@ export class ChatComponent
         }
       }
     );
+    this.repliedOn = null;
     //@ts-ignore
     document.getElementById('message-input').value = '';
   }
@@ -276,13 +283,18 @@ export class ChatComponent
       );
     }
   }
+  replyOn(id: string){
+    if (id==="") {
+      this.repliedOn = null;
+      return
+    }
+    this.repliedOn = this.chatData$.messages.find((item: any)=>item._id == id)
+  }
   // Media
   openMedia(comId: string): void {
-    const msg = this.chatData$.messages.find(
-      (msg: any) => msg._id === comId
-    );
+    const msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
     const media = msg?.media || [];
-    this.mediaToShow = media
+    this.mediaToShow = media;
     this.closeContextMenu();
   }
   closeMedia(): void {
@@ -324,6 +336,35 @@ export class ChatComponent
     this.me = this.authService.me;
     this.chatData$ = chatData;
     this.scrollToBottom();
+
+    this.friendsService.getFriendsList((friends: any) => {
+      if (
+        friends.list.find(
+          (item: any) => item.id == this.chatData$.chat.user1_id
+        )?.isOnline ||
+        friends.list.find(
+          (item: any) => item.id == this.chatData$.chat.user2_id
+        )?.isOnline
+      ) {
+        this.isOnline = true;
+      }
+    });
+    this.webSocketService.on('friends:friendOnline', (data: any) => {
+      if (
+        data.userId == this.chatData$.chat.user1_id ||
+        data.userId == this.chatData$.chat.user2_id
+      ) {
+        this.isOnline = true;
+      }
+    });
+    this.webSocketService.on('friends:friendOffline', (data: any) => {
+      if (
+        data.userId == this.chatData$.chat.user1_id ||
+        data.userId == this.chatData$.chat.user2_id
+      ) {
+        this.isOnline = false;
+      }
+    });
   }
   loadChat() {
     if (!this.chatId) {
@@ -371,57 +412,72 @@ export class ChatComponent
       this.contextMenuStyle.transform = 'translateX(-100%)';
     }
     if (targetData.type === 'message') {
-      if (targetData.my) {
-        this.contextMenuItems = [
-          {
-            label: 'Edit',
-            svg: 'pen',
-            action: () => {
-              this.toggleEditMessage(targetData.id);
-              this.closeContextMenu();
-            },
-          },
-          {
-            label: 'Delete',
-            svg: 'trashcan',
-            action: () => {
-              this.closeContextMenu();
-              this.chatService.deleteMessages([targetData.id]);
-            },
-          },
-        ];
-      } else {
-        this.contextMenuItems = [
-          {
-            label: 'Delete',
-            svg: 'trashcan',
-            action: () => {
-              this.closeContextMenu();
-              this.chatService.deleteMessages([targetData.id]);
-            },
-          },
-        ];
-      }
-    } else if (targetData.type === 'media') {
       this.contextMenuItems = [
         {
-          label: 'Download',
-          svg: 'download',
+          label: 'Reply',
+          svg: 'reply',
           action: () => {
-            window.location.href =
-              API_URL + '/mediaserver/public/' + targetData.path;
+            this.replyOn(targetData.id);
             this.closeContextMenu();
-          },
-        },
-        {
-          label: 'Delete',
-          svg: 'trashcan',
-          action: () => {
-            this.closeContextMenu();
-            this.chatService.deleteMedia(targetData.id);
           },
         },
       ];
+
+      if (targetData.my) {
+        this.contextMenuItems.push(
+          ...[
+            {
+              label: 'Edit',
+              svg: 'pen',
+              action: () => {
+                this.toggleEditMessage(targetData.id);
+                this.closeContextMenu();
+              },
+            },
+            {
+              label: 'Delete',
+              svg: 'trashcan',
+              action: () => {
+                this.closeContextMenu();
+                this.chatService.deleteMessages([targetData.id]);
+              },
+            },
+          ]
+        );
+      } else {
+        this.contextMenuItems.push(...[
+          {
+            label: 'Delete',
+            svg: 'trashcan',
+            action: () => {
+              this.closeContextMenu();
+              this.chatService.deleteMessages([targetData.id]);
+            },
+          },
+        ]);
+      }
+    } else if (targetData.type === 'media') {
+      this.contextMenuItems.push(
+        ...[
+          {
+            label: 'Download',
+            svg: 'download',
+            action: () => {
+              window.location.href =
+                API_URL + '/mediaserver/public/' + targetData.path;
+              this.closeContextMenu();
+            },
+          },
+          {
+            label: 'Delete',
+            svg: 'trashcan',
+            action: () => {
+              this.closeContextMenu();
+              this.chatService.deleteMedia(targetData.id);
+            },
+          },
+        ]
+      );
     }
 
     if (!targetData) {
@@ -457,9 +513,12 @@ export class ChatComponent
     });
     this.webSocketService.on('communication:deleteMessage', (data: any) => {
       if (data.spaceId === this.chatId) {
-        this.chatData$.messages = this.chatData$.messages.filter(
+        this.chatData$ = 
+        {
+          ...this.chatData$,
+          messages: this.chatData$.messages.filter(
           (msg: any) => msg._id !== data._id
-        );
+        )};
       }
     });
   }

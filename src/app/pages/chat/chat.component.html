@@ -7,7 +7,9 @@
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
-  <img [src]="chatData.chat.img[0] | img" class="avatar" alt="" />
+  <img [ngClass]="{
+    'online': this.isOnline
+  }" [src]="chatData.chat.img[0] | img" class="avatar" alt="" />
   <div class="header-info">
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
@@ -26,7 +28,7 @@
 <div id="messages-holder" class="messages-holder">
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
   @for (message of this.chatData.messages; track message._id; let last = $last) {
-  <app-message (onclick)="closeContextMenu()" [selectMode]="isSelectMode" (openMedia)="openMedia(message._id)"
+  <app-message [chatData] = "this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode" (openMedia)="openMedia(message._id)"
     [data]="message" [isSender]="message.senderId._id !== me?.id" (openContextMenu)="openContextMenu($event)">
   </app-message>
   }
@@ -48,6 +50,21 @@
     </div>
     }
   </div>
+  @if (this.repliedOn) {
+  <div class="reply-on">
+    <svg icon="reply"></svg>
+    <div class="reply-content-holder">
+      <div class="reply-to-person">
+        Reply to {{this.repliedOn.senderId.username}}
+      </div>
+      <div class="reply-to-text">
+        {{this.repliedOn.text}}
+      </div>
+    </div>
+
+    <button class="btn-undo" (click)="replyOn('')"><svg icon="plus" style="transform: rotate(45deg);"></svg></button>
+  </div>
+  }
   <div class="attachFileBtn">
     <label for="files-input" class="btn attachFile">
       <svg icon="attach"></svg>

@@ -99,9 +99,6 @@ export class AuthService {
           },
         })
         .toPromise();
-
-      
-
       return response;
     } catch (error) {
       localStorage.removeItem('token');

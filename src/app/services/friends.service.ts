@@ -8,33 +8,46 @@ import { WebSocketService } from './web-socket.service';
 @Injectable({
   providedIn: 'root',
 })
-export class FriendsService  {
+export class FriendsService {
   httpClient = inject(HttpClient);
   authService = inject(AuthService);
   webSocketService = inject(WebSocketService);
 
-  friends: any[] = [];
+  friends: {
+    list: any[];
+  } = {
+    list: [],
+  };
+  pendingRequests: {
+    list: any[];
+  } = {
+    list: [],
+  };
 
-
-  sendRequest(userId: string, text: string){
+  sendRequest(userId: string, text: string) {
     this.webSocketService.send(
-      "friends:createRequest",
-      {receiver: userId, text},
-      (ok: any, err: any, data: any)=>{
-        console.log(ok)
+      'friends:createRequest',
+      { receiver: userId, text },
+      (ok: any, err: any, data: any) => {
+        console.log(ok);
       }
-    )
+    );
   }
-  getPendingRequests(callback: Function): void{
-    this.webSocketService.send("friends:getRequestsList", {
-      status: "sent",
-    }, (ok: any, err: any, data: any)=>{
-      if (ok) {
-        callback(data)
-      } else {
-        console.error(err)
+  getPendingRequests(callback: Function): void {
+    this.webSocketService.send(
+      'friends:getRequestsList',
+      {
+        status: 'sent',
+      },
+      (ok: any, err: any, data: any) => {
+        if (ok) {
+          this.pendingRequests.list = data;
+          callback(this.pendingRequests);
+        } else {
+          console.error(err);
+        }
       }
-    });
+    );
   }
   async getFriendsList(callback: any): Promise<ProfileData[]> {
     //@ts-ignore
@@ -44,30 +57,50 @@ export class FriendsService  {
           Authorization: `Bearer ${this.authService.token}`,
         },
       })
-      .subscribe((data: any) => {this.friends=data.data; callback(data.data)});
+      .subscribe((data: any) => {
+        this.friends.list = data.data;
+        callback(this.friends);
+      });
   }
-
-  acceptRequest(reqId: string, callback?: Function){
-    this.webSocketService.send(
-      "friends:acceptRequest",
-      {requestId: reqId},
-    )
+  async delFriend(friendId: string, callback: any) {
+    //@ts-ignore
+    return this.httpClient
+      .delete(`${API_URL}/api/users/me/friends`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.token}`,
+        },
+        body: {
+          friendId,
+        },
+      })
+      .subscribe(() => {
+        this.friends.list = this.friends.list.filter((item) => {
+          return item.id != friendId;
+        });
+      });
   }
-  declineRequest(reqId: string, callback?: Function){
-    this.webSocketService.send(
-      "friends:cancelRequest",
-      {requestId: reqId},
-    )
+  acceptRequest(reqId: string, callback?: Function) {
+    this.webSocketService.send('friends:acceptRequest', { requestId: reqId });
   }
-  deleteRequest(reqId: string, callback?: Function){
+  declineRequest(reqId: string, callback?: Function) {
+    this.webSocketService.send('friends:cancelRequest', { requestId: reqId });
+  }
+  deleteRequest(reqId: string, callback?: Function) {
     this.webSocketService.send(
-      "friends:deleteRequest",
-      {requestId: reqId},
-      (ok: any, err: any, data: any)=>{
-        if (ok){
-          callback?.(data)
+      'friends:deleteRequest',
+      { requestId: reqId },
+      (ok: any, err: any, data: any) => {
+        if (ok) {
+          callback?.(data);
         }
       }
-    )
+    );
+  }
+
+  setFriendOnline(userId: string) {
+    this.friends.list.find((item)=> item.id == userId).isOnline = true
+  }
+  setFriendOffline(userId: string) {
+    this.friends.list.find((item) => item.id == userId).isOnline = false;
   }
 }

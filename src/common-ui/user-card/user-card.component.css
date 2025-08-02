@@ -24,7 +24,6 @@
   height: 150px;
   border-radius: 50%;
   background-color: var(--primary-color);
-  border: 3px solid var(--primary-color);
 }
 
 .username {

@@ -48,7 +48,6 @@ export class ChatsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.chatsService.chats(this.setChats.bind(this));
-
     this.aRoute.queryParamMap.subscribe((params) => {
       this.currentChat = params.get('id')?.trim();
     });

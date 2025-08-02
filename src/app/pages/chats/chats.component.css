@@ -7,6 +7,9 @@
 
   background: var(--dark-color);
 }
+.chats-header {
+  padding-left: 10px
+}
 
 .chats-container {
   min-width: 270px;
@@ -14,7 +17,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
   padding-top: 20px;
   background: var(--secondary-color);
 
@@ -30,8 +32,7 @@
   flex-direction: column;
 
   gap: 10px;
-
-  overflow: hidden;
+  padding-top: 15px;
 }
 
 .chats-content {

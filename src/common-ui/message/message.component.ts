@@ -9,6 +9,7 @@ import {
   Renderer2,
   ViewChild,
   ViewChildren,
+  OnInit,
 } from '@angular/core';
 import { API_URL } from '../../app/app.config';
 import { SvgIconComponent } from '../../app/utils/svg.component';
@@ -23,7 +24,7 @@ import { ImgPipe } from '../../app/utils/img.pipe';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
-export class MessageComponent implements AfterViewInit {
+export class MessageComponent implements AfterViewInit, OnInit {
   @ViewChild('wrapper') wrapper: any;
   @ViewChildren('mediaItem') mediaItems: any;
   API_URL = API_URL;
@@ -95,11 +96,17 @@ export class MessageComponent implements AfterViewInit {
   @Input() data: any;
   @Input() selectMode: boolean = false;
   @Input() isSender: boolean = false;
+  @Input() showSender: boolean = false;
+  @Input() chatData: any = {
+    messages: [],
+  };
   @Output() openMedia: EventEmitter<string> = new EventEmitter<string>();
   @Output() openContextMenu = new EventEmitter();
   @Output() onclick = new EventEmitter();
 
   isEditing: boolean = false;
+
+  repliedOn: any;
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
@@ -119,7 +126,6 @@ export class MessageComponent implements AfterViewInit {
     this.chatService.deleteMessages([this.data._id]);
   }
   deleteMedia(mediaId: string) {
-    console.log('delete media', mediaId);
     this.webSocketService.send(
       'communication:chat:deleteMedia',
       {
@@ -142,7 +148,6 @@ export class MessageComponent implements AfterViewInit {
   onMediaGallery() {
     this.openMedia.emit(this.data._id);
   }
-
   get imageMedia() {
     return (
       this.data?.media?.filter(
@@ -151,8 +156,26 @@ export class MessageComponent implements AfterViewInit {
       ) || []
     );
   }
-
   stopPropagation($event: Event) {
     $event.stopPropagation();
+  }
+
+  ngOnInit() {
+    if (!this.data.repliedOn) {
+      this.repliedOn = null;
+      return;
+    }
+    this.repliedOn = this.chatData.messages.find(
+      (item: any) => item._id == this.data.repliedOn
+    );
+  }
+  ngOnChanges() {
+    if (!this.data.repliedOn) {
+      this.repliedOn = null;
+      return;
+    }
+    this.repliedOn = this.chatData.messages.find(
+      (item: any) => item._id == this.data.repliedOn
+    );
   }
 }

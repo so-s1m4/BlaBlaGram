@@ -10,6 +10,8 @@ export class WebSocketService {
   private socket!: Socket;
 
   connect(token: string): void {
+    if (this.socket?.connected) return
+
     this.socket = io(API_URL, {
       transports: ['websocket'],
       auth: {
@@ -27,7 +29,6 @@ export class WebSocketService {
       console.log('[WS] Disconnected');
     });
   }
-
   send(event: string, dataOrCallback: any | Function, callback?: Function) {
     if (!this.socket) {
       console.error('[Socket] Not connected!');
@@ -51,12 +52,10 @@ export class WebSocketService {
       );
     }
   }
-
   on<T>(event: string, callback: (data: T) => void): void {
     this.socket.on(event, callback);
   }
-
   disconnect(): void {
-    this.socket.disconnect();
+    if (this.socket.connected) this.socket.disconnect();
   }
 }

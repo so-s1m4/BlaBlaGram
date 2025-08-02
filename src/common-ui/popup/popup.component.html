@@ -13,7 +13,7 @@
     }
   </div>
   <div class="body">
-    <img class="avatar" [src]="data.img[0] | img" alt="">
+    <img class="avatar" [src]="API_URL + '/public/' + data.img[0].path" alt="">
     <div class="data">
       <p class="title">{{ data.title }}</p>
       <p class="text">{{ data.message }}</p>

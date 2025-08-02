@@ -1,6 +1,9 @@
 @if (this.type == "user"){
 <img
   class="avatar"
+  [ngClass]="{
+    'online': this.data.isOnline
+  }"
   [src]="this.data!.img[0] | img"
   alt=""
   [routerLink]="['/profile', this.data!.username]"

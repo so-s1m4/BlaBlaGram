@@ -248,6 +248,56 @@
   color: var(--primary-color);
 }
 
+.reply-on {
+  display: flex;
+  align-items: center;
+
+  position: absolute;
+  height: 4rem;
+  width: 100%;
+  top: 0%;
+  transform: translateY(-100%);
+  z-index: 5;
+  background: var(--secondary-color);
+
+  svg {
+    color: var(--primary-color);
+    width: 4rem;
+    height: 60%;
+  }
+}
+.reply-content-holder {
+  padding: 5px;
+  border-left: 5px solid var(--primary-color);
+}
+.reply-to-person {
+  font-size: .8rem;
+  color: var(--primary-color);
+}
+.reply-to-text {
+  font-size: .7rem;
+  color: var(--gray-color);
+
+  max-width: 80%;
+}
+.btn-undo {
+  position: absolute;
+  right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  background: transparent;
+  border: 0;
+  height: 100%;
+  width: fit-content;
+  svg {
+    width: 2.5rem;
+    height: 60%;
+  }
+}
+
 @media (max-width: 800px) {
   .header {
     gap: 1rem;

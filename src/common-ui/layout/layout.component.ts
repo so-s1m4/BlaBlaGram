@@ -7,6 +7,7 @@ import { WebSocketService } from '../../app/services/web-socket.service';
 import { ChatsService } from '../../app/services/chats.service';
 import { PopupComponent } from '../popup/popup.component';
 import { AuthService } from '../../app/services/auth.service';
+import { FriendsService } from '../../app/services/friends.service';
 
 @Component({
   selector: 'app-layout',
@@ -27,6 +28,7 @@ export class LayoutComponent implements OnInit {
   webSocketService = inject(WebSocketService);
   chatsService = inject(ChatsService);
   authService = inject(AuthService);
+  friendsService = inject(FriendsService);
 
   pages = [
     {
@@ -86,11 +88,9 @@ export class LayoutComponent implements OnInit {
       if (this.chatsService.currentChatId !== data.spaceId) {
         const popUpData = {
           type: 'newMessage',
-          img:
-            this.chatsService
-              .chats()!
-              .find((chat: any) => chat._id === data.spaceId) ||
-            'assets/images/default-chat.png',
+          img: this.chatsService
+            .chats()!
+            .find((chat: any) => chat._id === data.spaceId).img,
           title:
             this.chatsService
               .chats()!
@@ -106,7 +106,7 @@ export class LayoutComponent implements OnInit {
       if (data.sender_id.id === this.authService.me.id) return;
       const popUpData = {
         type: 'newRequest',
-        img: data.sender_id,
+        img: data.sender_id.img,
         title: data.sender_id.username,
         message: data.text,
       };
@@ -116,10 +116,11 @@ export class LayoutComponent implements OnInit {
       if (data.receiver_id.id === this.authService.me.id) {
         return;
       }
+      console.log(data.receiver_id);
       const popUpData = {
         type: 'acceptRequest',
-        img: data.sender_id,
-        title: data.sender_id.username,
+        img: data.receiver_id.img,
+        title: data.receiver_id.username,
         message: '',
       };
       this.showPopUp(popUpData);
@@ -130,11 +131,25 @@ export class LayoutComponent implements OnInit {
       }
       const popUpData = {
         type: 'declineRequest',
-        img: data.receiver_id,
+        img: data.receiver_id.img,
         title: data.receiver_id.username,
         message: '',
       };
       this.showPopUp(popUpData);
     });
-  }
+
+    this.webSocketService.on('friends:friendOnline', (data: any) => {
+      this.friendsService.setFriendOnline(data.userId);
+    });
+    this.webSocketService.on('friends:friendOffline', (data: any) => {
+      this.friendsService.setFriendOffline(data.userId);
+    });
+
+    window.addEventListener('pagehide', ()=>this.webSocketService.disconnect(), { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') this.webSocketService.disconnect();
+      else this.webSocketService.connect(this.authService.token!)
+    });
+    window.addEventListener('beforeunload', ()=>this.webSocketService.disconnect());
+  } 
 }

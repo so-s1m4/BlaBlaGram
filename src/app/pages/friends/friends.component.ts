@@ -13,76 +13,93 @@ import { WebSocketService } from '../../services/web-socket.service';
   styleUrl: './friends.component.css',
 })
 export class FriendsComponent implements OnInit {
-  
   constructor() {}
 
   profileService = inject(ProfileService);
-  webSocketService=inject(WebSocketService);
+  webSocketService = inject(WebSocketService);
 
-  whatToShow = "friends";
+  whatToShow = 'friends';
 
-  authService = inject(AuthService)
-  private friendsList: ProfileData[] = [];
+  authService = inject(AuthService);
+  private friendsList: {
+    list: ProfileData[];
+  } = {
+    list: [],
+  };
+  pendingRequests: {
+    list: any[];
+  } = {
+    list: [],
+  };
+
   private incomingReq$: ProfileData[] = [];
   private myReq$: ProfileData[] = [];
   private searchResults$: any = [];
 
-  
   friendsService = inject(FriendsService);
 
   async ngOnInit(): Promise<void> {
     this.friendsService.getFriendsList((data: any) => {
       this.friendsList = data;
     });
-    this.friendsService.getPendingRequests((data: any)=>{
-      this.incomingReq$ = data.filter((item: any)=> item.sender_id.id !== this.authService.me.id);
-      this.myReq$ = data.filter((item: any)=> item.sender_id.id === this.authService.me.id);
+    this.friendsService.getPendingRequests((data: any) => {
+      this.pendingRequests = data;
+      this.incomingReq$ = data.list.filter(
+        (item: any) => item.sender_id.id !== this.authService.me.id
+      );
+      this.myReq$ = data.list.filter(
+        (item: any) => item.receiver_id.id !== this.authService.me.id
+      );
+      console.log(data.list)
     });
 
-    
-    this.webSocketService.on("friends:newRequest", (data: any)=>{
-      this.incomingReq$.push(data)
-    })
-    this.webSocketService.on("friends:requestAccepted", (data: any)=>{
-      if (data.sender_id.id === this.authService.me.id){
-        this.myReq$ = this.myReq$.filter((item: any)=> item.id != data.id)
-        this.friends.push(data.receiver_id)
+    this.webSocketService.on('friends:newRequest', (data: any) => {
+      this.incomingReq$.push(data);
+    });
+    this.webSocketService.on('friends:requestAccepted', (data: any) => {
+      if (data.sender_id.id === this.authService.me.id) {
+        this.myReq$ = this.myReq$.filter((item: any) => item.id != data.id);
+        this.friends.list.push(data.receiver_id);
       } else {
-        this.friends.push(data.sender_id)
-        this.incomingReq$ = this.incomingReq$.filter((item: any)=> item.id != data.id)
+        this.friends.list.push(data.sender_id);
+        this.incomingReq$ = this.incomingReq$.filter(
+          (item: any) => item.id != data.id
+        );
       }
-    })
-    this.webSocketService.on("friends:requestCanceled", (data: any)=>{
-      if (data.sender_id.id === this.authService.me.id){
-        this.myReq$ = this.myReq$.filter((item: any)=> item.id != data.id)
+    });
+    this.webSocketService.on('friends:requestCanceled', (data: any) => {
+      if (data.sender_id.id === this.authService.me.id) {
+        this.myReq$ = this.myReq$.filter((item: any) => item.id != data.id);
       } else {
-        this.incomingReq$ = this.incomingReq$.filter((item: any)=> item.id != data.id)
+        this.incomingReq$ = this.incomingReq$.filter(
+          (item: any) => item.id != data.id
+        );
       }
-    })
+    });
   }
-  onChange($event: any){
-    this.whatToShow = $event?.currentTarget?.value
+  onChange($event: any) {
+    this.whatToShow = $event?.currentTarget?.value;
   }
   searchFriends(data: string) {
     if (!data) {
-      this.whatToShow = "friends";
+      this.whatToShow = 'friends';
       return;
     }
-    this.whatToShow = "search"
-    this.profileService.getUsersStartsWith(data, (data: any[])=>{
+    this.whatToShow = 'search';
+    this.profileService.getUsersStartsWith(data, (data: any[]) => {
       this.searchResults$ = data;
-    })
+    });
   }
-  get friends(): ProfileData[] {
+  get friends(): any {
     return this.friendsList;
   }
-  get searchResults(){
+  get searchResults() {
     return this.searchResults$;
   }
-  get myReq(){
+  get myReq() {
     return this.myReq$;
   }
-  get incomingReq(){
+  get incomingReq() {
     return this.incomingReq$;
   }
 }

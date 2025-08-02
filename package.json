@@ -17,6 +17,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "ngx-image-compress": "^18.1.5",
     "ngx-socket-io": "^4.9.3",
     "rxjs": "~7.8.0",
     "socket.io": "^4.8.1",

@@ -3,12 +3,33 @@ import { inject, Injectable, OnInit } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
 import { AuthService } from './auth.service';
 import { API_URL } from '../app.config';
+import { NgxImageCompressService } from 'ngx-image-compress';
+
+function base64ToBlob(base64Data: string, contentType = 'image/png'): Blob {
+  const byteCharacters = atob(base64Data.split(',')[1]);
+  const byteArrays: Uint8Array[] = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = Array.from({ length: slice.length }, (_, i) =>
+      slice.charCodeAt(i)
+    );
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  return new Blob(byteArrays, { type: contentType });
+}
+function blobToFile(blob: any, fileName: string) {
+  return new File([blob], fileName, { type: blob.type });
+}
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatsService implements OnInit {
-  constructor() {}
+  constructor(private imageCompress: NgxImageCompressService) {}
 
   private chats$: any[] = [];
   private currentChatId$: string | null = null;
@@ -42,7 +63,6 @@ export class ChatsService implements OnInit {
         }
 
         callback?.();
-        
       }
     );
   }
@@ -103,11 +123,13 @@ export class ChatsService implements OnInit {
   createCommunication(
     chatId: string,
     text: string,
+    repliedOn: string | null,
     callback?: (ok: any, err: any, data: any) => void
   ): void {
+    
     this.webSocketService.send(
       'communication:chats:create',
-      { spaceId: chatId, text },
+      { spaceId: chatId, text, repliedOn },
       (ok: any, err: any, data: any) => {
         if (ok) {
           callback?.(ok, null, data);
@@ -124,27 +146,62 @@ export class ChatsService implements OnInit {
     callback?: (ok: any, err: any, data: any) => void
   ): Promise<void> {
     let payl = new FormData();
-    payl.append('file', file);
-    payl.append('communicationId', communicationId);
-    payl.append('type', 'file');
 
-    this.httpClient
-      .post(API_URL + '/mediaserver/media', payl, {
-        headers: {
-          Authorization: 'Bearer ' + this.authService.token,
-        },
-        reportProgress: true,
-        observe: 'events',
-      })
-      .subscribe(
-        (event) => {
-          callback?.(event, null, null);
-        },
-        (err) => {
-          console.error('Error sending file:', err);
-          callback?.(false, err, null);
-        }
-      );
+    if (!file.type.startsWith("image/")){
+      payl.append('file', file);
+      payl.append('communicationId', communicationId);
+      payl.append('type', "file");
+
+      this.httpClient
+        .post(API_URL + '/mediaserver/media', payl, {
+          headers: {
+            Authorization: 'Bearer ' + this.authService.token,
+          },
+          reportProgress: true,
+          observe: 'events',
+        })
+        .subscribe(
+          (event) => {
+            callback?.(event, null, null);
+          },
+          (err) => {
+            console.error('Error sending file:', err);
+            callback?.(false, err, null);
+          }
+        );
+
+      return;
+    };
+
+    this.imageCompress
+      .compressFile(URL.createObjectURL(file), 0, 70, 100) // 50% ratio, 50% quality
+      .then((compressedImage) => {
+
+        const blob = base64ToBlob(compressedImage);
+        let newFile = blobToFile(blob, file.name);
+
+        payl.append('file', newFile);
+        payl.append('communicationId', communicationId);
+        payl.append('type', 'file');
+
+        this.httpClient
+          .post(API_URL + '/mediaserver/media', payl, {
+            headers: {
+              Authorization: 'Bearer ' + this.authService.token,
+            },
+            reportProgress: true,
+            observe: 'events',
+          })
+          .subscribe(
+            (event) => {
+              callback?.(event, null, null);
+            },
+            (err) => {
+              console.error('Error sending file:', err);
+              callback?.(false, err, null);
+            }
+          );
+      });
   }
   commitCommunication(
     communicationId: string,
@@ -154,7 +211,7 @@ export class ChatsService implements OnInit {
       'communication:close',
       { communicationId },
       (ok: any, err: any, data: any) => {
-        console.log(ok, err, data)
+        console.log(ok, err, data);
         if (!ok) {
           console.error('Error closing communication:', err);
         }

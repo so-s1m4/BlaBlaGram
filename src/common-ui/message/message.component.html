@@ -6,7 +6,17 @@
 
   <div #wrapper class="wrapper" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
-    <div class="username">
+    @if (this.repliedOn){
+      <div class="replied-on-holder">
+        <div class="replied-on-username">
+          {{ this.repliedOn.senderId.username }}
+        </div>
+        <div class="replied-on-text">
+          {{ this.repliedOn.text }}
+        </div>
+      </div>
+    }
+    <div class="username" *ngIf="this.showSender">
       {{ isSender ? data.senderId.username : "You" }}
     </div>
 

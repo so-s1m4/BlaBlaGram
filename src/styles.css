@@ -4,7 +4,7 @@
 :root {
   --dark-color: #0a0a0a;
   --light-color: white;
-  --primary-color: #9cce2b;
+  --primary-color: rgb(156, 206, 43);
   --secondary-color: #111111;
   --dark-gray-color: #222222;
   --gray-color: #666666;
@@ -155,7 +155,6 @@ svg * {
   stroke: inherit;
 }
 
-
 input[type="checkbox"] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
@@ -207,7 +206,12 @@ input[type="checkbox"]:disabled {
   cursor: not-allowed;
 }
 
-
+.avatar {
+  border: 3px solid var(--gray-color);
+}
+.online {
+  border: 3px solid var(--primary-color);
+}
 
 @media (max-width: 800px) {
   h1 {

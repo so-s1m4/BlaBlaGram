@@ -20,7 +20,7 @@
   ></app-search>
   <div class="friends-list">
     @if (whatToShow == "friends") {
-      @for (friend of this.friends; track friend) {
+      @for (friend of this.friends.list; track friend) {
         <app-user-card [data]="friend"></app-user-card>
       } 
     } @else if (whatToShow == "search") {
