@@ -175,7 +175,7 @@ export class ChatsService implements OnInit {
 
     this.imageCompress
       .compressFile(URL.createObjectURL(file), 0, 70, 100) // 50% ratio, 50% quality
-      .then((compressedImage) => {
+      .then((compressedImage: any) => {
 
         const blob = base64ToBlob(compressedImage);
         let newFile = blobToFile(blob, file.name);
