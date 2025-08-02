@@ -28,7 +28,6 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
-
 .wrapper .username {
   display: block;
   text-align: right;
@@ -36,7 +35,7 @@
   color: var(--primary-color);
   text-align: right;
 }
-.wrapper .text pre{
+.wrapper .text pre {
   word-break: keep-all;
   text-wrap: wrap;
 }
@@ -59,7 +58,7 @@
   cursor: pointer;
   border-radius: 0.5rem;
 
-  padding: .5rem;
+  padding: 0.5rem;
   background: var(--dark-gray-color);
   color: var(--primary-color);
 }
@@ -75,13 +74,12 @@
   white-space: nowrap;
 }
 .media-item a {
-  position: relative; 
+  position: relative;
   width: 2rem;
   height: 2rem;
 
   color: var(--primary-color);
 }
-
 .message-select-box {
   position: absolute;
   top: 50%;
@@ -103,7 +101,31 @@
   left: auto;
   right: 10%;
 }
+.text {
+  position: relative;
+  unicode-bidi: plaintext;
+  overflow: clip;
+  overflow-clip-margin: 0.5rem;
+  display: block;
+  margin: 0;
+  border-radius: 0.25rem;
+  line-height: 1.3125;
+  text-align: initial;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 
+  p {
+    display: static;
+    font-size: 15px;
+    color: var(--gray-color);
+  }
+  svg {
+    margin-left: .2rem;
+    width: 20px;
+    height: 20px;
+    color: var(--gray-color);
+  }
+}
 .footer {
   display: flex;
   justify-content: space-between;
@@ -123,12 +145,12 @@
   background: color-mix(in srgb, var(--primary-color) 30%, transparent);
 }
 .replied-on-username {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: var(--primary-color);
 }
 .replied-on-text {
-  font-size: .6rem;
+  font-size: 0.6rem;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   line-clamp: 1;
@@ -137,8 +159,6 @@
   text-overflow: ellipsis;
   color: var(--primary-color);
 }
-
-
 
 @media (max-width: 800px) {
   .message {
