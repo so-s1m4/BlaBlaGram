@@ -5,7 +5,6 @@
 
   border-radius: 2rem;
 
-
   transform: translateY(-110%);
   z-index: 999;
 }
@@ -43,5 +42,25 @@
     color: var(--light-color);
     width: 50%;
     height: 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  .reaction-item,
+  .reactions-open-more {
+    width: calc(100vw / 9 - 8px);
+    height: calc(100vw / 9 - 8px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    cursor: pointer;
+    * {
+      width: 100%;
+      height: 100%;
+      font-size: 5rem;
+    }
   }
 }

@@ -20,11 +20,23 @@ export class EmojiSelectorComponent implements OnInit {
   @Input() style: any = {};
 
   firstLine: any[] = [];
+  // otherEmojis: any[] = [];
   webSocketService = inject(WebSocketService);
 
   ngOnInit(): void {
-    this.webSocketService.send('emojis:getList', {}, (ok: any, err: any, data: any) => {
-      this.firstLine = data;
-    });
+    this.webSocketService.send(
+      'emojis:getList',
+      {},
+      (ok: any, err: any, data: any) => {
+        this.firstLine = data;
+      }
+    );
+    // this.webSocketService.send(
+    //   'emojis:getList',
+    //   { offset: 8, limit: 1000 },
+    //   (ok: any, err: any, data: any) => {
+    //     this.otherEmojis = data;
+    //   }
+    // );
   }
 }
