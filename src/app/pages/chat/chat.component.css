@@ -139,6 +139,9 @@
 
   overflow: auto;
 }
+.filesPopUp.withReply {
+  top: -4rem;
+}
 
 .fileItem {
   flex: 0 0 125px;

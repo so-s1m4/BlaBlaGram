@@ -38,7 +38,9 @@
   @if (!editMode){
   <div id="upload-bars-holder" class="upload-bars-holder">
   </div>
-  <div class="filesPopUp" *ngIf="filesList.length">
+  <div [ngClass]="{
+    'withReply': this.repliedOn
+  }" class="filesPopUp" *ngIf="filesList.length">
     @for (file of filesList; track file.name) {
     <div class="fileItem">
       @if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
