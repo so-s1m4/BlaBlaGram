@@ -1,5 +1,5 @@
 <div class="wrapper" [ngStyle]="style">
-    <div *ngFor="let em of firstLine" class="reaction-item"><img [src]="em.url">
+    <div *ngFor="let em of firstLine" class="reaction-item" (click)="onSelect(em.id)"><img [src]="em.url">
     </div>
 
     <button class="reactions-open-more">

@@ -27,7 +27,9 @@
 </div>
 <div id="messages-holder" class="messages-holder">
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
-  <app-emoji-selector #emojiSelector [style]="emojiSelectorStyle"></app-emoji-selector>
+  <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select) = "toggleEmoji($event)" [style]="emojiSelectorStyle"></app-emoji-selector>
+
+
   @for (message of this.chatData.messages; track message._id; let last = $last) {
   <app-message [chatData] = "this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode" (openMedia)="openMedia(message._id)"
     [data]="message" [isSender]="message.senderId._id !== me?.id" (openContextMenu)="openContextMenu($event)">

@@ -1,9 +1,11 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { SvgIconComponent } from '../../app/utils/svg.component';
@@ -18,6 +20,8 @@ import { WebSocketService } from '../../app/services/web-socket.service';
 })
 export class EmojiSelectorComponent implements OnInit {
   @Input() style: any = {};
+  @Output() select = new EventEmitter<string>();
+  @Output() close = new EventEmitter<void>();
 
   firstLine: any[] = [];
   // otherEmojis: any[] = [];
@@ -38,5 +42,9 @@ export class EmojiSelectorComponent implements OnInit {
     //     this.otherEmojis = data;
     //   }
     // );
+  }
+  onSelect(emjId: string) {
+    this.select.emit(emjId);
+    this.close.emit()
   }
 }

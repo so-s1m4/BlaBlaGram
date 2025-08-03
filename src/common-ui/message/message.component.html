@@ -6,7 +6,7 @@
 
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
-    }" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
 
     @if (this.repliedOn){
@@ -47,6 +47,15 @@
         }
         <p>{{ data.createdAt | date: 'shortTime' }}</p>
         <svg icon="doublecheck"></svg>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="emoji-wrapper" *ngFor="let emj of this.emoji">
+        <img class="emoji" [src]="emj.url" alt="">
+        
+        <div class="users-holder">
+          <img class="userAvatar" *ngFor="let userImg of emj.members" [src]="API_URL + '/public/' + userImg.path" alt="">
+        </div>
       </div>
     </div>
   </div>

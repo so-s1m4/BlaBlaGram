@@ -24,7 +24,6 @@ function blobToFile(blob: any, fileName: string) {
   return new File([blob], fileName, { type: blob.type });
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -37,6 +36,19 @@ export class ChatsService implements OnInit {
   httpClient = inject(HttpClient);
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
+
+  toggleEmoji(communicationId: string, emojiId: string) {
+    this.webSocketService.send(
+      'emojis:toggle',
+      {
+        communicationId,
+        emojiId
+      },
+      (ok: any, err: any, data: any) => {
+        if (err) {console.error(err); return}        
+      }
+    );
+  }
 
   deleteMessages(messages: string[]): void {
     this.webSocketService.send(
@@ -126,7 +138,6 @@ export class ChatsService implements OnInit {
     repliedOn: string | null,
     callback?: (ok: any, err: any, data: any) => void
   ): void {
-    
     this.webSocketService.send(
       'communication:chats:create',
       { spaceId: chatId, text, repliedOn },
@@ -147,10 +158,10 @@ export class ChatsService implements OnInit {
   ): Promise<void> {
     let payl = new FormData();
 
-    if (!file.type.startsWith("image/")){
+    if (!file.type.startsWith('image/')) {
       payl.append('file', file);
       payl.append('communicationId', communicationId);
-      payl.append('type', "file");
+      payl.append('type', 'file');
 
       this.httpClient
         .post(API_URL + '/mediaserver/media', payl, {
@@ -171,12 +182,11 @@ export class ChatsService implements OnInit {
         );
 
       return;
-    };
+    }
 
     this.imageCompress
       .compressFile(URL.createObjectURL(file), 0, 70, 100) // 50% ratio, 50% quality
       .then((compressedImage: any) => {
-
         const blob = base64ToBlob(compressedImage);
         let newFile = blobToFile(blob, file.name);
 
@@ -211,7 +221,6 @@ export class ChatsService implements OnInit {
       'communication:close',
       { communicationId },
       (ok: any, err: any, data: any) => {
-        console.log(ok, err, data);
         if (!ok) {
           console.error('Error closing communication:', err);
         }

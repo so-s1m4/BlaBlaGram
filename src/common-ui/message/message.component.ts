@@ -107,43 +107,19 @@ export class MessageComponent implements AfterViewInit, OnInit {
   isEditing: boolean = false;
   repliedOn: any;
   showEmoji = false;
+  emoji: any[] = [];
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
-  }
-
-  changeText(event$: Event) {
-    //@ts-ignore
-    let newText = event$.target.value;
-    this.data.text = newText;
-
-    this.webSocketService.send('communication:chats:update', {
-      communicationId: this.data._id,
-      text: newText,
-    });
-  }
-  deleteMessage() {
-    this.chatService.deleteMessages([this.data._id]);
-  }
-  deleteMedia(mediaId: string) {
-    this.webSocketService.send(
-      'communication:chat:deleteMedia',
-      {
-        mediaId,
-      },
-      (ok: any, err: any, data: any) => {
-        console.log(ok, err, data);
-      }
-    );
   }
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.isEditing && !event.shiftKey) {
       this.isEditing = false;
     }
   }
-  onClick(){
-    this.showEmoji = false
-    this.onclick.emit()
+  onClick() {
+    this.showEmoji = false;
+    this.onclick.emit();
   }
   onContextMenu(event: Event) {
     event.preventDefault();
@@ -165,6 +141,48 @@ export class MessageComponent implements AfterViewInit, OnInit {
     $event.stopPropagation();
   }
   ngOnInit() {
+    this.webSocketService.on('emojis:toggle', (data: any) => {
+      if (data.emoji.communicationId.id == this.data._id) {
+
+        const emjUrl = data.emoji.emoji.url
+
+        if (data.action == 'removed') {
+          const emj = this.emoji.find((item: any) => {
+            return item.url == emjUrl;
+          });
+          if (!emj) return;
+
+          emj.members.splice(emj.members.indexOf(data.emoji.userId.img[0]), 1);
+          if (emj.members.length == 0) {
+            this.emoji.splice(this.emoji.indexOf(emj), 1)
+          }
+        } else {
+          let found = this.emoji.find((item) => item.url == emjUrl);
+          if (found) {
+            found.members.push(data.emoji.userId.img[0]);
+            return;
+          }
+          this.emoji.push({
+            url: emjUrl,
+            members: [data.emoji.userId.img[0]],
+          });
+        }
+      }
+    });
+
+    this.data.emoji?.forEach((item: any) => {
+      let emj = item.emoji;
+      let found = this.emoji.find((item) => item.url == emj.url);
+      if (found) {
+        found.members.push(item.userId.img[0]);
+        return;
+      }
+      this.emoji.push({
+        url: emj.url,
+        members: [item.userId.img[0]],
+      });
+    });
+
     if (!this.data.repliedOn) {
       this.repliedOn = null;
       return;
