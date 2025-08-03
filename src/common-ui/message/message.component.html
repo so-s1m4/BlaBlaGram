@@ -56,12 +56,15 @@
       }"
       (click)="toggleEmoji(emj.id)"
 
-      *ngFor="let emj of this.emoji">
+      *ngFor="let emj of this.emoji"
+      [ngForTrackBy]="emj.id"
+      >
         <img class="emoji" [src]="emj.url" alt="">
 
         <div class="users-holder">
-          <img class="userAvatar" *ngFor="let userImg of emj.members; let index = index"
-            [src]="API_URL + '/public/' + userImg.img.path"
+          <img class="userAvatar" *ngFor="let user of emj.members; let index = index;"
+            [ngForTrackBy]="user.id"
+            [src]="API_URL + '/public/' + user.img.path"
             alt=""
             [ngStyle]="{
               transform: index!==0 ? 'translate(-50%)': '',

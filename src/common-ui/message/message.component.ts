@@ -129,8 +129,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
     this.openContextMenu.emit(event);
   }
 
-  toggleEmoji(emjId: string){
-    this.chatService.toggleEmoji(this.data._id, emjId)
+  toggleEmoji(emjId: string) {
+    this.chatService.toggleEmoji(this.data._id, emjId);
   }
 
   onMediaGallery() {
@@ -189,10 +189,9 @@ export class MessageComponent implements AfterViewInit, OnInit {
         }
 
         this.emoji.map((item) => {
-          let find = item.members.find(
-            (item: any) => item.id === this.authService.me.id
+          item.isMe = !!item.members.find(
+            (item: any) => item.id == this.authService.me.id
           );
-          item.isMe = !!find;
         });
       }
     });

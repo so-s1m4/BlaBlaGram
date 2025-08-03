@@ -50,11 +50,14 @@ export class FriendsComponent implements OnInit {
       this.myReq$ = data.list.filter(
         (item: any) => item.receiver_id.id !== this.authService.me.id
       );
-      console.log(data.list)
+      console.log(data.list);
     });
-
     this.webSocketService.on('friends:newRequest', (data: any) => {
-      this.incomingReq$.push(data);
+      if (data.sender_id.id === this.authService.me.id) {
+        this.myReq$.push(data);
+      } else {
+        this.incomingReq$.push(data);
+      }
     });
     this.webSocketService.on('friends:requestAccepted', (data: any) => {
       if (data.sender_id.id === this.authService.me.id) {
@@ -78,6 +81,19 @@ export class FriendsComponent implements OnInit {
     });
   }
   onChange($event: any) {
+    this.friendsService.getFriendsList((data: any) => {
+      this.friendsList = data;
+    });
+    this.friendsService.getPendingRequests((data: any) => {
+      this.pendingRequests = data;
+      this.incomingReq$ = data.list.filter(
+        (item: any) => item.sender_id.id !== this.authService.me.id
+      );
+      this.myReq$ = data.list.filter(
+        (item: any) => item.receiver_id.id !== this.authService.me.id
+      );
+      console.log(data.list);
+    });
     this.whatToShow = $event?.currentTarget?.value;
   }
   searchFriends(data: string) {
