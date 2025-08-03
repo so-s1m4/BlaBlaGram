@@ -2,7 +2,7 @@
       message: true,
       'message-sender': isSender,
     }" [attr.data-id]="data._id" (click)="onClick()">
-  <img [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
 
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
@@ -50,11 +50,23 @@
       </div>
     </div>
     <div class="footer">
-      <div class="emoji-wrapper" *ngFor="let emj of this.emoji">
+      <div class="emoji-wrapper"
+      [ngClass]="{
+        my: emj.isMe
+      }"
+      (click)="toggleEmoji(emj.id)"
+
+      *ngFor="let emj of this.emoji">
         <img class="emoji" [src]="emj.url" alt="">
-        
+
         <div class="users-holder">
-          <img class="userAvatar" *ngFor="let userImg of emj.members" [src]="API_URL + '/public/' + userImg.path" alt="">
+          <img class="userAvatar" *ngFor="let userImg of emj.members; let index = index"
+            [src]="API_URL + '/public/' + userImg.img.path"
+            alt=""
+            [ngStyle]="{
+              transform: index!==0 ? 'translate(-50%)': '',
+              'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
+            }">
         </div>
       </div>
     </div>

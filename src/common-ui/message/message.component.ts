@@ -17,6 +17,7 @@ import { WebSocketService } from '../../app/services/web-socket.service';
 import { ChatsService } from '../../app/services/chats.service';
 import { MediaPreviewComponent } from '../media-preview/media-preview.component';
 import { ImgPipe } from '../../app/utils/img.pipe';
+import { AuthService } from '../../app/services/auth.service';
 
 @Component({
   selector: 'app-message',
@@ -32,6 +33,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
 
   webSocketService = inject(WebSocketService);
   chatService = inject(ChatsService);
+  authService = inject(AuthService);
 
   constructor(private renderer: Renderer2) {}
   ngAfterViewInit(): void {
@@ -126,6 +128,11 @@ export class MessageComponent implements AfterViewInit, OnInit {
     this.showEmoji = true;
     this.openContextMenu.emit(event);
   }
+
+  toggleEmoji(emjId: string){
+    this.chatService.toggleEmoji(this.data._id, emjId)
+  }
+
   onMediaGallery() {
     this.openMedia.emit(this.data._id);
   }
@@ -143,30 +150,51 @@ export class MessageComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.webSocketService.on('emojis:toggle', (data: any) => {
       if (data.emoji.communicationId.id == this.data._id) {
-
-        const emjUrl = data.emoji.emoji.url
-
+        const emjUrl = data.emoji.emoji.url;
         if (data.action == 'removed') {
           const emj = this.emoji.find((item: any) => {
             return item.url == emjUrl;
           });
           if (!emj) return;
 
-          emj.members.splice(emj.members.indexOf(data.emoji.userId.img[0]), 1);
+          emj.members.splice(
+            emj.members.indexOf({
+              id: data.emoji.userId.id,
+              img: data.emoji.userId.img[0],
+            }),
+            1
+          );
           if (emj.members.length == 0) {
-            this.emoji.splice(this.emoji.indexOf(emj), 1)
+            this.emoji.splice(this.emoji.indexOf(emj), 1);
           }
         } else {
           let found = this.emoji.find((item) => item.url == emjUrl);
           if (found) {
-            found.members.push(data.emoji.userId.img[0]);
-            return;
+            found.members.push({
+              id: data.emoji.userId.id,
+              img: data.emoji.userId.img[0],
+            });
+          } else {
+            this.emoji.push({
+              id: data.emoji.emoji.id,
+              url: emjUrl,
+              members: [
+                {
+                  id: data.emoji.userId.id,
+                  img: data.emoji.userId.img[0],
+                },
+              ],
+            });
           }
-          this.emoji.push({
-            url: emjUrl,
-            members: [data.emoji.userId.img[0]],
-          });
         }
+
+        this.emoji.map((item) => {
+          let find = item.members.find(
+            (item: any) => item.id === this.authService.me.id
+          );
+          console.log(item.members, find);
+          item.isMe = !!find;
+        });
       }
     });
 
@@ -174,13 +202,27 @@ export class MessageComponent implements AfterViewInit, OnInit {
       let emj = item.emoji;
       let found = this.emoji.find((item) => item.url == emj.url);
       if (found) {
-        found.members.push(item.userId.img[0]);
+        found.members.push({
+          id: item.userId.id,
+          img: item.userId.img[0],
+        });
         return;
       }
       this.emoji.push({
+        id: emj.id,
         url: emj.url,
-        members: [item.userId.img[0]],
+        members: [
+          {
+            id: item.userId.id,
+            img: item.userId.img[0],
+          },
+        ],
       });
+    });
+    this.emoji.map((item) => {
+      item.isMe = !!item.members.find(
+        (item: any) => item.id == this.authService.me.id
+      );
     });
 
     if (!this.data.repliedOn) {
