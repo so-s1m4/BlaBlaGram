@@ -240,4 +240,12 @@ export class MessageComponent implements AfterViewInit, OnInit {
       (item: any) => item._id == this.data.repliedOn
     );
   }
+
+  trackByEmoji(index: number, item: any): any {
+    return item.id;
+  }
+
+  trackByUser(index: number, item: any): any {
+    return item.id;
+  }
 }

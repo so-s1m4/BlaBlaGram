@@ -92,7 +92,6 @@ export class FriendsComponent implements OnInit {
       this.myReq$ = data.list.filter(
         (item: any) => item.receiver_id.id !== this.authService.me.id
       );
-      console.log(data.list);
     });
     this.whatToShow = $event?.currentTarget?.value;
   }
