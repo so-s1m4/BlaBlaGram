@@ -3,7 +3,7 @@
     <h1>Chats</h1>
   </div>
   <div class="chats-list">
-    @for (chat of getChats; track chat.id) {
+    @for (chat of getChats; track chat._id) {
       <app-chat-preview
         [chat]="chat"
         (click)="selectChat(chat)"

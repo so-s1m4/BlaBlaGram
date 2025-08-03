@@ -192,7 +192,6 @@ export class MessageComponent implements AfterViewInit, OnInit {
           let find = item.members.find(
             (item: any) => item.id === this.authService.me.id
           );
-          console.log(item.members, find);
           item.isMe = !!find;
         });
       }
