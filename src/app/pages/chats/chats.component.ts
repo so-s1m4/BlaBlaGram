@@ -5,25 +5,24 @@ import { ChatsService } from '../../services/chats.service';
 import { ChatComponent } from '../chat/chat.component';
 import { WebSocketService } from '../../services/web-socket.service';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-chats',
-  imports: [ChatPreviewComponent, ChatComponent],
+  imports: [ChatPreviewComponent, ChatComponent, CommonModule],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
 })
 export class ChatsComponent implements OnInit {
   window: any;
-  constructor() {
-    this.chats = [];
-  }
+
   router = inject(Router);
   aRoute = inject(ActivatedRoute);
   webSocketService = inject(WebSocketService);
 
   currentChat: any = null;
 
-  private chats: any[];
+  private chats: any[] = [];
   chatsService = inject(ChatsService);
 
   selectChat(chat: any) {
@@ -56,6 +55,9 @@ export class ChatsComponent implements OnInit {
     })
   }
 
+  isThisChatAtMe(chatId: string){
+    return !!this.chats.find((item)=> item._id == chatId)
+  }
   
   get getChats(): any[] {
     return this.chats;

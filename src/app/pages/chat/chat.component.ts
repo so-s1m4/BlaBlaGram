@@ -154,7 +154,7 @@ export class ChatComponent
       top: y + 'px',
     };
 
-    this.msgIdOverCM = data.currentTarget.getAttribute("msg-id")
+    this.msgIdOverCM = data.currentTarget.getAttribute('msg-id');
 
     const elem = data.currentTarget.getBoundingClientRect();
     if (data.currentTarget.classList.contains('sender')) {
@@ -479,7 +479,7 @@ export class ChatComponent
     this.scrollToBottom();
 
     this.friendsService.getFriendsList((friends: any) => {
-      console.log(friends, this.chatData$)
+      
       if (
         friends.list.find(
           (item: any) => item.id == this.chatData$.chat.user1_id
@@ -513,7 +513,9 @@ export class ChatComponent
       return;
     }
     this.chatService.selectChat(this.chatId!);
-    this.chatService.getChatById(this.chatId, this.setChatData.bind(this));
+    this.chatService.getChatById(this.chatId, (data: any) =>
+      this.setChatData(data)
+    );
   }
   // Event handlers
   onNewMessage(data: any): boolean {

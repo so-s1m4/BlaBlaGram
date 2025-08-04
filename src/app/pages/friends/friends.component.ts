@@ -50,7 +50,6 @@ export class FriendsComponent implements OnInit {
       this.myReq$ = data.list.filter(
         (item: any) => item.receiver_id.id !== this.authService.me.id
       );
-      console.log(data.list);
     });
     this.webSocketService.on('friends:newRequest', (data: any) => {
       if (data.sender_id.id === this.authService.me.id) {

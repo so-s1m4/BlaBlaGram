@@ -42,10 +42,13 @@ export class ChatsService implements OnInit {
       'emojis:toggle',
       {
         communicationId,
-        emojiId
+        emojiId,
       },
       (ok: any, err: any, data: any) => {
-        if (err) {console.error(err); return}        
+        if (err) {
+          console.error(err);
+          return;
+        }
       }
     );
   }
@@ -97,21 +100,21 @@ export class ChatsService implements OnInit {
   }
 
   getChatById(chatId: string, callback: any): void {
-    this.webSocketService.send(
-      'communication:getList',
-      { spaceId: chatId, limit: 100 },
-      (ok: boolean, err: string, res: any) => {
-        if (ok) {
-          let data = res.reverse();
-          callback({
-            chat: this.chats$.find((chat: any) => chat._id === chatId),
-            messages: data,
-          });
-        } else {
-          console.error('Error receiving chats:', err);
+      this.webSocketService.send(
+        'communication:getList',
+        { spaceId: chatId, limit: 100 },
+        (ok: boolean, err: string, res: any) => {
+          if (ok) {
+            let data = res.reverse();
+            callback({
+              chat: this.chats$.find((chat: any) => chat._id == chatId),
+              messages: data,
+            });
+          } else {
+            console.error('Error receiving chats:', err);
+          }
         }
-      }
-    );
+      );
   }
 
   selectChat(chatId: string): void {

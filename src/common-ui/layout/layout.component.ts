@@ -82,8 +82,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatsService.chats();
-    if (this.window.location.href.includes('chats')) {
-    }
+    
     this.webSocketService.on('communication:newMessage', (data: any) => {
       if (this.chatsService.currentChatId !== data.spaceId) {
         const popUpData = {
