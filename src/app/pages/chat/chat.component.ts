@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatsService } from '../../services/chats.service';
@@ -24,6 +25,7 @@ import { MediaGalleryComponent } from '../../../common-ui/media-gallery/media-ga
 import { ImgPipe } from '../../utils/img.pipe';
 import { FriendsService } from '../../services/friends.service';
 import { EmojiSelectorComponent } from '../../../common-ui/emoji-selector/emoji-selector.component';
+import { VideoMessageComponent } from '../../../common-ui/video-message/video-message.component';
 
 @Component({
   selector: 'app-chat',
@@ -35,6 +37,7 @@ import { EmojiSelectorComponent } from '../../../common-ui/emoji-selector/emoji-
     MediaGalleryComponent,
     ImgPipe,
     EmojiSelectorComponent,
+    VideoMessageComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -84,10 +87,13 @@ export class ChatComponent
 
   isSelectMode = false;
   isOnline = false;
+  isRecordVM = false;
 
   private chatData$: any;
   @Input() chatId: string | undefined = '';
   @Output('closeChat') close = new EventEmitter<void>();
+  @ViewChild(VideoMessageComponent)
+  videoComp?: VideoMessageComponent;
 
   // Actions
   toggleSelectMode(): void {
@@ -112,6 +118,20 @@ export class ChatComponent
       }
     }
   }
+  onStopRecord(videoDataBLOB: Blob) {
+    this.chatService.sendVideoMessage(this.chatData$.chat._id, videoDataBLOB);
+  }
+  async toggleRecVideoMsg() {
+    if (this.isRecordVM) {
+      this.videoComp?.stop();
+      setTimeout(() => {
+        this.isRecordVM = false;
+      }, 1000);
+      return;
+    }
+    this.isRecordVM = true;
+  }
+
   toggleEditMessage(msgId: string) {
     if (this.messageIdForEdit === msgId) {
       this.messageIdForEdit = null;
@@ -479,7 +499,6 @@ export class ChatComponent
     this.scrollToBottom();
 
     this.friendsService.getFriendsList((friends: any) => {
-      
       if (
         friends.list.find(
           (item: any) => item.id == this.chatData$.chat.user1_id

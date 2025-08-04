@@ -1,0 +1,31 @@
+:host {
+  position: absolute;
+  top: 6%;
+  width: 100%;
+  height: 89%;
+
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 10000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: fit-content;
+  height: fit-content;
+
+  border-radius: 50%;
+  border: 7px solid var(--gray-color);
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+video {
+  object-fit: cover;
+}

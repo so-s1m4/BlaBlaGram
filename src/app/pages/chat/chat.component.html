@@ -25,14 +25,18 @@
     </button>
   </div>
 </div>
+
+<app-video-message *ngIf="this.isRecordVM" (onstop)="onStopRecord($event)"></app-video-message>
 <div id="messages-holder" class="messages-holder">
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
-  <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select) = "toggleEmoji($event)" [style]="emojiSelectorStyle"></app-emoji-selector>
+  <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
+    [style]="emojiSelectorStyle"></app-emoji-selector>
 
 
   @for (message of this.chatData.messages; track message._id; let last = $last) {
-  <app-message [chatData] = "this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode" (openMedia)="openMedia(message._id)"
-    [data]="message" [isSender]="message.senderId._id !== me?.id" (openContextMenu)="openContextMenu($event)">
+  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+    (openMedia)="openMedia(message._id)" [data]="message" [isSender]="message.senderId._id !== me?.id"
+    (openContextMenu)="openContextMenu($event)">
   </app-message>
   }
 </div>
@@ -79,6 +83,10 @@
   <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
   <button id="send-btn" class="btn" (click)="sendMessage()">
     <svg icon="repost"></svg>
+  </button>
+  <button id="send-btn" class="btn" (click)="stopPropagation($event)" (mousedown)="toggleRecVideoMsg()"
+    (mouseup)="toggleRecVideoMsg()" (touchstart)="toggleRecVideoMsg()" (touchend)="toggleRecVideoMsg()">
+    <svg icon="camera"></svg>
   </button>
   } @else {
   <textarea id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)"

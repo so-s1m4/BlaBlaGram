@@ -6,8 +6,15 @@
 
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
-    }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
-    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+    }"
+    [ngStyle]="{
+      'background': this.isVM ? 'transparent' : 'var(--secondary-color)'
+    }"
+    [attr.msg-id]="data._id"
+    (contextmenu)="onContextMenu($event)"
+    data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})"
+  >
 
     @if (this.repliedOn){
     <div class="replied-on-holder">

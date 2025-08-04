@@ -5,6 +5,7 @@
   flex-direction: column;
 
   background: var(--dark-color);
+  position: relative;
 }
 
 .header {

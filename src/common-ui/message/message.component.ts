@@ -110,6 +110,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
   repliedOn: any;
   showEmoji = false;
   emoji: any[] = [];
+  isVM = false;
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
@@ -195,6 +196,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
         });
       }
     });
+
+    this.isVM = this.data.media.find((item: any)=>item.type=="video_message")
 
     this.data.emoji?.forEach((item: any) => {
       let emj = item.emoji;

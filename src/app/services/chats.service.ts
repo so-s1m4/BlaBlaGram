@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
 import { AuthService } from './auth.service';
@@ -100,21 +100,21 @@ export class ChatsService implements OnInit {
   }
 
   getChatById(chatId: string, callback: any): void {
-      this.webSocketService.send(
-        'communication:getList',
-        { spaceId: chatId, limit: 100 },
-        (ok: boolean, err: string, res: any) => {
-          if (ok) {
-            let data = res.reverse();
-            callback({
-              chat: this.chats$.find((chat: any) => chat._id == chatId),
-              messages: data,
-            });
-          } else {
-            console.error('Error receiving chats:', err);
-          }
+    this.webSocketService.send(
+      'communication:getList',
+      { spaceId: chatId, limit: 100 },
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          let data = res.reverse();
+          callback({
+            chat: this.chats$.find((chat: any) => chat._id == chatId),
+            messages: data,
+          });
+        } else {
+          console.error('Error receiving chats:', err);
         }
-      );
+      }
+    );
   }
 
   selectChat(chatId: string): void {
@@ -125,10 +125,46 @@ export class ChatsService implements OnInit {
     return this.currentChatId$;
   }
 
+  sendVideoMessage(chatId: string, videoBlob: Blob) {
+    this.createCommunication(
+      chatId,
+      '',
+      undefined,
+      (ok: any, err: any, data: any) => {
+        let payl = new FormData();
+
+        payl.append('file', videoBlob);
+        payl.append('communicationId', data._id);
+        payl.append('type', 'video_message');
+
+        this.httpClient
+          .post(API_URL + '/mediaserver/media', payl, {
+            headers: {
+              Authorization: 'Bearer ' + this.authService.token,
+            },
+            reportProgress: true,
+            observe: 'events',
+          })
+          .subscribe(
+            (event) => {
+              if (event.type === HttpEventType.Response) {
+                this.commitCommunication(data._id)
+              }
+            },
+            (err) => {
+              console.error('Error sending file:', err);
+            }
+          );
+
+        return;
+      }
+    );
+  }
+
   createCommunication(
     chatId: string,
     text: string,
-    repliedOn: string | null,
+    repliedOn: string | undefined,
     callback?: (ok: any, err: any, data: any) => void
   ): void {
     this.webSocketService.send(
