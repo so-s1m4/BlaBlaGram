@@ -58,4 +58,8 @@ export class WebSocketService {
   disconnect(): void {
     if (this.socket.connected) this.socket.disconnect();
   }
+
+  get socket$(){
+    return this.socket;
+  }
 }

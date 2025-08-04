@@ -1,4 +1,4 @@
-@if (!this.chatData || !authService.me) {
+@if (!this.chatData?.chat || !authService.me) {
 <div class="loading">Loading...</div>
 } @else {
 
@@ -77,7 +77,9 @@
     <input (change)="onFileSelected($event)" id="files-input" type="file" class="attachFile" multiple hidden />
   </div>
   <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
-  <button id="send-btn" class="btn" (click)="sendMessage()">Send</button>
+  <button id="send-btn" class="btn" (click)="sendMessage()">
+    <svg icon="repost"></svg>
+  </button>
   } @else {
   <textarea id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)"
     placeholder="Type a message..."></textarea>

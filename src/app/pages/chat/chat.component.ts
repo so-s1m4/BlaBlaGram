@@ -479,6 +479,7 @@ export class ChatComponent
     this.scrollToBottom();
 
     this.friendsService.getFriendsList((friends: any) => {
+      console.log(friends, this.chatData$)
       if (
         friends.list.find(
           (item: any) => item.id == this.chatData$.chat.user1_id

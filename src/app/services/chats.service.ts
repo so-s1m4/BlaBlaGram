@@ -80,25 +80,15 @@ export class ChatsService implements OnInit {
   }
 
   chats(callback?: (chats: any[]) => void): void | any[] {
-    if (this.chats$.length > 0) {
-      callback?.(this.chats$);
-      return this.chats$;
-    }
-    if (!callback) {
-      this.updateChats((chats: any[]) => {
-        this.chats$ = chats;
-      });
-      return this.chats$;
-    }
     this.updateChats(callback);
   }
-  updateChats(callback: any) {
+  updateChats(callback?: any) {
     this.webSocketService.send(
       'spaces:getList',
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           this.chats$ = res.map((chat: any) => chat.spaceId);
-          callback(this.chats$);
+          callback?.(this.chats$);
         } else {
           console.error('Error receiving chats:', err);
         }
