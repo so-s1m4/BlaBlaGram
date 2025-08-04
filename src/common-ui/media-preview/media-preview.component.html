@@ -1,6 +1,6 @@
 @if (this.imageToShow && this.imageToShow[0].type == "video_message"){
 <div class="wrapperVM">
-  <video #video [src]="API_URL + '/mediaserver/public/' + this.imageToShow[0].path" (click)="playPause()"></video>
+  <video autoplay #video [src]="API_URL + '/mediaserver/public/' + this.imageToShow[0].path" (click)="playPause()"></video>
 </div>
 } @else {
 <div #holder id="holder" class="holder" (click)="openMedia.emit()">
