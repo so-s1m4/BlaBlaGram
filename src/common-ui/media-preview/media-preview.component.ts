@@ -20,6 +20,7 @@ import { SvgIconComponent } from '../../app/utils/svg.component';
 })
 export class MediaPreviewComponent implements AfterViewInit, OnInit {
   @ViewChild('holder') holder!: ElementRef<HTMLDivElement>;
+  @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   API_URL = API_URL;
 
   @Input() imageMedia: any[] = [];
@@ -112,5 +113,13 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
   }
   ngOnChanges() {
     this.setupGridTemplateAreas();
+  }
+
+  playPause() {
+    if (this.video.nativeElement.paused) {
+      this.video.nativeElement.play();
+    } else {
+      this.video.nativeElement.pause();
+    }
   }
 }
