@@ -11,13 +11,13 @@ import {
   ViewChildren,
   OnInit,
 } from '@angular/core';
-import { API_URL } from '../../app/app.config';
-import { SvgIconComponent } from '../../app/utils/svg.component';
-import { WebSocketService } from '../../app/services/web-socket.service';
-import { ChatsService } from '../../app/services/chats.service';
+import { API_URL } from '../../../../../../../app/app.config';
+import { SvgIconComponent } from '../../../../../../utils/svg.component';
+import { WebSocketService } from '../../../../../../services/web-socket.service';
+import { ChatsService } from '../../../../../../services/chats.service';
 import { MediaPreviewComponent } from '../media-preview/media-preview.component';
-import { ImgPipe } from '../../app/utils/img.pipe';
-import { AuthService } from '../../app/services/auth.service';
+import { ImgPipe } from '../../../../../../utils/img.pipe';
+import { AuthService } from '../../../../../../services/auth.service';
 
 @Component({
   selector: 'app-message',

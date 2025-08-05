@@ -8,8 +8,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { API_URL } from '../../app/app.config';
-import { SvgIconComponent } from '../../app/utils/svg.component';
+import { API_URL } from '../../../../../../app.config';
+import { SvgIconComponent } from '../../../../../..//utils/svg.component';
 
 @Component({
   selector: 'app-media-gallery',
@@ -60,7 +60,8 @@ export class MediaGalleryComponent implements OnInit {
     if (this.media.length == 0) {
       this.onClose();
     }
-    this.selectedMedia = this.media[Math.min(currentIndex, this.media.length-1)];
+    this.selectedMedia =
+      this.media[Math.min(currentIndex, this.media.length - 1)];
   }
   private swipeCoord?: [number, number];
   private swipeTime?: number;

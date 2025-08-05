@@ -38,7 +38,6 @@ export class VideoMessageComponent implements AfterViewInit {
     setTimeout(this.stop.bind(this), 60000)
   }
 
-
   startRecording() {
     if (!this.stream) return;
     this.recording = true;

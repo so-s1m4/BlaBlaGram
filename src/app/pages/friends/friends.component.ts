@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProfileData, ProfileService } from '../../services/profile.service';
-import { UserCardComponent } from '../../../common-ui/user-card/user-card.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
 import { SearchComponent } from '../../../common-ui/search/search.component';
 import { FriendsService } from '../../services/friends.service';
 import { AuthService } from '../../services/auth.service';

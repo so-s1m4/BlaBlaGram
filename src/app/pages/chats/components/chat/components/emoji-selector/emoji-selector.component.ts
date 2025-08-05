@@ -8,9 +8,9 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { SvgIconComponent } from '../../app/utils/svg.component';
+import { SvgIconComponent } from '../../../../../../utils/svg.component';
 import { CommonModule } from '@angular/common';
-import { WebSocketService } from '../../app/services/web-socket.service';
+import { WebSocketService } from '../../../../../../services/web-socket.service';
 
 @Component({
   selector: 'app-emoji-selector',

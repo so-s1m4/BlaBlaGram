@@ -2,12 +2,12 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   ProfileData,
   ProfileService,
-} from '../../app/services/profile.service';
-import { ImgPipe } from '../../app/utils/img.pipe';
-import { SvgIconComponent } from '../../app/utils/svg.component';
+} from '../../../../services/profile.service';
+import { ImgPipe } from '../../../../utils/img.pipe';
+import { SvgIconComponent } from '../../../../utils/svg.component';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
-import { FriendsService } from '../../app/services/friends.service';
+import { FriendsService } from '../../../../services/friends.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
