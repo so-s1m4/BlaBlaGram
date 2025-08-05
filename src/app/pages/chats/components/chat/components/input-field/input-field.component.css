@@ -39,7 +39,7 @@
   top: -4rem;
 }
 .filesPopUp::-webkit-scrollbar {
-  height: .5rem;
+  height: 0.5rem;
 }
 .fileItem {
   flex: 0 0 125px;
@@ -132,6 +132,16 @@
   border: 0;
   width: 3rem;
   color: var(--gray-color);
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    margin: 0;
+    padding: 0;
+    height: 3rem;
+    width: 3rem;
+  }
 }
 .btn:hover {
   color: var(--primary-color);
@@ -184,18 +194,5 @@
   svg {
     width: 2.5rem;
     height: 60%;
-  }
-}
-
-#send-btn {
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  svg {
-    margin: 0;
-    padding: 0;
-    height: 3rem;
-    width: 3rem;
   }
 }
