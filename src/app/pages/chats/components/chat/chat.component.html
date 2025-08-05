@@ -41,59 +41,8 @@
   }
 </div>
 <div class="input-holder">
-  @if (!editMode){
-  <div id="upload-bars-holder" class="upload-bars-holder">
-  </div>
-  <div [ngClass]="{
-    'withReply': this.repliedOn
-  }" class="filesPopUp" *ngIf="filesList.length">
-    @for (file of filesList; track file.name) {
-    <div class="fileItem">
-      @if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
-      <img [src]="URL.createObjectURL(file.file)" class="fileImage" />
-      } @else {
-      <svg icon="file"></svg>
-      <span class="fileSize">{{ file.size }}</span>
-      }
-      <div class="deleteBtn" (click)="deleteFile(file)"><svg icon="plus"></svg></div>
-    </div>
-    }
-  </div>
-  @if (this.repliedOn) {
-  <div class="reply-on">
-    <svg icon="reply"></svg>
-    <div class="reply-content-holder">
-      <div class="reply-to-person">
-        Reply to {{this.repliedOn.senderId.username}}
-      </div>
-      <div class="reply-to-text">
-        {{this.repliedOn.text}}
-      </div>
-    </div>
-
-    <button class="btn-undo" (click)="replyOn('')"><svg icon="plus" style="transform: rotate(45deg);"></svg></button>
-  </div>
-  }
-  <div class="attachFileBtn">
-    <label for="files-input" class="btn attachFile">
-      <svg icon="attach"></svg>
-    </label>
-    <input (change)="onFileSelected($event)" id="files-input" type="file" class="attachFile" multiple hidden />
-  </div>
-  <textarea id="message-input" class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"></textarea>
-  <button id="send-btn" class="btn" (click)="sendMessage()">
-    <svg icon="repost"></svg>
-  </button>
-  <button id="send-btn" class="btn" (click)="stopPropagation($event)" (mousedown)="toggleRecVideoMsg()"
-    (mouseup)="toggleRecVideoMsg()" (touchstart)="toggleRecVideoMsg()" (touchend)="toggleRecVideoMsg()" style="z-index: 101;">
-    <svg icon="camera"></svg>
-  </button>
-  } @else {
-  <textarea id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)"
-    placeholder="Type a message..."></textarea>
-  <button id="send-btn" class="btn" (click)="editMessage()">Save</button>
-  }
-
+  <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()"
+    (toggleRecVideoMsg)="toggleRecVideoMsg()" [chatData]="this.chatData"></app-input-field>
 </div>
 
 <app-media-gallery *ngIf="mediaToShow.length > 0" (close)="closeMedia()" (delete)="deleteMedia($event)"

@@ -55,8 +55,6 @@ export class VideoMessageComponent implements AfterViewInit {
   }
 
   public stop(): void {
-    console.log(true);
-
     this.recording = false;
     this.mediaRecorder.stop();
   }

@@ -53,6 +53,22 @@ export class ChatsService implements OnInit {
     );
   }
 
+  editMsg(chatId: string, text: string, callback?: Function){
+    this.webSocketService.send(
+      'communication:chats:update',
+      {
+        communicationId: chatId,
+        text: text,
+      },
+      (ok: any, err: any, data: any) => {
+        if (err) {
+          console.error('Error updating message:', err);
+          return;
+        }
+        callback?.()
+      }
+    );
+  }
   deleteMessages(messages: string[]): void {
     this.webSocketService.send(
       'communication:chats:deleteMessages',

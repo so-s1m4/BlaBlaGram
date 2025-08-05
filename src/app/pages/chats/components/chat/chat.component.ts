@@ -26,6 +26,7 @@ import { ImgPipe } from '../../../../utils/img.pipe';
 import { FriendsService } from '../../../../services/friends.service';
 import { EmojiSelectorComponent } from './components/emoji-selector/emoji-selector.component';
 import { VideoMessageComponent } from './components/video-message/video-message.component';
+import { InputFieldComponent } from './components/input-field/input-field.component';
 
 @Component({
   selector: 'app-chat',
@@ -38,6 +39,7 @@ import { VideoMessageComponent } from './components/video-message/video-message.
     ImgPipe,
     EmojiSelectorComponent,
     VideoMessageComponent,
+    InputFieldComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -46,7 +48,6 @@ export class ChatComponent
   implements OnInit, OnChanges, OnDestroy, AfterContentInit
 {
   API_URL = API_URL;
-
   URL = URL;
   constructor(private router: ActivatedRoute) {}
 
@@ -57,12 +58,6 @@ export class ChatComponent
   authService = inject(AuthService);
   route: Router = inject(Router);
 
-  editMode = false;
-  messageIdForEdit: string | null = null;
-  messageTextForEdit: string | null = null;
-
-  repliedOn: any = null;
-
   contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
   contextMenuStyle: {
     top: string;
@@ -70,7 +65,6 @@ export class ChatComponent
     display: string;
     transform?: string;
   } = { top: '0', left: '0', display: 'none' };
-
   emojiSelectorStyle: {
     top: string;
     left: string;
@@ -80,8 +74,6 @@ export class ChatComponent
   msgIdOverCM: string = '';
 
   me: any = this.authService.me;
-
-  filesList: { name: string; size: number; file: File }[] = [];
 
   mediaToShow: any[] = [];
 
@@ -94,6 +86,7 @@ export class ChatComponent
   @Output('closeChat') close = new EventEmitter<void>();
   @ViewChild(VideoMessageComponent)
   videoComp?: VideoMessageComponent;
+  @ViewChild(InputFieldComponent) inputComp?: InputFieldComponent;
 
   // Actions
   toggleSelectMode(): void {
@@ -108,16 +101,6 @@ export class ChatComponent
       });
     }
   }
-  onKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      if (this.editMode) {
-        this.editMessage();
-      } else {
-        this.sendMessage();
-      }
-    }
-  }
   onStopRecord(videoDataBLOB: Blob) {
     this.chatService.sendVideoMessage(this.chatData$.chat._id, videoDataBLOB);
   }
@@ -130,20 +113,6 @@ export class ChatComponent
       return;
     }
     this.isRecordVM = true;
-  }
-
-  toggleEditMessage(msgId: string) {
-    if (this.messageIdForEdit === msgId) {
-      this.messageIdForEdit = null;
-      this.editMode = false;
-      this.messageTextForEdit = null;
-    } else {
-      this.messageIdForEdit = msgId;
-      this.editMode = true;
-      this.messageTextForEdit = this.chatData?.messages.find(
-        (msg: any) => msg._id === msgId
-      ).text;
-    }
   }
 
   closeContextMenu() {
@@ -214,7 +183,7 @@ export class ChatComponent
               label: 'Edit',
               svg: 'pen',
               action: () => {
-                this.toggleEditMessage(targetData.id);
+                this.inputComp?.toggleEditMessage(targetData.id);
                 this.closeContextMenu();
               },
             },
@@ -273,23 +242,24 @@ export class ChatComponent
   }
   // Messages
   sendMessage(): void {
-    //@ts-ignore
-    const message = document.getElementById('message-input')!.value;
+    if (!this.inputComp) return;
 
-    if (!message.trim() && this.filesList.length === 0) {
+    const message = this.inputComp.value;
+
+    if (!message.trim() && this.inputComp.filesList.length === 0) {
       return;
     }
 
     this.chatService.createCommunication(
       this.chatId!,
       message,
-      this.repliedOn?._id,
+      this.inputComp?.repliedOn?._id,
       (ok, err, data) => {
         const comId = data._id;
-        const files = this.filesList;
+        const files = this.inputComp!.filesList;
         let numberUploadedFiles = 0;
 
-        this.filesList = [];
+        this.inputComp!.filesList = [];
 
         if (files.length === 0) {
           this.chatService.commitCommunication(comId);
@@ -389,9 +359,9 @@ export class ChatComponent
         }
       }
     );
-    this.repliedOn = null;
+    this.inputComp.repliedOn = null;
     //@ts-ignore
-    document.getElementById('message-input').value = '';
+    this.inputComp.clearInputField();
   }
   deleteSelectedMessages($event: Event) {
     $event.stopPropagation();
@@ -406,45 +376,13 @@ export class ChatComponent
 
     this.chatService.deleteMessages(messagesToDelete);
   }
-  editMessage() {
-    const inputElement = document.getElementById(
-      'message-input'
-    ) as HTMLInputElement;
-    const text = inputElement.value;
-
-    if (text.length == 0) {
-      this.toggleEditMessage(this.messageIdForEdit!);
-    }
-    if (inputElement) {
-      this.webSocketService.send(
-        'communication:chats:update',
-        {
-          communicationId: this.messageIdForEdit,
-          text,
-        },
-        (ok: any, err: any, data: any) => {
-          if (err) {
-            console.error('Error updating message:', err);
-            return;
-          }
-          const msg = this.chatData$.messages.find(
-            (msg: any) => msg._id === this.messageIdForEdit
-          );
-          if (msg) {
-            msg.text = text;
-            msg.editedAt = new Date().toISOString();
-          }
-          this.toggleEditMessage(this.messageIdForEdit!);
-        }
-      );
-    }
-  }
   replyOn(id: string) {
+    if (!this.inputComp) return;
     if (id === '') {
-      this.repliedOn = null;
+      this.inputComp.repliedOn = null;
       return;
     }
-    this.repliedOn = this.chatData$.messages.find(
+    this.inputComp.repliedOn = this.chatData$.messages.find(
       (item: any) => item._id == id
     );
   }
@@ -472,26 +410,10 @@ export class ChatComponent
       msg.media = msg.media.filter((media: any) => media._id !== data.mediaId);
     });
   }
-  // Files
-  deleteFile(file: any): void {
-    this.filesList = this.filesList.filter((f) => f !== file);
-  }
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const files = Array.from(input.files);
-      let newFiles = files.map((file) => ({
-        name: file.name,
-        size: file.size,
-        file: file,
-      }));
-      this.filesList.push(...newFiles);
-      this.filesList = this.filesList.slice(0, 10); // Limit to 10 files
-    }
-  }
+  // File
   goBack(): void {
     this.close.emit();
-  }
+  } 
   // Chat data
   setChatData(chatData: any): void {
     this.me = this.authService.me;
@@ -584,12 +506,12 @@ export class ChatComponent
     });
   }
   ngOnChanges(): void {
-    this.filesList = [];
+    if (this.inputComp) this.inputComp.filesList = [];
     this.chatData$ = null;
     this.loadChat();
   }
   ngOnDestroy(): void {
-    this.filesList = [];
+    if (this.inputComp) this.inputComp.filesList = [];
     this.chatService.selectChat('');
   }
   ngAfterContentInit(): void {
