@@ -1,3 +1,89 @@
+@if (type == "kruzhok"){
+
+<div [ngClass]="{
+        message: true,
+        'message-sender': isSender,
+      }" [attr.data-id]="data._id" (click)="onClick()">
+  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+  <div #wrapper class="wrapper" [ngClass]="{
+        'sender': isSender,
+      }" [ngStyle]="{
+        'background': 'transparent'
+      }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+
+    <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
+      [imageMedia]="imageMedia"></app-media-preview>
+    <div class="text">
+      {{ data.text }}
+      <div
+        style="display:flex; position: relative; top: .375rem; bottom: auto !important; float: right; height: calc(var(--message-meta-height, 1rem)); margin-right: -0.375rem; margin-left: .4375rem; line-height: 1.35;">
+        @if (data.editedAt.split(".")[0] !== data.createdAt.split(".")[0])
+        {
+        <p>edited </p>
+        }
+        <p>{{ data.createdAt | date: 'shortTime' }}</p>
+        <svg icon="doublecheck"></svg>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="emoji-wrapper" [ngClass]="{
+          my: emj.isMe
+        }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emoji; trackBy: trackByEmoji;">
+        <img class="emoji" [src]="emj.url" alt="">
+
+        <div class="users-holder">
+          <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
+            [src]="API_URL + '/public/' + user.img.path" alt="" [ngStyle]="{
+                transform: index!==0 ? 'translate(-50%)': '',
+                'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
+              }">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div>
+
+} @else if (type == "gs") {
+<div [ngClass]="{
+          message: true,
+          'message-sender': isSender,
+        }" [attr.data-id]="data._id" (click)="onClick()">
+  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+  <div #wrapper class="wrapper" [ngClass]="{
+          'sender': isSender,
+        }" [ngStyle]="{
+          'background': 'transparent'
+        }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+
+    <app-audio-message-player [src]="API_URL + '/mediaserver/public/' + this.data.media[0].path"></app-audio-message-player>
+    
+    <div class="footer">
+      <div class="emoji-wrapper" [ngClass]="{
+            my: emj.isMe
+          }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emoji; trackBy: trackByEmoji;">
+        <img class="emoji" [src]="emj.url" alt="">
+
+        <div class="users-holder">
+          <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
+            [src]="API_URL + '/public/' + user.img.path" alt="" [ngStyle]="{
+                  transform: index!==0 ? 'translate(-50%)': '',
+                  'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
+                }">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div>
+
+} @else {
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
@@ -6,15 +92,10 @@
 
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
-    }"
-    [ngStyle]="{
-      'background': this.isVM ? 'transparent' : 'var(--secondary-color)'
-    }"
-    [attr.msg-id]="data._id"
-    (contextmenu)="onContextMenu($event)"
-    data-long-press-delay="1000"
-    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})"
-  >
+    }" [ngStyle]="{
+      'background': 'var(--secondary-color)'
+    }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
 
     @if (this.repliedOn){
     <div class="replied-on-holder">
@@ -36,7 +117,7 @@
     <div (click)="stopPropagation($event)" (contextmenu)="stopPropagation($event)" class="media-holder"
       *ngIf="data.media && data.media.length > 0">
       @for (media of data.media; track media._id) {
-      @if (!media.mime.startsWith('image/') && !media.mime.startsWith('video/')) {
+      @if (!media.mime.startsWith('image/') && !media.mime.startsWith('video/') && !media.type.startsWith("audio")) {
       <div #mediaItem class="media-item" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
         [attr.data]="JSON.stringify({type: 'media', id: media._id, path: media.path})">
         <svg icon="file"></svg>
@@ -76,3 +157,5 @@
   <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
       (change)="selectMessage($event)" name="" id="" /></div>
 </div>
+
+}

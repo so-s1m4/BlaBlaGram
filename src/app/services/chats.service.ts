@@ -53,7 +53,7 @@ export class ChatsService implements OnInit {
     );
   }
 
-  editMsg(chatId: string, text: string, callback?: Function){
+  editMsg(chatId: string, text: string, callback?: Function) {
     this.webSocketService.send(
       'communication:chats:update',
       {
@@ -65,7 +65,7 @@ export class ChatsService implements OnInit {
           console.error('Error updating message:', err);
           return;
         }
-        callback?.()
+        callback?.();
       }
     );
   }
@@ -164,7 +164,43 @@ export class ChatsService implements OnInit {
           .subscribe(
             (event) => {
               if (event.type === HttpEventType.Response) {
-                this.commitCommunication(data._id)
+                this.commitCommunication(data._id);
+              }
+            },
+            (err) => {
+              console.error('Error sending file:', err);
+            }
+          );
+
+        return;
+      }
+    );
+  }
+
+  sendAudioMessage(chatId: string, audioBlob: Blob) {
+    this.createCommunication(
+      chatId,
+      '',
+      undefined,
+      (ok: any, err: any, data: any) => {
+        let payl = new FormData();
+
+        payl.append('file', audioBlob);
+        payl.append('communicationId', data._id);
+        payl.append('type', 'audio');
+
+        this.httpClient
+          .post(API_URL + '/mediaserver/media', payl, {
+            headers: {
+              Authorization: 'Bearer ' + this.authService.token,
+            },
+            reportProgress: true,
+            observe: 'events',
+          })
+          .subscribe(
+            (event) => {
+              if (event.type === HttpEventType.Response) {
+                this.commitCommunication(data._id);
               }
             },
             (err) => {

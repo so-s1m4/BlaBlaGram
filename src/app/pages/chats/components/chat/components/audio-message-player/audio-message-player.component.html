@@ -1,0 +1,12 @@
+<audio #audio [src]="src"></audio>
+
+<button class="play-btn" (click)="togglePlay()">
+  @if (isPlaying) {<svg icon="pause"></svg>}
+  @else           {<svg icon="play" ></svg>}
+</button>
+
+<div class="progress-container" (click)="seek($event)">
+  <div class="progress-bar" [style.width.%]="this.progress"></div>
+</div>
+
+<span class="time">{{ this.currentTime * 1000 | date:"mm:ss"}}</span>

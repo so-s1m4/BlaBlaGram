@@ -10,10 +10,11 @@ import { WebSocketService } from '../../../../../../services/web-socket.service'
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../../../../../../utils/svg.component';
 import { ChatsService } from '../../../../../../services/chats.service';
+import { AudioMessageComponent } from './components/audio-message/audio-message.component';
 
 @Component({
   selector: 'app-input-field',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, AudioMessageComponent],
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.css',
 })
@@ -27,6 +28,9 @@ export class InputFieldComponent {
   public messageIdForEdit: string | null = null;
   public messageTextForEdit: string | null = null;
 
+  isVoice = true;
+  isRecording = false;
+
   public value: string = '';
 
   public filesList: { name: string; size: number; file: File }[] = [];
@@ -37,6 +41,7 @@ export class InputFieldComponent {
   @Output() toggleRecVideoMsg = new EventEmitter();
 
   @ViewChild('input') inputField?: any;
+  @ViewChild(AudioMessageComponent) audio_msg!: AudioMessageComponent;
 
   toggleEditMessage(msgId: string) {
     if (this.messageIdForEdit === msgId) {
@@ -77,6 +82,41 @@ export class InputFieldComponent {
         this.sendMessage.emit();
       }
     }
+  }
+
+  pressTimer: any;
+  pressDuration = 500;
+  wasLongPress = false;
+  onPressStart(type: string): void {
+    this.wasLongPress = false;
+
+    this.pressTimer = setTimeout(() => {
+      this.wasLongPress = true;
+      this.isRecording = true;
+
+      if (type == 'video') this.toggleRecVideoMsg.emit();
+      else {
+        this.audio_msg?.startRecording()
+      };
+    }, this.pressDuration);
+  }
+  onPressEnd(type: string): void {
+    clearTimeout(this.pressTimer);
+
+    if (this.wasLongPress) {
+      if (type == 'video') this.toggleRecVideoMsg.emit();
+      else this.audio_msg?.endRecording();
+
+      this.isRecording = false;
+    } else {
+      this.switchVideo2Voice();
+    }
+  }
+  handleAudio(blob: Blob) {
+    this.chatsService.sendAudioMessage(this.chatData.chat._id, blob);
+  }
+  switchVideo2Voice() {
+    this.isVoice = !this.isVoice;
   }
   stopPropagation($event: Event) {
     $event.stopPropagation();

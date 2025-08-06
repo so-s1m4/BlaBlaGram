@@ -18,10 +18,11 @@ import { ChatsService } from '../../../../../../services/chats.service';
 import { MediaPreviewComponent } from '../media-preview/media-preview.component';
 import { ImgPipe } from '../../../../../../utils/img.pipe';
 import { AuthService } from '../../../../../../services/auth.service';
+import { AudioMessagePlayerComponent } from "../audio-message-player/audio-message-player.component";
 
 @Component({
   selector: 'app-message',
-  imports: [CommonModule, SvgIconComponent, MediaPreviewComponent, ImgPipe],
+  imports: [CommonModule, SvgIconComponent, MediaPreviewComponent, ImgPipe, AudioMessagePlayerComponent],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
@@ -110,7 +111,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
   repliedOn: any;
   showEmoji = false;
   emoji: any[] = [];
-  isVM = false;
+  // isVM = false;
+  type: string = "message";
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
@@ -141,7 +143,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
     return (
       this.data?.media?.filter(
         (media: any) =>
-          media.mime.startsWith('image/') || media.mime.startsWith('video/')
+          media.mime.startsWith('image/') || media.mime.startsWith('video/') || media.type == 'audio'
       ) || []
     );
   }
@@ -197,7 +199,14 @@ export class MessageComponent implements AfterViewInit, OnInit {
       }
     });
 
-    this.isVM = this.data.media.find((item: any)=>item.type=="video_message")
+    // this.isVM = this.data.media.find((item: any)=>item.type=="video_message" || item.type == "audio")
+    if (this.data.media.find((item: any)=>item.type=="video_message")){
+      this.type = "kruzhok"
+    } else if (this.data.media.find((item: any)=>item.type=="audio")){
+      this.type = "gs"
+    } else {
+      this.type = "message"
+    }
 
     this.data.emoji?.forEach((item: any) => {
       let emj = item.emoji;
