@@ -430,6 +430,8 @@ export class ChatComponent
         )?.isOnline
       ) {
         this.isOnline = true;
+      } else {
+        this.isOnline = false;
       }
     });
     this.webSocketService.on('friends:friendOnline', (data: any) => {

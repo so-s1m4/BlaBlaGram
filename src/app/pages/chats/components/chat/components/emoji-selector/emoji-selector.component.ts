@@ -24,8 +24,9 @@ export class EmojiSelectorComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   firstLine: any[] = [];
-  // otherEmojis: any[] = [];
+  otherEmojis: any[] = [];
   webSocketService = inject(WebSocketService);
+  showOther = false;
 
   ngOnInit(): void {
     this.webSocketService.send(
@@ -35,16 +36,23 @@ export class EmojiSelectorComponent implements OnInit {
         this.firstLine = data;
       }
     );
-    // this.webSocketService.send(
-    //   'emojis:getList',
-    //   { offset: 8, limit: 1000 },
-    //   (ok: any, err: any, data: any) => {
-    //     this.otherEmojis = data;
-    //   }
-    // );
+    this.webSocketService.send(
+      'emojis:getList',
+      { offset: 8, limit: 1000 },
+      (ok: any, err: any, data: any) => {
+        this.otherEmojis = data;
+      }
+    );
   }
+
+  toggle(event: Event){
+    event.stopPropagation()
+    this.showOther = !this.showOther;
+  }
+
   onSelect(emjId: string) {
     this.select.emit(emjId);
     this.close.emit()
+    this.showOther = false;
   }
 }

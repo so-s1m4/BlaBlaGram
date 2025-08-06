@@ -55,3 +55,9 @@
   font-size: 12px;
   min-width: 60px;
 }
+
+@media (max-width: 800px) {
+  :host {
+    width: 70vw;
+  }
+}
