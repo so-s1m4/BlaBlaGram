@@ -159,8 +159,8 @@
   width: fit-content;
 }
 .userAvatar {
-  height: 80%;
-  width: auto;
+  height: 1.5rem;
+  width: 1.5rem;
   border-radius: 50%;
 
   object-fit: cover;

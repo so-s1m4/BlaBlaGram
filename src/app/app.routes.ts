@@ -4,11 +4,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './guards/auth-guard.module';
 import { LayoutComponent } from '../common-ui/layout/layout.component';
 import { ChatsComponent } from './pages/chats/chats.component';
-// import { ProfileComponent } from './pages/profile/profile.component';
 import { FriendsComponent } from './pages/friends/friends.component';
 import { CreatePostMobileComponent } from './pages/create-post-mobile/create-post-mobile.component';
 import { MobileGuard } from './guards/mobile-guard.module';
 import { RegisterPage } from './pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -40,14 +40,14 @@ export const routes: Routes = [
         path: 'friends',
         component: FriendsComponent,
       },
-      // {
-      //   path: 'profile',
-      //   redirectTo: 'profile/me',
-      // },
-      // {
-      //   path: 'profile/:username',
-      //   component: ProfileComponent,
-      // },
+      {
+        path: 'profile',
+        redirectTo: 'profile/me',
+      },
+      {
+        path: 'profile/:username',
+        component: ProfileComponent,
+      },
       {
         path: 'create-post',
         component: CreatePostMobileComponent,

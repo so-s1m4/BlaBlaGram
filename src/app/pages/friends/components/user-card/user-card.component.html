@@ -1,12 +1,12 @@
 @if (this.type == "user"){
 <img class="avatar" [ngClass]="{
     'online': this.data.isOnline
-  }" [src]="this.data!.img[0] | img" alt="" [routerLink]="['/profile', this.data!.username]" />
+  }" [src]="this.data!.img[0] | img" alt="" [routerLink]="['/profile', this.data!.id]" />
 } @else if (this.type == "inc_request"){
-<img class="avatar" [src]="this.data!.sender_id.img[0] | img" alt="" [routerLink]="['/profile', this.data!.username]" />
+<img class="avatar" [src]="this.data!.sender_id.img[0] | img" alt="" [routerLink]="['/profile', this.data!.id]" />
 } @else if (this.type == "my_request"){
 <img class="avatar" [src]="this.data!.receiver_id.img[0] | img" alt=""
-  [routerLink]="['/profile', this.data!.username]" />
+  [routerLink]="['/profile', this.data!.id]" />
 }
 
 <div class="friend-info">

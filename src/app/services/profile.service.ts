@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { WebSocketService } from './web-socket.service';
 import { API_URL } from '../app.config';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 export type ProfileData = {
   _id: string;
@@ -21,27 +22,38 @@ export class ProfileService {
   authService = inject(AuthService);
   constructor() {}
 
-  public async getProfile(userId: string | null): Promise<ProfileData | null> {
-    return Promise.resolve(null);
+  public getProfile(userId: string | null): any {
+    return this.httpClient.get(API_URL + '/api/users/' + userId, {
+      headers: {
+        Authorization: 'Bearer ' + this.authService.token,
+      },
+    });
+  }
+  editProfile(payload: FormData): Observable<{ data: any }> {
+    // adjust URL to match your backend
+    return this.httpClient.patch<{ data: any }>(API_URL + `/api/users/me`, payload, {
+      headers: {
+        Authorization: "Bearer "+this.authService.token
+      }
+    });
   }
 
-  getUsersStartsWith(data: string, callback?: Function){
-    this.httpClient.get(
-      API_URL + "/api/users",
-      {
-        headers:{
-          Authorization: "Bearer " + this.authService.token
+  getUsersStartsWith(data: string, callback?: Function) {
+    this.httpClient
+      .get(API_URL + '/api/users', {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.token,
         },
-        params:{
-          startsWith: data
-        }
-      }
-    ).subscribe((res: any)=>{
-      const filtered = res.data.filter((item: any)=>{
-        return item.id !== this.authService.me.id
+        params: {
+          startsWith: data,
+        },
       })
-      callback?.(filtered)
-    })
+      .subscribe((res: any) => {
+        const filtered = res.data.filter((item: any) => {
+          return item.id !== this.authService.me.id;
+        });
+        callback?.(filtered);
+      });
   }
 
   openChat(userId: string, callback: (data: any) => void) {
@@ -49,10 +61,10 @@ export class ProfileService {
       'spaces:chats:create',
       { userId },
       (ok: any, err: any, data: any) => {
-        if(ok) {
-          callback(data)
+        if (ok) {
+          callback(data);
         } else {
-          console.error(err)
+          console.error(err);
         }
       }
     );

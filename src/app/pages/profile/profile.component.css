@@ -268,7 +268,7 @@
   grid-template-rows: auto auto 1fr;
   grid-template-areas:
     "avatar name"
-    "avatar ."
+    "avatar password"
     "avatar description"
     "save save";
 
