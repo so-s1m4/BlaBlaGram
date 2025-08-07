@@ -26,8 +26,11 @@
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Photos'">
+    <app-photo-gallery *ngIf="showGallery" [media]="data.img" [selected]="selectedPhoto" (close)="closePhotoGallery()"
+      (delete)="deletePhoto($event)"></app-photo-gallery>
     <div class="content">
-      <img class="photo-item" *ngFor="let image of data.img" [src]="image | img" alt="…" />
+      <img class="photo-item" *ngFor="let image of data.img" [src]="image | img" alt="…"
+        (click)="openGallery(image.path)" />
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Settings'">
@@ -45,8 +48,7 @@
           <div class="input-holder"
             style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
 
-            <label #label for="uploadAvatar" class="upload"
-            style="left: initial; transform: initial;"
+            <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;"
               [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
               <svg icon="plus"></svg></label>
             <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img"
@@ -66,7 +68,8 @@
         <div class="item">
           <div class="input-holder inline">
             <h5>Date of Birth</h5>
-            <input formControlName="birthday" type="date">
+            <!-- formControlName="birthday" -->
+            <input type="date">
           </div>
         </div>
         <div class="item">

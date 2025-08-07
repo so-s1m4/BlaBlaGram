@@ -1,0 +1,165 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100svh;
+
+  z-index: 10000;
+
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.gallery-header {
+  height: 5%;
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+}
+.close-button {
+  position: relative;
+  background: transparent;
+  border: 0;
+
+  left: 1%;
+
+  width: 50px;
+  height: 100%;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    color: var(--primary-color);
+  }
+}
+.gallery-content {
+  height: 85%;
+  min-height: 500px;
+
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.media-viewer {
+  width: 80%;
+  height: 100%;
+
+  * {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+  }
+}
+.actionBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--dark-gray-color);
+
+  svg {
+    width: 30px;
+    height: 30px;
+    color: var(--primary-color);
+  }
+}
+.actionBtn.back {
+  left: 25px;
+}
+.actionBtn.forward {
+  right: 25px;
+}
+.gallery-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0.2rem;
+
+  overflow: auto;
+  height: 20%;
+  width: 100%;
+  max-height: 100px;
+
+  position: relative;
+}
+.media-item-preview {
+  height: 80%;
+  width: fit-content;
+  object-fit: cover !important;
+
+  cursor: pointer;
+
+  video,
+  img {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.media-item-preview:hover {
+  transform: scale(1.2);
+}
+
+.action-buttons-holder {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+
+  height: 100%;
+  width: fit-content;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.actBtn {
+  height: 50%;
+  width: auto;
+  background: 0;
+  border: 0;
+  cursor: pointer;
+
+  svg {
+    width: 3rem;
+    height: 100%;
+
+    color: white;
+  }
+}
+.actBtn:hover {
+  svg {
+    color: var(--primary-color);
+  }
+}
+
+@media (max-width: 800px) {
+  .actionBtn {
+    display: none;
+  }
+
+  .media-viewer {
+    height: 90%;
+    width: 90%;
+  }
+}

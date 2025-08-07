@@ -13,6 +13,7 @@ import {
 import { SvgIconComponent } from '../../utils/svg.component';
 import { MediaPipe } from '../../utils/media.pipe';
 import { GiftComponent } from './components/gift/gift.component';
+import { PhotoGalleryComponent } from './components/photo-gallery/photo-gallery.component';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,7 @@ import { GiftComponent } from './components/gift/gift.component';
     SvgIconComponent,
     MediaPipe,
     GiftComponent,
+    PhotoGalleryComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
@@ -34,6 +36,8 @@ export class ProfileComponent implements OnInit {
 
   selectedNav = 'Gifts';
   navPanel: any[] = [];
+  showGallery = false;
+  selectedPhoto = '';
 
   settingsFormGroup = new FormGroup({
     img: new FormControl<File | null>(null, []),
@@ -42,7 +46,7 @@ export class ProfileComponent implements OnInit {
       Validators.maxLength(64),
     ]),
     bio: new FormControl<string>('', [Validators.maxLength(512)]),
-    birthday: new FormControl<Date | null>(null, []),
+    // birthday: new FormControl<string>(new Date().toISOString(), []),
     phone: new FormControl(null, []),
     email: new FormControl(null, [Validators.email]),
 
@@ -54,6 +58,19 @@ export class ProfileComponent implements OnInit {
   @ViewChild('label') label?: any;
 
   constructor(private route: ActivatedRoute) {}
+
+  closePhotoGallery() {
+    this.showGallery = false;
+  }
+  deletePhoto(path: string) {
+    this.profileService.deletePhoto(path).subscribe((res) => {
+      this.data.img = this.data.img.filter((item: any) => item.path !== path);
+    });
+  }
+  openGallery(path: string) {
+    this.selectedPhoto = path;
+    this.showGallery = true;
+  }
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -67,13 +84,13 @@ export class ProfileComponent implements OnInit {
     const payload = new FormData();
 
     if (values.img) {
-      payload.append('img', values.img, values.img.name);
+      payload.append('photo', values.img);
     }
     payload.append('name', values.name!);
-    payload.append('description', values.bio!);
-    payload.append('birthday', values.birthday?.toISOString() ?? '');
-    payload.append('phone', values.phone!);
-    payload.append('email', values.email!);
+    payload.append('description', values.bio! || 'about me!');
+    // payload.append('birthday', values.birthday!);
+    // payload.append('phone', values.phone! || "");
+    // payload.append('email', values.email!);
     payload.append('password', values.password!);
 
     // 4) send to backend
@@ -116,7 +133,6 @@ export class ProfileComponent implements OnInit {
           .getProfile(this.authService.me.id)
           .subscribe((res: any) => {
             let data = res.data;
-            console.log(data);
             this.data = data;
             this.data.img = this.data.img.reverse();
 
@@ -130,7 +146,7 @@ export class ProfileComponent implements OnInit {
                   },
                   date: new Date('01-01-0001'),
                   value: 777,
-                  text: 'For dead during coding this fucking web-site, which will be never popular',
+                  text: 'Awarded for dying while coding this fucking website that will never be popular',
                 },
                 {
                   url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
@@ -140,7 +156,7 @@ export class ProfileComponent implements OnInit {
                   },
                   date: new Date('09-16-2022'),
                   value: 'unlimited',
-                  text: 'For the unlimited love that he has given to her',
+                  text: 'For the unlimited love that he has given her',
                 },
               ];
             }
@@ -148,7 +164,9 @@ export class ProfileComponent implements OnInit {
             this.settingsFormGroup.patchValue({
               name: data.name,
               bio: data.description,
-              birthday: new Date(data.birthday),
+              // birthday: data.birthday
+              //   ? new Date(data.birthday).toISOString()
+              //   : new Date().toISOString(),
               phone: data.phone,
               email: data.email,
             });
@@ -156,7 +174,7 @@ export class ProfileComponent implements OnInit {
       } else {
         this.isMyProfile = false;
         this.profileService.getProfile(username).subscribe((res: any) => {
-          let data = res.data
+          let data = res.data;
           this.data = data;
           if (data.username == 's1m4') {
             this.data.gifts = [
@@ -168,7 +186,7 @@ export class ProfileComponent implements OnInit {
                 },
                 date: new Date('01-01-0001'),
                 value: 777,
-                text: 'For dead during coding this fucking web-site, which will be never popular',
+                text: 'Awarded for dying while coding this fucking website that will never be popular',
               },
               {
                 url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
@@ -178,7 +196,7 @@ export class ProfileComponent implements OnInit {
                 },
                 date: new Date('09-16-2022'),
                 value: 'unlimited',
-                text: 'For the unlimited love that he has given to her',
+                text: 'For the unlimited love that he has given her',
               },
             ];
           }

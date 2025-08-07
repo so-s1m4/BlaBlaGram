@@ -37,6 +37,16 @@ export class ProfileService {
       }
     });
   }
+  deletePhoto(path: string){
+    return this.httpClient.delete<{ data: any }>(
+      API_URL + `/api/users/me/photos/`+path,
+      {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.token,
+        },
+      }
+    );
+  }
 
   getUsersStartsWith(data: string, callback?: Function) {
     this.httpClient

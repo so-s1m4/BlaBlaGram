@@ -207,6 +207,10 @@ progress[value]::-webkit-progress-value {
   border: 1px solid var(--primary-color);
   border-radius: 10px;
 }
+.content form .btn:hover {
+  background: var(--primary-color);
+  color: var(--light-color);
+}
 .content form .item .input-holder input {
   height: 100%;
   background: transparent;
