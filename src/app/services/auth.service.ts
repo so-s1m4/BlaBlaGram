@@ -24,6 +24,7 @@ export class AuthService {
     this.getMeRequest().then((user) => {
       if (user) {
         this.me = user.data;
+        this.me.img.reverse();
       }
     });
 
