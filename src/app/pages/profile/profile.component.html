@@ -6,7 +6,7 @@
   <div class="header">
     <div class="background"></div>
     <div class="avatar">
-      <img [src]="this.data.img[0] | img" alt="">
+      <img [src]="this.data.img.reverse()[0] | img" alt="">
     </div>
     <div class="username">{{ this.data.username }}@if (this.data.username == "s1m4") {<p>CEO</p>}</div>
     <div class="description">{{ this.data.description }}</div>
@@ -29,8 +29,7 @@
     <app-photo-gallery *ngIf="showGallery" [media]="data.img" [selected]="selectedPhoto" (close)="closePhotoGallery()"
       (delete)="deletePhoto($event)"></app-photo-gallery>
     <div class="content">
-      <img class="photo-item" *ngFor="let image of data.img" [src]="image | img" alt="…"
-        (click)="openGallery(image.path)" />
+      <img class="photo-item" *ngFor="let image of data.img.reverse()" [src]="image | img" alt="…" (click)="openGallery(image.path)"/>
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Settings'">

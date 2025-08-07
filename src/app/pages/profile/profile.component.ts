@@ -22,7 +22,6 @@ import { PhotoGalleryComponent } from './components/photo-gallery/photo-gallery.
     ImgPipe,
     ReactiveFormsModule,
     SvgIconComponent,
-    MediaPipe,
     GiftComponent,
     PhotoGalleryComponent,
   ],
@@ -67,7 +66,7 @@ export class ProfileComponent implements OnInit {
       this.data.img = this.data.img.filter((item: any) => item.path !== path);
     });
   }
-  openGallery(path: string) {
+  openGallery(path: any) {
     this.selectedPhoto = path;
     this.showGallery = true;
   }
@@ -130,9 +129,7 @@ export class ProfileComponent implements OnInit {
       if (username == 'me') {
         this.isMyProfile = true;
         let data = this.authService.me;
-        console.log(data)
         this.data = data;
-        this.data.img = this.data.img.reverse();
         if (data.username == 's1m4') {
           this.data.gifts = [
             {
