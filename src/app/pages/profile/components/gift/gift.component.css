@@ -90,3 +90,9 @@
     transform: rotate(45deg);
   }
 }
+
+@media (max-width: 800px) {
+  .modal {
+    width: 100dvw;
+  }
+}

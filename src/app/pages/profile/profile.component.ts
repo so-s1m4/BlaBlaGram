@@ -140,7 +140,7 @@ export class ProfileComponent implements OnInit {
                   },
                   date: new Date('09-16-2022'),
                   value: 'unlimited',
-                  text: 'For the unlimited love that he has gave to her',
+                  text: 'For the unlimited love that he has given to her',
                 },
               ];
             }
@@ -178,7 +178,7 @@ export class ProfileComponent implements OnInit {
                 },
                 date: new Date('09-16-2022'),
                 value: 'unlimited',
-                text: 'For the unlimited love that he has gave to her',
+                text: 'For the unlimited love that he has given to her',
               },
             ];
           }
