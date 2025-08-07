@@ -33,7 +33,7 @@
   <ng-container *ngIf="selectedNav === 'Settings'">
     <div class="content">
 
-      <form [formGroup]="settingsFormGroup">
+      <form [formGroup]="settingsFormGroup" (ngSubmit)="onSubmit($event)">
         <div class="item">
           <h2>Used Memory</h2>
           <label for="memoryUsed">700MB / 1000MB</label>
@@ -80,7 +80,7 @@
             <h5>Password</h5><input formControlName="password" type="password" placeholder="********">
           </div>
         </div>
-        <button class="btn">Save</button>
+        <button class="btn" type="submit">Save</button>
       </form>
     </div>
   </ng-container>

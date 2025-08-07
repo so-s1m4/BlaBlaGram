@@ -43,8 +43,8 @@ export class ProfileComponent implements OnInit {
     ]),
     bio: new FormControl<string>('', [Validators.maxLength(512)]),
     birthday: new FormControl<Date | null>(null, []),
-    phone: new FormControl<Date | null>(null, []),
-    email: new FormControl<Date | null>(null, [Validators.email]),
+    phone: new FormControl(null, []),
+    email: new FormControl(null, [Validators.email]),
 
     password: new FormControl('', [Validators.minLength(8)]),
   });
@@ -55,6 +55,37 @@ export class ProfileComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {}
 
+  onSubmit(event: Event) {
+    event.preventDefault();
+
+    if (this.settingsFormGroup.invalid) {
+      this.settingsFormGroup.markAllAsTouched();
+      return;
+    }
+
+    const values = this.settingsFormGroup.value;
+    const payload = new FormData();
+
+    if (values.img) {
+      payload.append('img', values.img, values.img.name);
+    }
+    payload.append('name', values.name!);
+    payload.append('description', values.bio!);
+    payload.append('birthday', values.birthday?.toISOString() ?? '');
+    payload.append('phone', values.phone!);
+    payload.append('email', values.email!);
+    payload.append('password', values.password!);
+
+    // 4) send to backend
+    this.profileService.editProfile(payload).subscribe({
+      next: (res) => {
+        console.log('Settings saved', res);
+      },
+      error: (err) => {
+        console.error('Save failed', err);
+      },
+    });
+  }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -85,7 +116,7 @@ export class ProfileComponent implements OnInit {
           .getProfile(this.authService.me.id)
           .subscribe((res: any) => {
             let data = res.data;
-            console.log(data)
+            console.log(data);
             this.data = data;
             this.data.img = this.data.img.reverse();
 
