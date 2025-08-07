@@ -129,48 +129,43 @@ export class ProfileComponent implements OnInit {
       let username = params.get('username')!;
       if (username == 'me') {
         this.isMyProfile = true;
-        this.profileService
-          .getProfile(this.authService.me.id)
-          .subscribe((res: any) => {
-            let data = res.data;
-            this.data = data;
-            this.data.img = this.data.img.reverse();
-
-            if (data.username == 's1m4') {
-              this.data.gifts = [
-                {
-                  url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/15/21d26574dd8bc17df5035e5aa63a04.webp',
-                  from: {
-                    username: 'GOD',
-                    id: '777',
-                  },
-                  date: new Date('01-01-0001'),
-                  value: 777,
-                  text: 'Awarded for dying while coding this fucking website that will never be popular',
-                },
-                {
-                  url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
-                  from: {
-                    username: 'His girlfriend',
-                    id: '------',
-                  },
-                  date: new Date('09-16-2022'),
-                  value: 'unlimited',
-                  text: 'For the unlimited love that he has given her',
-                },
-              ];
-            }
-
-            this.settingsFormGroup.patchValue({
-              name: data.name,
-              bio: data.description,
-              // birthday: data.birthday
-              //   ? new Date(data.birthday).toISOString()
-              //   : new Date().toISOString(),
-              phone: data.phone,
-              email: data.email,
-            });
-          });
+        let data = this.authService.me;
+        console.log(data)
+        this.data = data;
+        this.data.img = this.data.img.reverse();
+        if (data.username == 's1m4') {
+          this.data.gifts = [
+            {
+              url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/15/21d26574dd8bc17df5035e5aa63a04.webp',
+              from: {
+                username: 'GOD',
+                id: '777',
+              },
+              date: new Date('01-01-0001'),
+              value: 777,
+              text: 'Awarded for dying while coding this fucking website that will never be popular',
+            },
+            {
+              url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
+              from: {
+                username: 'His girlfriend',
+                id: '------',
+              },
+              date: new Date('09-16-2022'),
+              value: 'unlimited',
+              text: 'For the unlimited love that he has given her',
+            },
+          ];
+        }
+        this.settingsFormGroup.patchValue({
+          name: data.name,
+          bio: data.description,
+          // birthday: data.birthday
+          //   ? new Date(data.birthday).toISOString()
+          //   : new Date().toISOString(),
+          phone: data.phone,
+          email: data.email,
+        });
       } else {
         this.isMyProfile = false;
         this.profileService.getProfile(username).subscribe((res: any) => {

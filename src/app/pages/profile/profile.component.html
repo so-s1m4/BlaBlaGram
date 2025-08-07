@@ -39,8 +39,8 @@
       <form [formGroup]="settingsFormGroup" (ngSubmit)="onSubmit($event)">
         <div class="item">
           <h2>Used Memory</h2>
-          <label for="memoryUsed">700MB / 1000MB</label>
-          <progress id="memoryUsed" value="70" max="100" class="memory-line">70</progress>
+          <label for="memoryUsed">{{this.data.storage/1000000 | number:"1.0-0"}}MB / 500MB</label>
+          <progress id="memoryUsed" [value]="this.data.storage" max="500000000" class="memory-line"></progress>
         </div>
 
         <div class="item">
