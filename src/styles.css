@@ -2,13 +2,14 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 :root {
-  --dark-color: #0a0a0a;
-  --light-color: white;
+  --dark-color: #0f0f0f;
+  --light-color: #f0f0f0;
   --primary-color: rgb(156, 206, 43);
-  --secondary-color: #111111;
-  --dark-gray-color: #222222;
-  --gray-color: #666666;
-  --lightgray-color: #999999;
+  --secondary-color: #1a1a1a;
+  --darker-gray-color: #202020;
+  --dark-gray-color: #2b2b2b;
+  --gray-color: #555555;
+  --lightgray-color: #888888;
 }
 *,
 *::before,

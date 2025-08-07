@@ -43,7 +43,7 @@ app-search {
   overflow-x: visible;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-rows: repeat(auto-fill, 300px);
   gap: 10px;
   padding-right: 15 px;
 }

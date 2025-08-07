@@ -1,76 +1,59 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
-import { PostComponent } from '../../../common-ui/post/post.component';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ProfileService } from '../../services/profile.service';
-import { PostData } from '../../../common-ui/post/post.component';
-import { PostsService } from '../../services/posts.service';
+import { ImgPipe } from '../../utils/img.pipe';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ImgPipe } from '../../utils/img.pipe';
-import { BgPipe } from '../../utils/bg.pipe';
 import { SvgIconComponent } from '../../utils/svg.component';
-
-import { profileBackgrounds, profileBorders } from '../../../main';
-
-import { BorderPipe } from '../../utils/border.pipe';
-import { AuthService } from '../../services/auth.service';
-import { API_URL } from '../../app.config';
+import { MediaPipe } from '../../utils/media.pipe';
+import { GiftComponent } from './components/gift/gift.component';
 
 @Component({
   selector: 'app-profile',
   imports: [
-    PostComponent,
-    ReactiveFormsModule,
     CommonModule,
     ImgPipe,
+    ReactiveFormsModule,
     SvgIconComponent,
-    BgPipe,
-    BorderPipe,
-    RouterLink,
+    MediaPipe,
+    GiftComponent,
   ],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit {
-  backgrounds: string[] = profileBackgrounds;
-  borders: string[] = profileBorders;
+  data: any;
+  isMyProfile: boolean = false;
+  sub: any;
 
-  createPostForm = new FormGroup({
-    file: new FormControl<File | null | undefined>(null, [Validators.required]),
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [Validators.required]),
-  });
+  selectedNav = 'Gifts';
+  navPanel: any[] = [];
 
-  editProfileForm = new FormGroup({
-    img: new FormControl<File | string | undefined>(undefined, []),
-    name: new FormControl('Bla', [
+  settingsFormGroup = new FormGroup({
+    img: new FormControl<File | null>(null, []),
+    name: new FormControl<string>('', [
       Validators.minLength(3),
-      Validators.maxLength(64)
+      Validators.maxLength(64),
     ]),
-    description: new FormControl('', [Validators.maxLength(512)]),
-    password: new FormControl('', [Validators.minLength(3), Validators.maxLength(64)]),
+    bio: new FormControl<string>('', [Validators.maxLength(512)]),
+    birthday: new FormControl<Date | null>(null, []),
+    phone: new FormControl<Date | null>(null, []),
+    email: new FormControl<Date | null>(null, [Validators.email]),
+
+    password: new FormControl('', [Validators.minLength(8)]),
   });
-  window = window;
 
-  constructor(private router: ActivatedRoute) {}
-
-  private isMyProfile: boolean = false;
-  private isEditing$: boolean = false;
-
-  route: Router = inject(Router);
-  profileService = inject(ProfileService);
   authService = inject(AuthService);
-  postsService = inject(PostsService);
+  profileService = inject(ProfileService);
+  @ViewChild('label') label?: any;
 
-  posts: PostData[] | undefined;
-
-  data: any | null | undefined;
+  constructor(private route: ActivatedRoute) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -79,135 +62,119 @@ export class ProfileComponent implements OnInit {
 
     if (!file) {
       console.error('No file selected');
-      input.style.backgroundImage = 'none';
+      this.label.nativeElement.style.backgroundImage = 'none';
       return;
     }
 
     const blobUrl = URL.createObjectURL(file);
 
     // Set it as the background
-    input.style.backgroundImage = `url(${blobUrl})`;
-    input.style.backgroundSize = 'cover';
-    input.style.backgroundPosition = 'center';
+    this.label.nativeElement.style.backgroundImage = `url(${blobUrl})`;
+    this.label.nativeElement.style.backgroundSize = 'cover';
+    this.label.nativeElement.style.backgroundPosition = 'center';
   }
-
-  // async createPost(event: Event): Promise<void> {
-  //   event.preventDefault();
-
-  //   if (this.createPostForm.invalid) {
-  //     return;
-  //   }
-  //   if (this.createPostForm.valid) {
-  //     const post = await this.postsService.createPost(
-  //       this.createPostForm.value
-  //     );
-  //     this.posts?.unshift(post);
-  //     this.createPostForm.reset();
-  //   }
-  // }
-
-  editProfile(event: Event): void {
-    event.preventDefault();
-    this.isEditing$ = !this.isEditing$;
+  changeTo(page: string) {
+    this.selectedNav = page;
   }
-  async onEditProfile(event: Event): Promise<void> {
-    event.preventDefault();
-    console.log('validate');
-
-    // 1. validate
-    if (this.editProfileForm.invalid) {
-      this.editProfileForm.markAllAsTouched();
-      return;
-    }
-
-    console.log('validated');
-
-    // 2. build payload (FormData if you’re uploading a file)
-    const { password, name, description } = this.editProfileForm.value;
-    const body = new FormData();
-    body.append('password', password!);
-    body.append('name', name!);
-    body.append('description', description!);
-
-    // 3. send & subscribe
-    this.profileService.editProfile(body).subscribe({
-      next: (resp) => {
-        // update your local data so the template reflects the changes
-        this.data = {
-          ...this.data,
-          img: resp.data.img,
-          name: resp.data.name,
-          description: resp.data.description,
-        };
-
-        // patch the form so it stays in sync if you re-open
-        this.editProfileForm.patchValue({
-          name: resp.data.name,
-          description: resp.data.description,
-        });
-
-        // finally close the editor
-        this.isEditing$ = false;
-      },
-      error: (err) => {
-        console.error('Failed to save profile', err);
-        // maybe show a toast here
-      },
-    });
-  }
-  async onSelectBg(event: Event, bg: string): Promise<void> {
-    event.preventDefault();
-  }
-  async onSelectBorder(event: Event, bg: string): Promise<void> {
-    event.preventDefault();
-  }
-  ngOnInit() {
-    // Subscribe to the paramMap and do everything inside its callback
-    this.router.paramMap.subscribe((params) => {
-      let userId = params.get('username');
-      if (!userId) {
-        // no username in URL → bail out
-        this.route.navigate(['/']);
-        return;
-      }
-
-      // decide if it’s “my” profile
-      if (userId === 'me') {
+  ngOnInit(): void {
+    this.sub = this.route.paramMap.subscribe((params: ParamMap) => {
+      let username = params.get('username')!;
+      if (username == 'me') {
         this.isMyProfile = true;
-        userId = this.authService.me.id;
+        this.profileService
+          .getProfile(this.authService.me.id)
+          .subscribe((res: any) => {
+            let data = res.data;
+            console.log(data)
+            this.data = data;
+            this.data.img = this.data.img.reverse();
+
+            if (data.username == 's1m4') {
+              this.data.gifts = [
+                {
+                  url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/15/21d26574dd8bc17df5035e5aa63a04.webp',
+                  from: {
+                    username: 'GOD',
+                    id: '777',
+                  },
+                  date: new Date('01-01-0001'),
+                  value: 777,
+                  text: 'For dead during coding this fucking web-site, which will be never popular',
+                },
+                {
+                  url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
+                  from: {
+                    username: 'His girlfriend',
+                    id: '------',
+                  },
+                  date: new Date('09-16-2022'),
+                  value: 'unlimited',
+                  text: 'For the unlimited love that he has gave to her',
+                },
+              ];
+            }
+
+            this.settingsFormGroup.patchValue({
+              name: data.name,
+              bio: data.description,
+              birthday: new Date(data.birthday),
+              phone: data.phone,
+              email: data.email,
+            });
+          });
       } else {
         this.isMyProfile = false;
-      }
-
-      // now that we have a real userId, fetch the profile
-      this.profileService.getProfile(userId).subscribe((resp: any) => {
-        // patch the form first
-        this.editProfileForm.patchValue({
-          name: resp.data.name,
-          description: resp.data.description || '',
+        this.profileService.getProfile(username).subscribe((data: any) => {
+          this.data = data.data;
+          if (data.username == 's1m4') {
+            this.data.gifts = [
+              {
+                url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/15/21d26574dd8bc17df5035e5aa63a04.webp',
+                from: {
+                  username: 'GOD',
+                  id: '777',
+                },
+                date: '01.01.0000',
+                value: 777,
+                text: 'For dead during coding this fucking web-site, which will be never popular',
+              },
+              {
+                url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
+                from: {
+                  username: 'His girlfriend',
+                  id: '------',
+                },
+                date: new Date('16-09-2022'),
+                value: 'unlimited',
+                text: 'For the unlimited love that he has gave to her',
+              },
+            ];
+          }
+          this.data.img = this.data.img.reverse();
         });
-
-        // then store the data for the template
-        this.data = {
-          ...resp.data,
-          border: 'border1.png',
-          bg: 'bg1.avif',
-        };
-
-        console.log('loaded profile', this.data);
-      });
+      }
+      this.navPanel = [
+        {
+          label: 'General',
+          guard: true,
+        },
+        {
+          label: 'Gifts',
+          guard: true,
+        },
+        {
+          label: 'Photos',
+          guard: true,
+        },
+        {
+          label: 'Posts',
+          guard: true,
+        },
+        {
+          label: 'Settings',
+          guard: this.isMyProfile,
+        },
+      ];
     });
-  }
-
-  // profile.component.ts (inside ProfileComponent)
-  trackByPost(index: number, post: PostData): number {
-    return post.id;
-  }
-
-  get isItMyProfile(): boolean {
-    return this.isMyProfile;
-  }
-  get isEditing(): boolean {
-    return this.isEditing$;
   }
 }

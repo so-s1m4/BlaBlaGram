@@ -1,7 +1,7 @@
 #titlebar {
   height: 30px;
   background: rgba(0, 0, 0, 0.3);
-  color: white;
+  color: var(--light-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,10 +23,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   background: none;
   border: none;
-  color: white;
+  color: var(--light-color);
   width: 40px;
   height: 100%;
   font-size: 14px;

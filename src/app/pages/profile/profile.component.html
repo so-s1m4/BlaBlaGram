@@ -1,67 +1,88 @@
-<!-- profile.component.html -->
-<ng-container *ngIf="data; else loading">
-  <div class="wrapper">
-    <div class="profile-container">
-      <h1 class="title">Profile</h1>
+@if (!this.data) {
+<p>Loading...</p>
+} @else {
 
-      <div class="profile-header">
-        <div class="profile-background" [style.backgroundImage]="'url(' + (data.bg | bg) + ')'"></div>
-
-        <div class="profile-info">
-          <div class="profile-avatar">
-            <img [src]="data.img[0] | img" alt="avatar" class="profile-avatar-img" />
-            <img [src]="data.border | border" alt="border" class="profile-border" />
-          </div>
-
-          <div class="prof-info">
-            <div class="nickname">{{ data.username }}</div>
-            <div class="name">{{ data.name }}</div>
-            <div class="description">{{ data.description }}</div>
-          </div>
-
-          <button *ngIf="isItMyProfile" class="btn editBtn" (click)="editProfile($event)">
-            <svg icon="pen"></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Posts list -->
-      <ng-container *ngFor="let post of posts; trackBy: trackByPost">
-        <app-post [data]="post"></app-post>
-      </ng-container>
+<div class="wrapper">
+  <div class="header">
+    <div class="background"></div>
+    <div class="avatar">
+      <img [src]="this.data.img[0] | img" alt="">
     </div>
+    <div class="username">{{ this.data.username }}@if (this.data.username == "s1m4") {<p>CEO</p>}</div>
+    <div class="description">{{ this.data.description }}</div>
   </div>
-</ng-container>
+  <div class="nav">
+    @for (navItem of this.navPanel; track navItem.label){
+    <div *ngIf="navItem.guard" class="navItem" [ngClass]="{'selected': navItem.label == this.selectedNav}"
+      (click)="changeTo(navItem.label)">
+      {{ navItem.label }} <div class="line"></div>
+    </div>
+    }
+  </div>
 
-<ng-template #loading>
-  <div class="loading">Loading...</div>
-</ng-template>
+  <ng-container *ngIf="selectedNav === 'Gifts'">
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+      <app-gift *ngFor="let gift of this.data.gifts" [data]="gift"></app-gift>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="selectedNav === 'Photos'">
+    <div class="content">
+      <img class="photo-item" *ngFor="let image of data.img" [src]="image | img" alt="…" />
+    </div>
+  </ng-container>
+  <ng-container *ngIf="selectedNav === 'Settings'">
+    <div class="content">
 
-<!-- Edit-profile overlay -->
-<div class="edit-profile-wrapper" *ngIf="isItMyProfile && isEditing">
-  <div class="edit-profile">
-    <button class="btn close" (click)="editProfile($event)" style="position: absolute; top: 10px; right: 10px">
-      x
-    </button>
+      <form [formGroup]="settingsFormGroup">
+        <div class="item">
+          <h2>Used Memory</h2>
+          <label for="memoryUsed">700MB / 1000MB</label>
+          <progress id="memoryUsed" value="70" max="100" class="memory-line">70</progress>
+        </div>
 
-    <div class="edit" style="grid-area: main">
-      <h1>Edit Profile</h1>
-      <form class="edit-profile-form" [formGroup]="editProfileForm" (ngSubmit)="onEditProfile($event)">
-        <!-- file picker stays the same -->
-        <input type="file" class="upload avatar" accept="image/*" formControlName="img"
-          (change)="onFileSelected($event)" [ngClass]="{ selected: editProfileForm.get('img')?.value }" />
+        <div class="item">
+          <h2>Edit Profile</h2>
+          <div class="input-holder"
+            style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
 
-        <!-- NAME field: NO ngModel, NO name="" -->
-        <input type="text" placeholder="Name" formControlName="name" style="grid-area: name" />
-        <input type="password" placeholder="Password" formControlName="password" style="grid-area: password" />
+            <label #label for="uploadAvatar" class="upload"
+            style="left: initial; transform: initial;"
+              [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
+              <svg icon="plus"></svg></label>
+            <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img"
+              (change)="onFileSelected($event)" />
 
-        <!-- DESCRIPTION field: NO ngModel, NO name="" -->
-        <textarea placeholder="Description" formControlName="description" style="grid-area: description"></textarea>
-
-        <button class="btn btn-primary" type="submit" style="grid-area: save">
-          Save
-        </button>
+            <input formControlName="name" style="font-size: 1.5rem;" placeholder="First and last name">
+          </div>
+        </div>
+        <div class="item">
+          <p>BIO</p>
+          <div class="input-holder">
+            <input formControlName="bio">
+          </div>
+          <p>Any details such as age, occupation or city</p>
+          <p>Example: 23 y.o. designer from Odessa</p>
+        </div>
+        <div class="item">
+          <div class="input-holder inline">
+            <h5>Date of Birth</h5>
+            <input formControlName="birthday" type="date">
+          </div>
+        </div>
+        <div class="item">
+          <div class="input-holder inline">
+            <h5>Phone</h5><input formControlName="phone" type="tel" placeholder="+431234567890">
+          </div>
+          <div class="input-holder inline">
+            <h5>Email</h5><input formControlName="email" type="email" placeholder="email@example.com">
+          </div>
+          <div class="input-holder inline">
+            <h5>Password</h5><input formControlName="password" type="password" placeholder="********">
+          </div>
+        </div>
+        <button class="btn">Save</button>
       </form>
     </div>
-  </div>
+  </ng-container>
 </div>
+}

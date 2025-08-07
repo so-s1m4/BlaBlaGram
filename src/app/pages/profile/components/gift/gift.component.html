@@ -1,0 +1,21 @@
+<img [src]="this.data.url" alt="" (click)="open()">
+<div class="modal-wrapper" [ngClass]="{
+  showed: this.showed
+}" (click)="close()">
+  <div class="modal" (click)="stopPropagation($event)">
+    <div class="btn close" (click)="close()">
+      <svg icon="plus"></svg>
+    </div>
+    <img [src]="this.data.url" alt="">
+    <h3>Gift</h3>
+    <div class="info">
+      <div class="grid-item">From</div>
+      <div class="grid-item">{{ this.data.from.username }}</div>
+      <div class="grid-item">Date</div>
+      <div class="grid-item">{{ this.data.date | date }}</div>
+      <div class="grid-item">Value</div>
+      <div class="grid-item">{{ this.data.value }}</div>
+    </div>
+    <button class="btn done" (click)="close()">Done</button>
+  </div>
+</div>

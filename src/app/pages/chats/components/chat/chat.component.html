@@ -9,7 +9,7 @@
   </button>
   <img [ngClass]="{
     'online': this.isOnline
-  }" [src]="chatData.chat.img[0] | img" class="avatar" alt="" />
+  }" [src]="chatData.chat.img[chatData.chat.img.length-1] | img" class="avatar" alt="" />
   <div class="header-info">
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
