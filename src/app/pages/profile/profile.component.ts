@@ -155,8 +155,9 @@ export class ProfileComponent implements OnInit {
           });
       } else {
         this.isMyProfile = false;
-        this.profileService.getProfile(username).subscribe((data: any) => {
-          this.data = data.data;
+        this.profileService.getProfile(username).subscribe((res: any) => {
+          let data = res.data
+          this.data = data;
           if (data.username == 's1m4') {
             this.data.gifts = [
               {
@@ -165,7 +166,7 @@ export class ProfileComponent implements OnInit {
                   username: 'GOD',
                   id: '777',
                 },
-                date: '01.01.0000',
+                date: new Date('01-01-0001'),
                 value: 777,
                 text: 'For dead during coding this fucking web-site, which will be never popular',
               },
@@ -175,7 +176,7 @@ export class ProfileComponent implements OnInit {
                   username: 'His girlfriend',
                   id: '------',
                 },
-                date: new Date('16-09-2022'),
+                date: new Date('09-16-2022'),
                 value: 'unlimited',
                 text: 'For the unlimited love that he has gave to her',
               },
