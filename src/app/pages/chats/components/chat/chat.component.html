@@ -20,9 +20,14 @@
     <button class="btn" (click)="toggleSelectMode()">
       <svg icon="select"></svg>
     </button>
-    <button class="btn" (click)="openChatSettings()">
-      <svg icon="hex"></svg>
+    <button class="btn" (click)="toggleChatsSettigns()">
+      <svg icon="threedots"></svg>
     </button>
+  </div>
+  <div class="chatsSettings" *ngIf="this.isChatsSettings">
+    <div class="setting-item delete">
+      <svg icon="trashcan"> </svg>  Delete Chat
+    </div>
   </div>
 </div>
 

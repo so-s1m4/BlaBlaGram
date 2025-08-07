@@ -31,7 +31,7 @@
   position: absolute;
   width: fit-content;
   height: 100%;
-  right: 5%;
+  right: 2%;
   top: 50%;
   transform: translateY(-50%);
 
@@ -57,7 +57,48 @@
     height: 100%;
   }
 }
+.chatsSettings {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
 
+  padding: .5rem 0;
+
+  position: absolute;
+  right: 2%;
+  top: 100%;
+  transform: translateY(20%);
+
+  background: var(--dark-gray-color);
+
+  border-radius: 8px;
+
+  z-index: 99;
+}
+.setting-item {
+  display: flex;
+  align-items: center;
+
+  gap: .5rem;
+  padding: 0 1rem;
+
+  height: 2rem;
+  width: fit-content;
+  cursor: pointer;
+
+  color: var(--light-color);
+
+  svg {
+    height: 80%;
+    aspect-ratio: 1 / 1;
+  }
+}
+.setting-item.delete:hover {
+  color: rgb(255, 65, 65);
+}
+.setting-item:hover {
+  background: var(--gray-color);
+}
 .avatar {
   width: 50px;
   height: 50px;

@@ -112,7 +112,6 @@
 
   display: flex;
   align-items: flex-start;
-  padding: 0 1rem;
   flex-wrap: wrap;
 
   overflow: auto;

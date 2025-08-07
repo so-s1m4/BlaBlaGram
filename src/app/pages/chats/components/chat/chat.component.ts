@@ -80,6 +80,7 @@ export class ChatComponent
   isSelectMode = false;
   isOnline = false;
   isRecordVM = false;
+  isChatsSettings = false;
 
   private chatData$: any;
   @Input() chatId: string | undefined = '';
@@ -92,7 +93,9 @@ export class ChatComponent
   toggleSelectMode(): void {
     this.isSelectMode = !this.isSelectMode; // Toggle select mode
   }
-  openChatSettings(): void {}
+  toggleChatsSettigns(): void {
+    this.isChatsSettings = !this.isChatsSettings;
+  }
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
     if (messagesHolder) {
@@ -118,6 +121,7 @@ export class ChatComponent
   closeContextMenu() {
     this.contextMenuStyle.display = 'none';
     this.emojiSelectorStyle.display = 'none';
+    this.isChatsSettings = false;
   }
   openContextMenu(data: {
     currentTarget: any;
@@ -413,7 +417,7 @@ export class ChatComponent
   // File
   goBack(): void {
     this.close.emit();
-  } 
+  }
   // Chat data
   setChatData(chatData: any): void {
     this.me = this.authService.me;
