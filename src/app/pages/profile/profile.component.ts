@@ -12,8 +12,8 @@ import {
 } from '@angular/forms';
 import { SvgIconComponent } from '../../utils/svg.component';
 import { MediaPipe } from '../../utils/media.pipe';
-import { GiftComponent } from './components/gift/gift.component';
-import { PhotoGalleryComponent } from './components/photo-gallery/photo-gallery.component';
+import { GiftComponent } from './ui/gift/gift.component';
+import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.component';
 
 @Component({
   selector: 'app-profile',

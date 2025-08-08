@@ -21,9 +21,10 @@
     "paths": {
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
-      "@features/*": ["app/features/*"],
+      "@features/*": ["app/pages/*"],
       "@services/*": ["app/services/*"],
-      "@utils/*": ["app/utils/*"]
+      "@utils/*": ["app/shared/utils/*"],
+      "@commonUI/*": ["app/shared/common-ui/*"]
     }
   },
   "angularCompilerOptions": {

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SvgIconComponent } from '../../app/utils/svg.component';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-search',

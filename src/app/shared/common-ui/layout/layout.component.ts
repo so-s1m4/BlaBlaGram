@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { SvgIconComponent } from '../../app/utils/svg.component';
-import { NotificationsComponent } from '../../app/pages/notifications/notifications.component';
+import { SvgIconComponent } from '@utils/svg.component';
+import { NotificationsComponent } from '@features/notifications/notifications.component';
 import { CommonModule } from '@angular/common';
-import { WebSocketService } from '../../app/services/web-socket.service';
-import { ChatsService } from '../../app/services/chats.service';
+import { WebSocketService } from '@services/web-socket.service';
+import { ChatsService } from '@services/chats.service';
 import { PopupComponent } from '../popup/popup.component';
-import { AuthService } from '../../app/services/auth.service';
-import { FriendsService } from '../../app/services/friends.service';
+import { AuthService } from '@services/auth.service';
+import { FriendsService } from '@services/friends.service';
 
 @Component({
   selector: 'app-layout',

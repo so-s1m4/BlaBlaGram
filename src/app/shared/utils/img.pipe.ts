@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { API_URL } from '../app.config';
+import { API_URL } from 'app/app.config';
 
 @Pipe({
   name: 'img'

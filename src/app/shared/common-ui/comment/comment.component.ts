@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SvgIconComponent } from '../../app/utils/svg.component';
+import { SvgIconComponent } from '@utils/svg.component';
 import { CommonModule } from '@angular/common';
 
 export type CommentData = {
