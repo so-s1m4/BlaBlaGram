@@ -1,13 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPage } from './pages/login/login.component';
-import { HomeComponent } from './pages/home/home.component';
+import { LoginPage } from './features/login/login.component';
+import { HomeComponent } from './features/home/home.component';
 import { AuthGuard } from './guards/auth-guard.module';
-import { LayoutComponent } from '@commonUI/layout/layout.component';
-import { ChatsComponent } from './pages/chats/chats.component';
-import { FriendsComponent } from './pages/friends/friends.component';
+import { LayoutComponent } from '@features/layout/layout.component';
+import { ChatsComponent } from './features/chats/chats.component';
+import { FriendsComponent } from './features/friends/friends.component';
 import { MobileGuard } from './guards/mobile-guard.module';
-import { RegisterPage } from './pages/register/register.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { RegisterPage } from './features/register/register.component';
+import { ProfileComponent } from './features/profile/profile.component';
 
 export const routes: Routes = [
   {

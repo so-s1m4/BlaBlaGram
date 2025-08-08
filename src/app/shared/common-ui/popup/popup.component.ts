@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { API_URL } from '../../app/app.config';
+import { API_URL } from 'app/app.config';
 
 @Component({
   selector: 'app-popup',

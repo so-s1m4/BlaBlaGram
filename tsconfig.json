@@ -21,8 +21,8 @@
     "paths": {
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
-      "@features/*": ["app/pages/*"],
-      "@services/*": ["app/services/*"],
+      "@features/*": ["app/features/*"],
+      "@services/*": ["app/core/services/*"],
       "@utils/*": ["app/shared/utils/*"],
       "@commonUI/*": ["app/shared/common-ui/*"]
     }
