@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ChatPreviewComponent } from './components/chat-preview/chat-preview.component';
+import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from '../../services/chats.service';
-import { ChatComponent } from './components/chat/chat.component';
+import { ChatComponent } from './ui/chat/chat.component';
 import { WebSocketService } from '../../services/web-socket.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';

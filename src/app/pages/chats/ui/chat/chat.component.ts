@@ -11,22 +11,22 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChatsService } from '../../../../services/chats.service';
+import { ChatsService } from '@services/chats.service';
 import { CommonModule } from '@angular/common';
-import { SvgIconComponent } from '../../../../utils/svg.component';
-import { API_URL } from '../../../../app.config';
-import { AuthService } from '../../../../services/auth.service';
-import { WebSocketService } from '../../../../services/web-socket.service';
-import { LayoutComponent } from '../../../../../common-ui/layout/layout.component';
-import { MessageComponent } from './components/message/message.component';
+import { SvgIconComponent } from '@utils/svg.component';
+import { API_URL } from 'app/app.config';
+import { AuthService } from '@services/auth.service';
+import { WebSocketService } from '@services/web-socket.service';
+import { LayoutComponent } from 'common-ui/layout/layout.component';
+import { MessageComponent } from '../message/message.component';
 import { HttpEventType } from '@angular/common/http';
-import { ContextMenuComponent } from './components/context-menu/context-menu.component';
-import { MediaGalleryComponent } from './components/media-gallery/media-gallery.component';
-import { ImgPipe } from '../../../../utils/img.pipe';
-import { FriendsService } from '../../../../services/friends.service';
-import { EmojiSelectorComponent } from './components/emoji-selector/emoji-selector.component';
-import { VideoMessageComponent } from './components/video-message/video-message.component';
-import { InputFieldComponent } from './components/input-field/input-field.component';
+import { ContextMenuComponent } from '../context-menu/context-menu.component';
+import { MediaGalleryComponent } from '../media-gallery/media-gallery.component';
+import { ImgPipe } from '@utils/img.pipe';
+import { FriendsService } from '@services/friends.service';
+import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.component';
+import { VideoMessageComponent } from '../video-message/video-message.component';
+import { InputFieldComponent } from '../input-field/input-field.component';
 
 @Component({
   selector: 'app-chat',

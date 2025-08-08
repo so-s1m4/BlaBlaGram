@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { SvgIconComponent } from '../../../../../../utils/svg.component';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-context-menu',

@@ -8,8 +8,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { API_URL } from '../../../../../../app.config';
-import { SvgIconComponent } from '../../../../../..//utils/svg.component';
+import { API_URL } from 'app/app.config';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-media-gallery',

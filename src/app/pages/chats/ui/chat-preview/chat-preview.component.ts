@@ -6,10 +6,10 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ImgPipe } from '../../../../utils/img.pipe';
+import { ImgPipe } from '@utils/img.pipe';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FriendsService } from '../../../../../app/services/friends.service';
-import { WebSocketService } from '../../../../../app/services/web-socket.service';
+import { FriendsService } from '@services/friends.service';
+import { WebSocketService } from '@services/web-socket.service';
 
 @Component({
   selector: 'app-chat-preview',

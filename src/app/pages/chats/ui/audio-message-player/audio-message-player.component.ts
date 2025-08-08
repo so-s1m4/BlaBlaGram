@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { SvgIconComponent } from '../../../../../../utils/svg.component';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-audio-message-player',

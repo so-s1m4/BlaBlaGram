@@ -26,7 +26,7 @@
   </div>
   <div class="chatsSettings" *ngIf="this.isChatsSettings">
     <div class="setting-item delete">
-      <svg icon="trashcan"> </svg>  Delete Chat
+      <svg icon="trashcan"> </svg> Delete Chat
     </div>
   </div>
 </div>
@@ -46,8 +46,8 @@
   }
 </div>
 <div class="input-holder">
-  <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()"
-    (toggleRecVideoMsg)="toggleRecVideoMsg()" [chatData]="this.chatData"></app-input-field>
+  <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()" (toggleRecVideoMsg)="toggleRecVideoMsg()"
+    [chatData]="this.chatData"></app-input-field>
 </div>
 
 <app-media-gallery *ngIf="mediaToShow.length > 0" (close)="closeMedia()" (delete)="deleteMedia($event)"

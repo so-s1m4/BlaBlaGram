@@ -6,11 +6,11 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { WebSocketService } from '../../../../../../services/web-socket.service';
+import { WebSocketService } from '@services/web-socket.service';
 import { CommonModule } from '@angular/common';
-import { SvgIconComponent } from '../../../../../../utils/svg.component';
-import { ChatsService } from '../../../../../../services/chats.service';
-import { AudioMessageComponent } from './components/audio-message/audio-message.component';
+import { SvgIconComponent } from '@utils/svg.component';
+import { ChatsService } from '@services/chats.service';
+import { AudioMessageComponent } from '../audio-message/audio-message.component';
 
 @Component({
   selector: 'app-input-field',
