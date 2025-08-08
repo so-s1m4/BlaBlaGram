@@ -1,4 +1,4 @@
-@if (!this.data) {
+@if (!data) {
 <p>Loading...</p>
 } @else {
 
@@ -6,14 +6,14 @@
   <div class="header">
     <div class="background"></div>
     <div class="avatar">
-      <img [src]="this.data.img[0] | img" alt="">
+      <img [src]="data.img[0] | img" alt="">
     </div>
-    <div class="username">{{ this.data.username }}@if (this.data.username == "s1m4") {<p>CEO</p>}</div>
-    <div class="description">{{ this.data.description }}</div>
+    <div class="username">{{ data.username }}@if (data.username == "s1m4") {<p>CEO</p>}</div>
+    <div class="description">{{ data.description }}</div>
   </div>
   <div class="nav">
-    @for (navItem of this.navPanel; track navItem.label){
-    <div *ngIf="navItem.guard" class="navItem" [ngClass]="{'selected': navItem.label == this.selectedNav}"
+    @for (navItem of navPanel; track navItem.label){
+    <div *ngIf="navItem.guard" class="navItem" [ngClass]="{'selected': navItem.label == selectedNav}"
       (click)="changeTo(navItem.label)">
       {{ navItem.label }} <div class="line"></div>
     </div>
@@ -22,7 +22,7 @@
 
   <ng-container *ngIf="selectedNav === 'Gifts'">
     <div class="content" style="gap: .5rem; padding-top: .5rem;">
-      <app-gift *ngFor="let gift of this.data.gifts" [data]="gift"></app-gift>
+      <app-gift *ngFor="let gift of data.gifts" [data]="gift"></app-gift>
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Photos'">
@@ -38,8 +38,8 @@
       <form [formGroup]="settingsFormGroup" (ngSubmit)="onSubmit($event)">
         <div class="item">
           <h2>Used Memory</h2>
-          <label for="memoryUsed">{{this.data.storage/1024/1024 | number:"1.0-0"}}MB / 500MB</label>
-          <progress id="memoryUsed" [value]="this.data.storage" [max]="500*1024*1024" class="memory-line"></progress>
+          <label for="memoryUsed">{{data.storage/1024/1024 | number:"1.0-0"}}MB / 500MB</label>
+          <progress id="memoryUsed" [value]="data.storage" [max]="500*1024*1024" class="memory-line"></progress>
         </div>
 
         <div class="item">
