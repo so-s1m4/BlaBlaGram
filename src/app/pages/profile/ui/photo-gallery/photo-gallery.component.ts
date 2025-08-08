@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ImgPipe } from '../../../../utils/img.pipe';
-import { SvgIconComponent } from '../../../../utils/svg.component';
+import { ImgPipe } from '@utils/img.pipe';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-photo-gallery',

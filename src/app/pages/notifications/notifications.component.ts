@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NotifyComponent } from '../../../common-ui/notify/notify.component';
+import { NotifyComponent } from '@commonUI/notify/notify.component';
 
 @Component({
   selector: 'app-notifications',

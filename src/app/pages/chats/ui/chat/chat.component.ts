@@ -17,7 +17,7 @@ import { SvgIconComponent } from '@utils/svg.component';
 import { API_URL } from 'app/app.config';
 import { AuthService } from '@services/auth.service';
 import { WebSocketService } from '@services/web-socket.service';
-import { LayoutComponent } from 'common-ui/layout/layout.component';
+import { LayoutComponent } from '@commonUI/layout/layout.component';
 import { MessageComponent } from '../message/message.component';
 import { HttpEventType } from '@angular/common/http';
 import { ContextMenuComponent } from '../context-menu/context-menu.component';

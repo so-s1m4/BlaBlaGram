@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { SvgIconComponent } from '../../../../utils/svg.component';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-gift',

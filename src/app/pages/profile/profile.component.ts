@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@services/auth.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ProfileService } from '../../services/profile.service';
-import { ImgPipe } from '../../utils/img.pipe';
+import { ProfileService } from '@services/profile.service';
+import { ImgPipe } from '@utils/img.pipe';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SvgIconComponent } from '../../utils/svg.component';
-import { MediaPipe } from '../../utils/media.pipe';
+import { SvgIconComponent } from '@utils/svg.component';
 import { GiftComponent } from './ui/gift/gift.component';
 import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.component';
 
