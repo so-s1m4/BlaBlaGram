@@ -1,14 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPage } from './pages/login/login.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AuthGuard } from './guards/auth-guard.module';
-import { LayoutComponent } from '../common-ui/layout/layout.component';
-import { ChatsComponent } from './pages/chats/chats.component';
-import { FriendsComponent } from './pages/friends/friends.component';
-import { CreatePostMobileComponent } from './pages/create-post-mobile/create-post-mobile.component';
-import { MobileGuard } from './guards/mobile-guard.module';
-import { RegisterPage } from './pages/register/register.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { LoginPage } from '@features/login/login.component';
+import { HomeComponent } from '@features/home/home.component';
+import { AuthGuard } from '@core/guards/auth-guard.module';
+import { LayoutComponent } from '@features/layout/layout.component';
+import { ChatsComponent } from '@features/chats/chats.component';
+import { FriendsComponent } from '@features/friends/friends.component';
+import { MobileGuard } from '@core/guards/mobile-guard.module';
+import { RegisterPage } from '@features/register/register.component';
+import { ProfileComponent } from '@features/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -47,11 +46,6 @@ export const routes: Routes = [
       {
         path: 'profile/:username',
         component: ProfileComponent,
-      },
-      {
-        path: 'create-post',
-        component: CreatePostMobileComponent,
-        canActivate: [MobileGuard],
       },
     ],
   },
