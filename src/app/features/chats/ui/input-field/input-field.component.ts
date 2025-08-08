@@ -52,7 +52,7 @@ export class InputFieldComponent {
       this.messageIdForEdit = msgId;
       this.editMode = true;
       this.messageTextForEdit = this.chatData?.messages.find(
-        (msg: any) => msg._id === msgId
+        (msg: any) => msg.id === msgId
       ).text;
     }
   }
@@ -63,7 +63,7 @@ export class InputFieldComponent {
     }
     this.chatsService.editMsg(this.messageIdForEdit!, text, () => {
       const msg = this.chatData.messages.find(
-        (msg: any) => msg._id === this.messageIdForEdit
+        (msg: any) => msg.id === this.messageIdForEdit
       );
       if (msg) {
         msg.text = text;
@@ -113,7 +113,7 @@ export class InputFieldComponent {
     }
   }
   handleAudio(blob: Blob) {
-    this.chatsService.sendAudioMessage(this.chatData.chat._id, blob);
+    this.chatsService.sendAudioMessage(this.chatData.chat.id, blob);
   }
   switchVideo2Voice() {
     this.isVoice = !this.isVoice;

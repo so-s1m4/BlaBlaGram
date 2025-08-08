@@ -32,7 +32,6 @@ export class AudioMessageComponent implements AfterViewInit {
     this.canvasCtx = this.canvasRef.nativeElement.getContext('2d')!;
   }
   async startRecording(): Promise<void> {
-    console.log('started ');
     this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.audioContext = new (window.AudioContext ||
       (window as any).webkitAudioContext)();
@@ -63,6 +62,7 @@ export class AudioMessageComponent implements AfterViewInit {
     requestAnimationFrame(() => this.drawWaveform());
     if (!this.analyser) return;
 
+    //@ts-ignore
     this.analyser.getByteTimeDomainData(this.dataArray);
 
     const canvas = this.canvasRef.nativeElement;

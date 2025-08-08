@@ -38,9 +38,9 @@
     [style]="emojiSelectorStyle"></app-emoji-selector>
 
 
-  @for (message of this.chatData.messages; track message._id; let last = $last) {
+  @for (message of this.chatData.messages; track message.id; let last = $last) {
   <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
-    (openMedia)="openMedia(message._id)" [data]="message" [isSender]="message.senderId._id !== me?.id"
+    (openMedia)="openMedia(message.id)" [data]="message" [isSender]="message.sender.id !== me?.id"
     (openContextMenu)="openContextMenu($event)">
   </app-message>
   }

@@ -105,7 +105,7 @@ export class ChatComponent
     }
   }
   onStopRecord(videoDataBLOB: Blob) {
-    this.chatService.sendVideoMessage(this.chatData$.chat._id, videoDataBLOB);
+    this.chatService.sendVideoMessage(this.chatData$.chat.id, videoDataBLOB);
   }
   async toggleRecVideoMsg() {
     if (this.isRecordVM) {
@@ -257,9 +257,9 @@ export class ChatComponent
     this.chatService.createCommunication(
       this.chatId!,
       message,
-      this.inputComp?.repliedOn?._id,
+      this.inputComp?.repliedOn?.id,
       (ok, err, data) => {
-        const comId = data._id;
+        const comId = data.id;
         const files = this.inputComp!.filesList;
         let numberUploadedFiles = 0;
 
@@ -373,7 +373,7 @@ export class ChatComponent
     let messagesToDelete = this.chatData$.messages
       .map((msg: any) => {
         if (msg.isSelected) {
-          return msg._id;
+          return msg.id;
         }
       })
       .filter((id: any) => id);
@@ -387,7 +387,7 @@ export class ChatComponent
       return;
     }
     this.inputComp.repliedOn = this.chatData$.messages.find(
-      (item: any) => item._id == id
+      (item: any) => item.id == id
     );
   }
   toggleEmoji(emjId: string) {
@@ -395,7 +395,7 @@ export class ChatComponent
   }
   // Media
   openMedia(comId: string): void {
-    const msg = this.chatData$.messages.find((msg: any) => msg._id === comId);
+    const msg = this.chatData$.messages.find((msg: any) => msg.id === comId);
     const media = msg?.media || [];
     this.mediaToShow = media;
     this.closeContextMenu();
@@ -406,12 +406,12 @@ export class ChatComponent
   deleteMedia(data: { comId: string; mediaId: string }): void {
     this.chatService.deleteMedia(data.mediaId, () => {
       let msg = this.chatData$.messages.find(
-        (msg: any) => msg._id === data.comId
+        (msg: any) => msg.id === data.comId
       );
       if (!msg) {
         return;
       }
-      msg.media = msg.media.filter((media: any) => media._id !== data.mediaId);
+      msg.media = msg.media.filter((media: any) => media.id !== data.mediaId);
     });
   }
   // File
@@ -423,14 +423,10 @@ export class ChatComponent
     this.me = this.authService.me;
     this.chatData$ = chatData;
     this.scrollToBottom();
-
     this.friendsService.getFriendsList((friends: any) => {
       if (
         friends.list.find(
-          (item: any) => item.id == this.chatData$.chat.user1_id
-        )?.isOnline ||
-        friends.list.find(
-          (item: any) => item.id == this.chatData$.chat.user2_id
+          (item: any) => item.id == this.chatData$.chat.chat.friendId
         )?.isOnline
       ) {
         this.isOnline = true;
@@ -482,7 +478,7 @@ export class ChatComponent
     this.webSocketService.on('communication:editMessage', (data: any) => {
       if (data.spaceId === this.chatId) {
         const message = this.chatData$.messages.find(
-          (msg: any) => msg._id === data._id
+          (msg: any) => msg.id === data.id
         );
         if (message) {
           message.editedAt = data.editedAt;
@@ -491,12 +487,12 @@ export class ChatComponent
       }
     });
     this.webSocketService.on('communication:deleteMedia', (data: any) => {
-      if (data.communicationId.spaceId === this.chatId) {
+      if (data.spaceId === this.chatId) {
         const message = this.chatData$.messages.find(
-          (msg: any) => msg._id === data.communicationId._id
+          (msg: any) => msg.id === data.communicationId
         );
         message.media = message.media.filter(
-          (media: any) => media._id !== data._id
+          (media: any) => media.id !== data.id
         );
       }
     });
@@ -505,7 +501,7 @@ export class ChatComponent
         this.chatData$ = {
           ...this.chatData$,
           messages: this.chatData$.messages.filter(
-            (msg: any) => msg._id !== data._id
+            (msg: any) => msg.id !== data.id
           ),
         };
       }

@@ -3,9 +3,10 @@
     'online': this.data.isOnline
   }" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" [routerLink]="['/profile', this.data!.id]" />
 } @else if (this.type == "inc_request"){
-<img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.length-1] | img" alt="" [routerLink]="['/profile', this.data!.id]" />
+<img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.img.length-1] | img" alt=""
+  [routerLink]="['/profile', this.data!.id]" />
 } @else if (this.type == "my_request"){
-<img class="avatar" [src]="this.data!.receiver_id.img[this.data!.receiver_id.length-1] | img" alt=""
+<img class="avatar" [src]="this.data!.receiver_id.img[this.data!.receiver_id.img.length-1] | img" alt=""
   [routerLink]="['/profile', this.data!.id]" />
 }
 
@@ -23,42 +24,44 @@
 </div>
 
 <div class="actionBtns" [ngStyle]="{
-  'flex-direction': this.data.isFriend ? 'row' : 'column'
+  'flex-direction': 'row'
 }">
   @if (this.type == "user"){
   @if (this.data.isFriend) {
   <button class="btn btn-primary" (click)="this.openChat()">
     <svg icon="comments"></svg>
-    Chat
   </button>
   <button class="btn btn-danger" (click)="this.removeFriend()">
     <svg icon="trashcan"></svg>
-    Remove
   </button>
   } @else {
-  @if (!isSent){
-  <input id="message-req-input" placeholder="Some message?"
-    style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100" />
-  }
-  <button class="btn btn-primary" (click)="sendRequest()" [disabled]="isSent">
-    <svg icon="repost"></svg>
-    {{isSent ? "Sent" : "Send request"}}
-  </button>
+  <div style="display: flex; flex-direction: column; gap: .5rem;">
+    @if (!isSent){
+    <input id="message-req-input" placeholder="Some message?"
+      style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100" />
+    }
+    <button class="btn btn-primary" (click)="sendRequest()" [disabled]="isSent">
+      <svg icon="repost"></svg>
+      {{isSent ? "Sent" : "Send request"}}
+    </button>
+  </div>
+
   }
   } @else if (this.type == "inc_request") {
-  <p>{{ this.data.text }}</p>
-  <button class="btn btn-primary" (click)="acceptRequest()">
-    <svg icon="plus"></svg>
-    Accept
-  </button>
-  <button class="btn btn-danger" (click)="declineRequest()">
-    <svg icon="trashcan"></svg>
-    Decline
-  </button>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: .5rem;">
+    <p>{{ this.data.text }}</p>
+    <div style="display: flex; gap: 1rem;">
+      <button class="btn btn-primary" (click)="acceptRequest()">
+        <svg icon="plus"></svg>
+      </button>
+      <button class="btn btn-danger" (click)="declineRequest()">
+        <svg icon="trashcan"></svg>
+      </button>
+    </div>
+  </div>
   } @else if (this.type == "my_request") {
   <button class="btn btn-danger" (click)="deleteRequest()" [disabled]="isDeleted">
     <svg icon="trashcan"></svg>
-
     Delete@if(isDeleted){d}
   </button>
   }

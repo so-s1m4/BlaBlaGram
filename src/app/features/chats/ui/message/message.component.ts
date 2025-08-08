@@ -116,7 +116,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
   isEditing: boolean = false;
   repliedOn: any;
   showEmoji = false;
-  emoji: any[] = [];
+  emojis: any[] = [];
   // isVM = false;
   type: string = 'message';
 
@@ -139,11 +139,11 @@ export class MessageComponent implements AfterViewInit, OnInit {
   }
 
   toggleEmoji(emjId: string) {
-    this.chatService.toggleEmoji(this.data._id, emjId);
+    this.chatService.toggleEmoji(this.data.id, emjId);
   }
 
   onMediaGallery() {
-    this.openMedia.emit(this.data._id);
+    this.openMedia.emit(this.data.id);
   }
   get imageMedia() {
     return (
@@ -160,10 +160,10 @@ export class MessageComponent implements AfterViewInit, OnInit {
   }
   ngOnInit() {
     this.webSocketService.on('emojis:toggle', (data: any) => {
-      if (data.emoji.communicationId.id == this.data._id) {
+      if (data.emoji.communicationId.id == this.data.id) {
         const emjUrl = data.emoji.emoji.url;
         if (data.action == 'removed') {
-          const emj = this.emoji.find((item: any) => {
+          const emj = this.emojis.find((item: any) => {
             return item.url == emjUrl;
           });
           if (!emj) return;
@@ -176,17 +176,17 @@ export class MessageComponent implements AfterViewInit, OnInit {
             1
           );
           if (emj.members.length == 0) {
-            this.emoji.splice(this.emoji.indexOf(emj), 1);
+            this.emojis.splice(this.emojis.indexOf(emj), 1);
           }
         } else {
-          let found = this.emoji.find((item) => item.url == emjUrl);
+          let found = this.emojis.find((item) => item.url == emjUrl);
           if (found) {
             found.members.push({
               id: data.emoji.userId.id,
               img: data.emoji.userId.img[0],
             });
           } else {
-            this.emoji.push({
+            this.emojis.push({
               id: data.emoji.emoji.id,
               url: emjUrl,
               members: [
@@ -199,7 +199,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
           }
         }
 
-        this.emoji.map((item) => {
+        this.emojis.map((item) => {
           item.isMe = !!item.members.find(
             (item: any) => item.id == this.authService.me.id
           );
@@ -216,28 +216,28 @@ export class MessageComponent implements AfterViewInit, OnInit {
       this.type = 'message';
     }
 
-    this.data.emoji?.forEach((item: any) => {
-      let emj = item.emoji;
-      let found = this.emoji.find((item) => item.url == emj.url);
+    this.data.emojis?.forEach((item: any) => {
+      let emj = item;
+      let found = this.emojis.find((item) => item.url == emj.url);
       if (found) {
         found.members.push({
-          id: item.userId.id,
-          img: item.userId.img[0],
+          id: item.user.id,
+          img: item.user.img[0],
         });
         return;
       }
-      this.emoji.push({
+      this.emojis.push({
         id: emj.id,
         url: emj.url,
         members: [
           {
-            id: item.userId.id,
-            img: item.userId.img[0],
+            id: item.user.id,
+            img: item.user.img[0],
           },
         ],
       });
     });
-    this.emoji.map((item) => {
+    this.emojis.map((item) => {
       item.isMe = !!item.members.find(
         (item: any) => item.id == this.authService.me.id
       );
@@ -248,7 +248,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
       return;
     }
     this.repliedOn = this.chatData.messages.find(
-      (item: any) => item._id == this.data.repliedOn
+      (item: any) => item.id == this.data.repliedOn
     );
   }
   ngOnChanges() {
@@ -257,7 +257,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
       return;
     }
     this.repliedOn = this.chatData.messages.find(
-      (item: any) => item._id == this.data.repliedOn
+      (item: any) => item.id == this.data.repliedOn
     );
   }
 

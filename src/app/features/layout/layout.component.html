@@ -14,9 +14,6 @@
       }
     </div>
   </div>
-  <div class="notifications" [ngClass]="{ showed: this.showNotifications }">
-    <app-notifications></app-notifications>
-  </div>
   <div class="popups-holder" [ngClass]="{ showed: this.popUps.length > 0 }">
     @for (popUp of this.popUps; track popUp) {
     <app-popup [data]="popUp"></app-popup>

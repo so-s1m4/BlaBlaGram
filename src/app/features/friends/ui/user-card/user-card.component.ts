@@ -37,7 +37,7 @@ export class UserCardComponent implements OnInit {
   }
   openChat() {
     this.profileService.openChat(this.data.id, (data: any) => {
-      this.router.navigate(['/chats'], { queryParams: { id: data._id } });
+      this.router.navigate(['/chats'], { queryParams: { id: data.chat.id } });
     });
   }
   sendRequest() {
@@ -50,7 +50,6 @@ export class UserCardComponent implements OnInit {
   }
   removeFriend() {
     this.friendsService.delFriend(this.data.id, (data: any) => {
-      console.log(data);
     });
   }
   acceptRequest() {

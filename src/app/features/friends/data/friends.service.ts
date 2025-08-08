@@ -29,7 +29,6 @@ export class FriendsService {
       'friends:createRequest',
       { receiver: userId, text },
       (ok: any, err: any, data: any) => {
-        console.log(ok);
       }
     );
   }
@@ -49,7 +48,7 @@ export class FriendsService {
       }
     );
   }
-  async getFriendsList(callback: any): Promise<ProfileData[]> {
+  async getFriendsList(callback?: any): Promise<ProfileData[]> {
     //@ts-ignore
     return this.httpClient
       .get<ProfileData[]>(`${API_URL}/api/users/me/friends`, {
@@ -59,7 +58,7 @@ export class FriendsService {
       })
       .subscribe((data: any) => {
         this.friends.list = data.data;
-        callback(this.friends);
+        callback?.(this.friends);
       });
   }
   async delFriend(friendId: string, callback: any) {

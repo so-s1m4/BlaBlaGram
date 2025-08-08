@@ -31,7 +31,7 @@ export class MediaGalleryComponent implements OnInit {
   selectedMedia: any;
 
   goToMedia(mediaId: string) {
-    this.selectedMedia = this.media.find((item) => item._id === mediaId);
+    this.selectedMedia = this.media.find((item) => item.id === mediaId);
   }
   goBack() {
     const currentIndex = this.media.indexOf(this.selectedMedia);
@@ -51,11 +51,11 @@ export class MediaGalleryComponent implements OnInit {
   onDelete() {
     const currentIndex = this.media.indexOf(this.selectedMedia);
     this.media = this.media.filter(
-      (item) => item._id !== this.selectedMedia._id
+      (item) => item.id !== this.selectedMedia.id
     );
     this.delete.emit({
       comId: this.selectedMedia.communicationId,
-      mediaId: this.selectedMedia._id,
+      mediaId: this.selectedMedia.id,
     });
     if (this.media.length == 0) {
       this.onClose();

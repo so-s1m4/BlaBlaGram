@@ -20,8 +20,8 @@
 }
 
 .avatar {
-  width: 150px;
-  height: 150px;
+  width: 40%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   background-color: var(--primary-color);
 }
@@ -79,11 +79,17 @@
   box-shadow: 10 10 20px rgba(255, 0, 0, 0.2);
 }
 
+.actionBtns {
+  display: flex;
+}
 .actionBtns button {
   svg {
     color: inherit;
+    padding: 0;
+    margin: 0;
   }
 }
+
 @media (prefers-color-scheme: light) {
   :host {
     background: var(--secondary-color);

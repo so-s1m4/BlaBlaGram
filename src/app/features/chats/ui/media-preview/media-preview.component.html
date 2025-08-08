@@ -4,7 +4,7 @@
 </div>
 } @else {
 <div #holder id="holder" class="holder" (click)="openMedia.emit()">
-  @for (media of this.imageToShow; track media._id) {
+  @for (media of this.imageToShow; track media.id) {
   @if (media.mime.startsWith('image/')) {
   <img class="media-item" [src]="API_URL + '/mediaserver/public/' + media.path"
     [ngStyle]="{'grid-area': media.gridArea}" />

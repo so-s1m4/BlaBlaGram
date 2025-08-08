@@ -55,7 +55,7 @@ export class ChatsService implements OnInit {
 
   editMsg(chatId: string, text: string, callback?: Function) {
     this.webSocketService.send(
-      'communication:chats:update',
+      'communication:update',
       {
         communicationId: chatId,
         text: text,
@@ -71,7 +71,7 @@ export class ChatsService implements OnInit {
   }
   deleteMessages(messages: string[]): void {
     this.webSocketService.send(
-      'communication:chats:deleteMessages',
+      'communication:deleteMessages',
       { messages },
       (ok: any, err: any, data: any) => {
         if (!ok) {
@@ -83,7 +83,7 @@ export class ChatsService implements OnInit {
   }
   deleteMedia(mediaId: string, callback?: any): void {
     this.webSocketService.send(
-      'communication:chats:deleteMedias',
+      'communication:deleteMedias',
       {
         media: [mediaId],
       },
@@ -106,7 +106,7 @@ export class ChatsService implements OnInit {
       'spaces:getList',
       (ok: boolean, err: string, res: any) => {
         if (ok) {
-          this.chats$ = res.map((chat: any) => chat.spaceId);
+          this.chats$ = res
           callback?.(this.chats$);
         } else {
           console.error('Error receiving chats:', err);
@@ -123,7 +123,7 @@ export class ChatsService implements OnInit {
         if (ok) {
           let data = res.reverse();
           callback({
-            chat: this.chats$.find((chat: any) => chat._id == chatId),
+            chat: this.chats$.find((chat: any) => chat.id == chatId),
             messages: data,
           });
         } else {
@@ -150,7 +150,7 @@ export class ChatsService implements OnInit {
         let payl = new FormData();
 
         payl.append('file', videoBlob);
-        payl.append('communicationId', data._id);
+        payl.append('communicationId', data.id);
         payl.append('type', 'video_message');
 
         this.httpClient
@@ -164,7 +164,7 @@ export class ChatsService implements OnInit {
           .subscribe(
             (event) => {
               if (event.type === HttpEventType.Response) {
-                this.commitCommunication(data._id);
+                this.commitCommunication(data.id);
               }
             },
             (err) => {
@@ -186,7 +186,7 @@ export class ChatsService implements OnInit {
         let payl = new FormData();
 
         payl.append('file', audioBlob);
-        payl.append('communicationId', data._id);
+        payl.append('communicationId', data.id);
         payl.append('type', 'audio');
 
         this.httpClient
@@ -200,7 +200,7 @@ export class ChatsService implements OnInit {
           .subscribe(
             (event) => {
               if (event.type === HttpEventType.Response) {
-                this.commitCommunication(data._id);
+                this.commitCommunication(data.id);
               }
             },
             (err) => {
@@ -220,7 +220,7 @@ export class ChatsService implements OnInit {
     callback?: (ok: any, err: any, data: any) => void
   ): void {
     this.webSocketService.send(
-      'communication:chats:create',
+      'communication:create',
       { spaceId: chatId, text, repliedOn },
       (ok: any, err: any, data: any) => {
         if (ok) {

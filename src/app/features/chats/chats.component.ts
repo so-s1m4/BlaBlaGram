@@ -26,7 +26,7 @@ export class ChatsComponent implements OnInit {
   chatsService = inject(ChatsService);
 
   selectChat(chat: any) {
-    this.currentChat = chat._id;
+    this.currentChat = chat.id;
 
     this.router.navigate(['chats'], {
       queryParams: { id: this.currentChat },
@@ -56,7 +56,7 @@ export class ChatsComponent implements OnInit {
   }
 
   isThisChatAtMe(chatId: string) {
-    return !!this.chats.find((item) => item._id == chatId);
+    return !!this.chats.find((item) => item.id == chatId);
   }
 
   get getChats(): any[] {

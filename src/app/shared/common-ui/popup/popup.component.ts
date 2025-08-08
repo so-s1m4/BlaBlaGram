@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { API_URL } from 'app/app.config';
+import { ImgPipe } from "@utils/img.pipe";
 
 @Component({
   selector: 'app-popup',
-  imports: [],
+  imports: [ImgPipe],
   templateUrl: './popup.component.html',
   styleUrl: './popup.component.css'
 })

@@ -29,8 +29,8 @@
   </div>
 
   <div class="gallery-footer">
-    @for (mediaItem of media; track mediaItem._id; let i = $index) {
-    <div class="media-item-preview" (click)="goToMedia(mediaItem._id)">
+    @for (mediaItem of media; track mediaItem.id; let i = $index) {
+    <div class="media-item-preview" (click)="goToMedia(mediaItem.id)">
       @if (mediaItem.mime.startsWith('video/')) {
       <video [src]="API_URL +'/mediaserver/public/' + mediaItem.path" muted></video>
       } @else if (mediaItem.mime.startsWith('image/')) {

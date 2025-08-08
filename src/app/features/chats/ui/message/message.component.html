@@ -3,14 +3,14 @@
 <div [ngClass]="{
         message: true,
         'message-sender': isSender,
-      }" [attr.data-id]="data._id" (click)="onClick()">
-  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+      }" [attr.data-id]="data.id" (click)="onClick()">
+  <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
         'sender': isSender,
       }" [ngStyle]="{
         'background': 'transparent'
-      }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
-    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+      }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
     <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
       [imageMedia]="imageMedia"></app-media-preview>
@@ -29,7 +29,7 @@
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
           my: emj.isMe
-        }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emoji; trackBy: trackByEmoji;">
+        }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emojis; trackBy: trackByEmoji;">
         <img class="emoji" [src]="emj.url" alt="">
 
         <div class="users-holder">
@@ -51,21 +51,21 @@
 <div [ngClass]="{
           message: true,
           'message-sender': isSender,
-        }" [attr.data-id]="data._id" (click)="onClick()">
-  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+        }" [attr.data-id]="data.id" (click)="onClick()">
+  <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
           'sender': isSender,
         }" [ngStyle]="{
           'background': 'transparent'
-        }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
-    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+        }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
     <app-audio-message-player [src]="API_URL + '/mediaserver/public/' + this.data.media[0].path"></app-audio-message-player>
     
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
             my: emj.isMe
-          }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emoji; trackBy: trackByEmoji;">
+          }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emojis; trackBy: trackByEmoji;">
         <img class="emoji" [src]="emj.url" alt="">
 
         <div class="users-holder">
@@ -87,20 +87,20 @@
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
-    }" [attr.data-id]="data._id" (click)="onClick()">
-  <img *ngIf="this.showSender" [src]="data.senderId.img[0] | img" class="avatar" alt="" />
+    }" [attr.data-id]="data.id" (click)="onClick()">
+  <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
 
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
     }" [ngStyle]="{
       'background': 'var(--secondary-color)'
-    }" [attr.msg-id]="data._id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
-    [attr.data]="JSON.stringify({type: 'message', id: data._id, my: !isSender})">
+    }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+    [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
     @if (this.repliedOn){
     <div class="replied-on-holder">
       <div class="replied-on-username">
-        {{ this.repliedOn.senderId.username }}
+        {{ this.repliedOn.sender.username }}
       </div>
       <div class="replied-on-text">
         {{ this.repliedOn.text }}
@@ -108,7 +108,7 @@
     </div>
     }
     <div class="username" *ngIf="this.showSender">
-      {{ isSender ? data.senderId.username : "You" }}
+      {{ isSender ? data.sender.username : "You" }}
     </div>
 
     <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
@@ -116,10 +116,10 @@
 
     <div (click)="stopPropagation($event)" (contextmenu)="stopPropagation($event)" class="media-holder"
       *ngIf="data.media && data.media.length > 0">
-      @for (media of data.media; track media._id) {
+      @for (media of data.media; track media.id) {
       @if (!media.mime.startsWith('image/') && !media.mime.startsWith('video/') && !media.type.startsWith("audio")) {
       <div #mediaItem class="media-item" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
-        [attr.data]="JSON.stringify({type: 'media', id: media._id, path: media.path})">
+        [attr.data]="JSON.stringify({type: 'media', id: media.id, path: media.path})">
         <svg icon="file"></svg>
         <p>{{ media.path }}</p>
       </div>
@@ -140,7 +140,7 @@
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
         my: emj.isMe
-      }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emoji; trackBy: trackByEmoji;">
+      }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emojis; trackBy: trackByEmoji;">
         <img class="emoji" [src]="emj.url" alt="">
 
         <div class="users-holder">

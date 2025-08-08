@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SvgIconComponent } from '@utils/svg.component';
-import { NotificationsComponent } from 'app/features/notifications/notifications.component';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '@core/services/web-socket.service';
 import { ChatsService } from '@features/chats/data/chats.service';
@@ -15,7 +14,6 @@ import { FriendsService } from '@features/friends/data/friends.service';
     RouterOutlet,
     RouterLink,
     SvgIconComponent,
-    NotificationsComponent,
     CommonModule,
     PopupComponent,
   ],
@@ -82,19 +80,14 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatsService.chats();
+    this.friendsService.getFriendsList();
 
     this.webSocketService.on('communication:newMessage', (data: any) => {
       if (this.chatsService.currentChatId !== data.spaceId) {
         const popUpData = {
           type: 'newMessage',
-          img: this.chatsService
-            .chats()!
-            .find((chat: any) => chat._id === data.spaceId).img,
-          title:
-            this.chatsService
-              .chats()!
-              .find((chat: any) => chat._id === data.spaceId)?.title ||
-            'New Message',
+          img: data.sender.img[data.sender.img.length - 1],
+          title: data.sender.username || 'New Message',
           chatId: data.spaceId,
           message: data.text,
         };
@@ -105,7 +98,7 @@ export class LayoutComponent implements OnInit {
       if (data.sender_id.id === this.authService.me.id) return;
       const popUpData = {
         type: 'newRequest',
-        img: data.sender_id.img,
+        img: data.sender_id.img[data.sender_id.img.length-1],
         title: data.sender_id.username,
         message: data.text,
       };
@@ -115,10 +108,9 @@ export class LayoutComponent implements OnInit {
       if (data.receiver_id.id === this.authService.me.id) {
         return;
       }
-      console.log(data.receiver_id);
       const popUpData = {
         type: 'acceptRequest',
-        img: data.receiver_id.img,
+        img: data.receiver_id.img[data.receiver_id.img.length - 1],
         title: data.receiver_id.username,
         message: '',
       };
@@ -130,7 +122,7 @@ export class LayoutComponent implements OnInit {
       }
       const popUpData = {
         type: 'declineRequest',
-        img: data.receiver_id.img,
+        img: data.receiver_id.img[data.receiver_id.img.length - 1],
         title: data.receiver_id.username,
         message: '',
       };
