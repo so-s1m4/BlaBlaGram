@@ -53,6 +53,17 @@
     object-position: center;
   }
 }
+.avatar.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--dark-gray-color);
+  svg {
+    width: 60%;
+    height: 60%;
+    fill: var(--gray-color);
+  }
+}
 .username {
   display: flex;
   gap: 0.5rem;
@@ -82,6 +93,11 @@
   display: none;
 }
 .navItem {
+  background: none;
+  border: none;
+  font: inherit;
+  transition: color 0.2s ease;
+  outline: none;
   position: relative;
   height: 100%;
   padding: 0 1rem;
@@ -92,6 +108,11 @@
   color: var(--gray-color);
 
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
 }
 .navItem.selected {
   color: var(--primary-color);
@@ -123,6 +144,11 @@ img.photo-item {
   width: 25%;
   aspect-ratio: 1 / 1; /* → height will match width */
   object-fit: cover; /* crop/fill the square */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
 /* Settings page */
@@ -196,7 +222,7 @@ progress[value]::-webkit-progress-value {
   left: 100%;
   transform: translate(-100%);
 
-  padding: 0.5 1rem;
+  padding: 0.5rem 1rem;
   width: fit-content;
   height: fit-content;
   font-size: 1rem;
@@ -205,6 +231,13 @@ progress[value]::-webkit-progress-value {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 .content form .btn:hover {
   background: var(--primary-color);

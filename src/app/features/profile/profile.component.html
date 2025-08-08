@@ -6,83 +6,109 @@
   <div class="header">
     <div class="background"></div>
     <div class="avatar">
-      <img [src]="data.img[0] | img" alt="">
+      <img *ngIf="data.img?.length" [src]="data.img[0] | img" alt="User avatar" />
+      <div *ngIf="!data.img?.length" class="avatar placeholder" aria-label="No avatar">
+        <svg icon="user"></svg>
+      </div>
     </div>
     <div class="username">{{ data.username }}@if (data.username == "s1m4") {<p>CEO</p>}</div>
     <div class="description">{{ data.description }}</div>
   </div>
-  <div class="nav">
+
+  <div class="nav" role="tablist" aria-label="Profile sections">
     @for (navItem of navPanel; track navItem.label){
-    <div *ngIf="navItem.guard" class="navItem" [ngClass]="{'selected': navItem.label == selectedNav}"
+    <button
+      *ngIf="navItem.guard"
+      type="button"
+      class="navItem"
+      role="tab"
+      [attr.aria-selected]="navItem.label === selectedNav"
+      [ngClass]="{ 'selected': navItem.label === selectedNav }"
       (click)="changeTo(navItem.label)">
-      {{ navItem.label }} <div class="line"></div>
-    </div>
+      {{ navItem.label }}
+      <div class="line"></div>
+    </button>
     }
   </div>
 
   <ng-container *ngIf="selectedNav === 'Gifts'">
     <div class="content" style="gap: .5rem; padding-top: .5rem;">
-      <app-gift *ngFor="let gift of data.gifts" [data]="gift"></app-gift>
+      <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
     </div>
   </ng-container>
+
   <ng-container *ngIf="selectedNav === 'Photos'">
-    <app-photo-gallery *ngIf="showGallery" [media]="data.img" [selected]="selectedPhoto" (close)="closePhotoGallery()"
+    <app-photo-gallery
+      *ngIf="showGallery"
+      [media]="data.img || []"
+      [selected]="selectedPhoto"
+      (close)="closePhotoGallery()"
       (delete)="deletePhoto($event)"></app-photo-gallery>
+
     <div class="content">
-      <img class="photo-item" *ngFor="let image of data.img" [src]="image | img" alt="…" (click)="openGallery(image.path)"/>
+      <img
+        class="photo-item"
+        *ngFor="let image of (data.img || [])"
+        [src]="image | img"
+        alt="User photo"
+        (click)="openGallery(image.path)"/>
     </div>
   </ng-container>
+
   <ng-container *ngIf="selectedNav === 'Settings'">
     <div class="content">
-
       <form [formGroup]="settingsFormGroup" (ngSubmit)="onSubmit($event)">
         <div class="item">
           <h2>Used Memory</h2>
-          <label for="memoryUsed">{{data.storage/1024/1024 | number:"1.0-0"}}MB / 500MB</label>
-          <progress id="memoryUsed" [value]="data.storage" [max]="500*1024*1024" class="memory-line"></progress>
+          <label for="memoryUsed">{{ (data['storage']/1024/1024) | number:'1.0-0' }}MB / 500MB</label>
+          <progress id="memoryUsed" [value]="data['storage']" [max]="500*1024*1024" class="memory-line"></progress>
         </div>
 
         <div class="item">
           <h2>Edit Profile</h2>
-          <div class="input-holder"
-            style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
+          <div class="input-holder" style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
+            <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;" [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
+              <svg icon="plus"></svg>
+            </label>
+            <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img" (change)="onFileSelected($event)" />
 
-            <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;"
-              [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
-              <svg icon="plus"></svg></label>
-            <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img"
-              (change)="onFileSelected($event)" />
-
-            <input formControlName="name" style="font-size: 1.5rem;" placeholder="First and last name">
+            <input formControlName="name" autocomplete="name" style="font-size: 1.5rem;" placeholder="First and last name" [attr.aria-invalid]="settingsFormGroup.get('name')?.invalid && settingsFormGroup.get('name')?.touched" />
           </div>
         </div>
+
         <div class="item">
           <p>BIO</p>
           <div class="input-holder">
-            <input formControlName="bio">
+            <input formControlName="bio" placeholder="Tell something about yourself" [attr.aria-invalid]="settingsFormGroup.get('bio')?.invalid && settingsFormGroup.get('bio')?.touched" />
           </div>
           <p>Any details such as age, occupation or city</p>
           <p>Example: 23 y.o. designer from Odessa</p>
         </div>
+
         <div class="item">
           <div class="input-holder inline">
             <h5>Date of Birth</h5>
-            <!-- formControlName="birthday" -->
-            <input type="date">
+            <!-- formControlName="birthday" (awaiting backend support) -->
+            <input type="date" />
           </div>
         </div>
+
         <div class="item">
           <div class="input-holder inline">
-            <h5>Phone</h5><input formControlName="phone" type="tel" placeholder="+431234567890">
+            <h5>Phone</h5>
+            <input formControlName="phone" type="tel" autocomplete="tel" placeholder="+431234567890" />
           </div>
           <div class="input-holder inline">
-            <h5>Email</h5><input formControlName="email" type="email" placeholder="email@example.com">
+            <h5>Email</h5>
+            <input formControlName="email" type="email" autocomplete="email" placeholder="email@example.com" />
           </div>
           <div class="input-holder inline">
-            <h5>Password</h5><input formControlName="password" type="password" placeholder="********">
+            <h5>Password</h5>
+            <input formControlName="password" type="password" autocomplete="new-password" placeholder="********" />
           </div>
         </div>
-        <button class="btn" type="submit">Save</button>
+
+        <button class="btn" type="submit" [disabled]="settingsFormGroup.pending || settingsFormGroup.invalid">Save</button>
       </form>
     </div>
   </ng-container>
