@@ -9,6 +9,8 @@
     </div>
   </div>
   <div class="gallery-content">
+    <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
+
     <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
       @if (selectedMedia) {
       <img [src]="selectedMedia | img" alt="Selected Media" />
@@ -17,7 +19,6 @@
       }
     </div>
 
-    <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
     <div class="actionBtn forward" (click)="goForward()"> <svg icon="arrowBack"
         style="transform: rotate(180deg);"></svg></div>
   </div>

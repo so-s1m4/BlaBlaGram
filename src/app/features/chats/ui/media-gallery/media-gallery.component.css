@@ -65,18 +65,14 @@
 }
 .actionBtn {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   cursor: pointer;
 
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
 
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--dark-gray-color);
+  padding: 0 2rem;
+  flex: 1 1 20%;
+  height: 100%;
 
   svg {
     width: 30px;
@@ -84,12 +80,10 @@
     color: var(--primary-color);
   }
 }
-.actionBtn.back {
-  left: 25px;
-}
 .actionBtn.forward {
-  right: 25px;
+  justify-content: flex-end;
 }
+
 .gallery-footer { 
   display: flex;
   justify-content: center;

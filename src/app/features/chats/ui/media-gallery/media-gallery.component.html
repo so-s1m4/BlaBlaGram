@@ -1,14 +1,16 @@
 <div #wrapper class="wrapper">
   <div class="gallery-header">
     <button (click)="onClose()" class="close-button"><svg icon="arrowBack"></svg></button>
-  
+
     <div class="action-buttons-holder">
-      <button class="actBtn" (click) = "onDelete()">
+      <button class="actBtn" (click)="onDelete()">
         <svg icon="trashcan"></svg>
       </button>
     </div>
   </div>
   <div class="gallery-content">
+    <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
+
     <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
       @if (selectedMedia) {
       @if (selectedMedia.mime.startsWith('video/')) {
@@ -22,8 +24,6 @@
       <span>No media selected</span>
       }
     </div>
-
-    <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
     <div class="actionBtn forward" (click)="goForward()"> <svg icon="arrowBack"
         style="transform: rotate(180deg);"></svg></div>
   </div>
