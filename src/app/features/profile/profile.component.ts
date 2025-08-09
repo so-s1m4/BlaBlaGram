@@ -23,6 +23,7 @@ import { SvgIconComponent } from '@utils/svg.component';
 import { GiftComponent } from './ui/gift/gift.component';
 import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.component';
 import { Subject, takeUntil } from 'rxjs';
+import { AppComponent } from 'app/app.component';
 
 interface Gift {
   url: string;
@@ -72,12 +73,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     phone: FormControl<string | null>;
     email: FormControl<string | null>;
     password: FormControl<string | null>;
+    primaryColor: FormControl<string>;
   }>;
 
   private readonly authService = inject(AuthService);
   private readonly profileService = inject(ProfileService);
   private readonly route = inject(ActivatedRoute);
   private readonly renderer = inject(Renderer2);
+  private readonly appComponent = inject(AppComponent);
   private readonly destroy$ = new Subject<void>();
 
   @ViewChild('label') label?: ElementRef<HTMLElement>;
@@ -93,6 +96,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       phone: new FormControl<string | null>(null),
       email: new FormControl<string | null>(null, [Validators.email]),
       password: new FormControl<string | null>('', [Validators.minLength(8)]),
+      primaryColor: new FormControl<string>(
+        localStorage.getItem('mainColor') || '',
+        []
+      ),
     }) as unknown as ProfileComponent['settingsFormGroup'];
   }
 
@@ -128,11 +135,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   deletePhoto(path: string) {
-    this.profileService.deletePhoto(path).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (this.data?.img) {
-        this.data.img = this.data.img.filter((item) => item.path !== path);
-      }
-    });
+    this.profileService
+      .deletePhoto(path)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.data?.img) {
+          this.data.img = this.data.img.filter((item) => item.path !== path);
+        }
+      });
   }
 
   onFileSelected(event: Event): void {
@@ -141,16 +151,32 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     if (!file) {
       if (this.label?.nativeElement) {
-        this.renderer.setStyle(this.label.nativeElement, 'backgroundImage', 'none');
+        this.renderer.setStyle(
+          this.label.nativeElement,
+          'backgroundImage',
+          'none'
+        );
       }
       return;
     }
 
     const blobUrl = URL.createObjectURL(file);
     if (this.label?.nativeElement) {
-      this.renderer.setStyle(this.label.nativeElement, 'backgroundImage', `url(${blobUrl})`);
-      this.renderer.setStyle(this.label.nativeElement, 'backgroundSize', 'cover');
-      this.renderer.setStyle(this.label.nativeElement, 'backgroundPosition', 'center');
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundImage',
+        `url(${blobUrl})`
+      );
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundSize',
+        'cover'
+      );
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundPosition',
+        'center'
+      );
     }
 
     // keep file in form for submit
@@ -174,15 +200,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // Optionals left commented intentionally until backend supports them consistently
     // if (values.phone) payload.append('phone', values.phone);
     // if (values.email) payload.append('email', values.email);
+    this.appComponent.changeMainColor(values.primaryColor!);
 
-    this.profileService.editProfile(payload).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res) => {
-        console.log('Settings saved', res);
-      },
-      error: (err) => {
-        console.error('Save failed', err);
-      },
-    });
+    this.profileService
+      .editProfile(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          console.log('Settings saved', res);
+        },
+        error: (err) => {
+          console.error('Save failed', err);
+        },
+      });
+  }
+  resetMainColor(event: Event){
+    event.stopPropagation()
+    event.preventDefault()
+    this.appComponent.resetMainColor()
   }
 
   private loadProfile(username: string) {

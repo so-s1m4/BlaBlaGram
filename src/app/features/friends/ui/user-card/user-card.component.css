@@ -18,14 +18,12 @@
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
 }
-
 .avatar {
   width: 40%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
 }
-
 .username {
   color: var(--light-color);
   text-align: center;
@@ -40,7 +38,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .actionBtns button {
   display: flex;
   gap: 0.5rem;
@@ -50,7 +47,6 @@
     fill: var(--light-color);
   }
 }
-
 .block-btn {
   position: absolute;
   right: 10px;
@@ -70,7 +66,6 @@
     height: 100%;
   }
 }
-
 .block-btn:hover {
   cursor: pointer;
   color: red;
@@ -78,7 +73,6 @@
 
   box-shadow: 10 10 20px rgba(255, 0, 0, 0.2);
 }
-
 .actionBtns {
   display: flex;
 }

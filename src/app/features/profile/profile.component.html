@@ -27,19 +27,25 @@
     }
   </div>
 
+  <ng-container *ngIf="selectedNav === 'General'">
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    </div>
+  </ng-container>
   <ng-container *ngIf="selectedNav === 'Gifts'">
-
     <div class="content" style="gap: .5rem; padding-top: .5rem;">
       <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
     </div>
   </ng-container>
-
   <ng-container *ngIf="selectedNav === 'Photos'">
     <app-photo-gallery *ngIf="showGallery" [media]="data.img || []" [selected]="selectedPhoto"
       (close)="closePhotoGallery()" (delete)="deletePhoto($event)"></app-photo-gallery>
     <div class="content">
       <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
         (click)="openGallery(image.path)" />
+    </div>
+  </ng-container>
+  <ng-container *ngIf="selectedNav === 'Posts'">
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
     </div>
   </ng-container>
 
@@ -99,6 +105,17 @@
           <div class="input-holder inline">
             <h5>Password</h5>
             <input formControlName="password" type="password" autocomplete="new-password" placeholder="********" />
+          </div>
+        </div>
+        <div class="item">
+          <h2>Thema</h2>
+          <div class="input-holder inline">
+            <h5>Main color</h5>
+            <div style="display: flex; gap: 1rem; width: 80%; align-items: center; justify-content: flex-end;">
+              <input formControlName="primaryColor" type="color" id="primaryColor"
+                style="padding: 0; margin: 0; height: 2rem; width: 30%;">
+              <button style="width: fit-content; color: red; background: transparent; border: 0; font-weight: bolder; cursor: pointer;" (click)="resetMainColor($event)">Reset</button>
+            </div>
           </div>
         </div>
 

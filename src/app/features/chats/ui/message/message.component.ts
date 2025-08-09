@@ -160,8 +160,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
   }
   ngOnInit() {
     this.webSocketService.on('emojis:toggle', (data: any) => {
-      if (data.emoji.communicationId.id == this.data.id) {
-        const emjUrl = data.emoji.emoji.url;
+      if (data.emoji.communicationId == this.data.id) {
+        const emjUrl = data.emoji.emoji.emojiUrl;
         if (data.action == 'removed') {
           const emj = this.emojis.find((item: any) => {
             return item.url == emjUrl;
@@ -170,8 +170,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
 
           emj.members.splice(
             emj.members.indexOf({
-              id: data.emoji.userId.id,
-              img: data.emoji.userId.img[0],
+              id: data.emoji.user.id,
+              img: data.emoji.user.img[data.emoji.user.img.length-1],
             }),
             1
           );
@@ -182,17 +182,17 @@ export class MessageComponent implements AfterViewInit, OnInit {
           let found = this.emojis.find((item) => item.url == emjUrl);
           if (found) {
             found.members.push({
-              id: data.emoji.userId.id,
-              img: data.emoji.userId.img[0],
+              id: data.emoji.user.id,
+              img: data.emoji.user.img[data.emoji.user.img.length-1],
             });
           } else {
             this.emojis.push({
-              id: data.emoji.emoji.id,
+              id: data.emoji.emoji.emojiUniqueId,
               url: emjUrl,
               members: [
                 {
-                  id: data.emoji.userId.id,
-                  img: data.emoji.userId.img[0],
+                  id: data.emoji.user.id,
+                  img: data.emoji.user.img[data.emoji.user.img.length-1],
                 },
               ],
             });
@@ -227,8 +227,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
         return;
       }
       this.emojis.push({
-        id: emj.id,
-        url: emj.url,
+        id: emj.emoji.id,
+        url: emj.emoji.url,
         members: [
           {
             id: item.user.id,

@@ -53,6 +53,7 @@ export class ChatsService implements OnInit {
     );
   }
 
+  // Messages
   editMsg(chatId: string, text: string, callback?: Function) {
     this.webSocketService.send(
       'communication:update',
@@ -97,50 +98,6 @@ export class ChatsService implements OnInit {
       }
     );
   }
-
-  chats(callback?: (chats: any[]) => void): void | any[] {
-    this.updateChats(callback);
-  }
-  updateChats(callback?: any) {
-    this.webSocketService.send(
-      'spaces:getList',
-      (ok: boolean, err: string, res: any) => {
-        if (ok) {
-          this.chats$ = res
-          callback?.(this.chats$);
-        } else {
-          console.error('Error receiving chats:', err);
-        }
-      }
-    );
-  }
-
-  getChatById(chatId: string, callback: any): void {
-    this.webSocketService.send(
-      'communication:getList',
-      { spaceId: chatId, limit: 100 },
-      (ok: boolean, err: string, res: any) => {
-        if (ok) {
-          let data = res.reverse();
-          callback({
-            chat: this.chats$.find((chat: any) => chat.id == chatId),
-            messages: data,
-          });
-        } else {
-          console.error('Error receiving chats:', err);
-        }
-      }
-    );
-  }
-
-  selectChat(chatId: string): void {
-    this.currentChatId$ = chatId;
-  }
-
-  get currentChatId(): string | null {
-    return this.currentChatId$;
-  }
-
   sendVideoMessage(chatId: string, videoBlob: Blob) {
     this.createCommunication(
       chatId,
@@ -176,7 +133,6 @@ export class ChatsService implements OnInit {
       }
     );
   }
-
   sendAudioMessage(chatId: string, audioBlob: Blob) {
     this.createCommunication(
       chatId,
@@ -212,7 +168,6 @@ export class ChatsService implements OnInit {
       }
     );
   }
-
   createCommunication(
     chatId: string,
     text: string,
@@ -310,6 +265,57 @@ export class ChatsService implements OnInit {
     );
   }
 
+  // Chat data
+  chats(callback?: (chats: any[]) => void): void | any[] {
+    this.updateChats(callback);
+  }
+  updateChats(callback?: any) {
+    this.webSocketService.send(
+      'spaces:getList',
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          this.chats$ = res;
+          callback?.(this.chats$);
+        } else {
+          console.error('Error receiving chats:', err);
+        }
+      }
+    );
+  }
+  getChatById(chatId: string, callback: any): void {
+    this.webSocketService.send(
+      'communication:getList',
+      { spaceId: chatId, limit: 100 },
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          let data = res.reverse();
+          callback({
+            chat: this.chats$.find((chat: any) => chat.id == chatId),
+            messages: data,
+          });
+        } else {
+          console.error('Error receiving chats:', err);
+        }
+      }
+    );
+  }
+  deleteChat(chatId: string): void{
+    console.log(chatId)
+    this.webSocketService.send("spaces:deleteSpace", {
+      spaceId: chatId
+    }, (ok: any, err: any, data: any)=>{
+      console.log(ok, err, data)
+    })
+  }
+  selectChat(chatId: string): void {
+    this.currentChatId$ = chatId;
+  }
+  get currentChatId(): string | null {
+    return this.currentChatId$;
+  }
+
+
+  // Hooks
   ngOnInit(): void {
     this.chats();
   }

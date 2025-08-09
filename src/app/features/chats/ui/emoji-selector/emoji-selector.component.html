@@ -1,15 +1,17 @@
 <div class="wrapper" [ngStyle]="style">
     <div class="wrapper-emojis">
-        <div *ngFor="let em of firstLine" class="reaction-item" (click)="onSelect(em.id)"><img [src]="em.url">
+        <div *ngFor="let em of firstLine" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
+                [src]="em.emojiUrl">
         </div>
 
         <button class="reactions-open-more" (click)="toggle($event)">
             @if (!showOther) {<svg icon="plus" />}
-            @else            {<svg icon="minus" />}
+            @else {<svg icon="minus" />}
         </button>
     </div>
     <div class="wrapper-emojis" *ngIf="showOther">
-        <div *ngFor="let em of otherEmojis" class="reaction-item" (click)="onSelect(em.id)"><img [src]="em.url">
+        <div *ngFor="let em of otherEmojis" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
+                [src]="em.emojiUrl">
         </div>
     </div>
 </div>
