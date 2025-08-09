@@ -51,7 +51,6 @@ export class ProfileService {
       }
     );
   }
-
   getUsersStartsWith(data: string, callback?: Function) {
     this.httpClient
       .get(API_URL + '/api/users', {
@@ -69,7 +68,6 @@ export class ProfileService {
         callback?.(filtered);
       });
   }
-
   openChat(userId: string, callback: (data: any) => void) {
     this.webSocketService.send(
       'spaces:chats:create',

@@ -4,6 +4,7 @@
 
 <div class="wrapper">
   <div class="header">
+    <button class="giftBtn"><svg icon="gift"></svg></button>
     <div class="background"></div>
     <div class="avatar">
       <img *ngIf="data.img?.length" [src]="data.img[0] | img" alt="User avatar" />
@@ -17,13 +18,8 @@
 
   <div class="nav" role="tablist" aria-label="Profile sections">
     @for (navItem of navPanel; track navItem.label){
-    <button
-      *ngIf="navItem.guard"
-      type="button"
-      class="navItem"
-      role="tab"
-      [attr.aria-selected]="navItem.label === selectedNav"
-      [ngClass]="{ 'selected': navItem.label === selectedNav }"
+    <button *ngIf="navItem.guard" type="button" class="navItem" role="tab"
+      [attr.aria-selected]="navItem.label === selectedNav" [ngClass]="{ 'selected': navItem.label === selectedNav }"
       (click)="changeTo(navItem.label)">
       {{ navItem.label }}
       <div class="line"></div>
@@ -32,26 +28,18 @@
   </div>
 
   <ng-container *ngIf="selectedNav === 'Gifts'">
+
     <div class="content" style="gap: .5rem; padding-top: .5rem;">
       <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
     </div>
   </ng-container>
 
   <ng-container *ngIf="selectedNav === 'Photos'">
-    <app-photo-gallery
-      *ngIf="showGallery"
-      [media]="data.img || []"
-      [selected]="selectedPhoto"
-      (close)="closePhotoGallery()"
-      (delete)="deletePhoto($event)"></app-photo-gallery>
-
+    <app-photo-gallery *ngIf="showGallery" [media]="data.img || []" [selected]="selectedPhoto"
+      (close)="closePhotoGallery()" (delete)="deletePhoto($event)"></app-photo-gallery>
     <div class="content">
-      <img
-        class="photo-item"
-        *ngFor="let image of (data.img || [])"
-        [src]="image | img"
-        alt="User photo"
-        (click)="openGallery(image.path)"/>
+      <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
+        (click)="openGallery(image.path)" />
     </div>
   </ng-container>
 
@@ -66,20 +54,26 @@
 
         <div class="item">
           <h2>Edit Profile</h2>
-          <div class="input-holder" style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
-            <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;" [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
+          <div class="input-holder"
+            style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
+            <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;"
+              [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
               <svg icon="plus"></svg>
             </label>
-            <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img" (change)="onFileSelected($event)" />
+            <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img"
+              (change)="onFileSelected($event)" />
 
-            <input formControlName="name" autocomplete="name" style="font-size: 1.5rem;" placeholder="First and last name" [attr.aria-invalid]="settingsFormGroup.get('name')?.invalid && settingsFormGroup.get('name')?.touched" />
+            <input formControlName="name" autocomplete="name" style="font-size: 1.5rem;"
+              placeholder="First and last name"
+              [attr.aria-invalid]="settingsFormGroup.get('name')?.invalid && settingsFormGroup.get('name')?.touched" />
           </div>
         </div>
 
         <div class="item">
           <p>BIO</p>
           <div class="input-holder">
-            <input formControlName="bio" placeholder="Tell something about yourself" [attr.aria-invalid]="settingsFormGroup.get('bio')?.invalid && settingsFormGroup.get('bio')?.touched" />
+            <input formControlName="bio" placeholder="Tell something about yourself"
+              [attr.aria-invalid]="settingsFormGroup.get('bio')?.invalid && settingsFormGroup.get('bio')?.touched" />
           </div>
           <p>Any details such as age, occupation or city</p>
           <p>Example: 23 y.o. designer from Odessa</p>
@@ -108,7 +102,8 @@
           </div>
         </div>
 
-        <button class="btn" type="submit" [disabled]="settingsFormGroup.pending || settingsFormGroup.invalid">Save</button>
+        <button class="btn" type="submit"
+          [disabled]="settingsFormGroup.pending || settingsFormGroup.invalid">Save</button>
       </form>
     </div>
   </ng-container>
