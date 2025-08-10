@@ -130,6 +130,7 @@
   display: flex;
   color: var(--gray-color);
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .emoji-wrapper {

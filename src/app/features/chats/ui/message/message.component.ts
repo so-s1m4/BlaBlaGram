@@ -218,7 +218,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
 
     this.data.emojis?.forEach((item: any) => {
       let emj = item;
-      let found = this.emojis.find((item) => item.url == emj.url);
+      let found = this.emojis.find((item) => item.url == emj.emojiUrl);
       if (found) {
         found.members.push({
           id: item.user.id,
@@ -227,8 +227,8 @@ export class MessageComponent implements AfterViewInit, OnInit {
         return;
       }
       this.emojis.push({
-        id: emj.emoji.id,
-        url: emj.emoji.url,
+        id: emj.emoji.emojiUniqueId,
+        url: emj.emoji.emojiUrl,
         members: [
           {
             id: item.user.id,

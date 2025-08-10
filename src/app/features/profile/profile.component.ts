@@ -192,8 +192,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     const values = this.settingsFormGroup.value;
     const payload = new FormData();
-
-    if (values.img) payload.append('photo', values.img);
+    const file = this.settingsFormGroup.get('img')?.value;
+    if (file) {
+      payload.append('photo', file, file.name);
+    }
     if (values.name) payload.append('name', values.name);
     payload.append('description', values.bio || 'about me!');
     if (values.password) payload.append('password', values.password);
@@ -214,10 +216,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         },
       });
   }
-  resetMainColor(event: Event){
-    event.stopPropagation()
-    event.preventDefault()
-    this.appComponent.resetMainColor()
+  resetMainColor(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.appComponent.resetMainColor();
   }
 
   private loadProfile(username: string) {

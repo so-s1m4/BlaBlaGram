@@ -7,10 +7,7 @@
     <button class="giftBtn"><svg icon="gift"></svg></button>
     <div class="background"></div>
     <div class="avatar">
-      <img *ngIf="data.img?.length" [src]="data.img[0] | img" alt="User avatar" />
-      <div *ngIf="!data.img?.length" class="avatar placeholder" aria-label="No avatar">
-        <svg icon="user"></svg>
-      </div>
+      <img [src]="data.img[0] | img" alt="User avatar" />
     </div>
     <div class="username">{{ data.username }}@if (data.username == "s1m4") {<p>CEO</p>}</div>
     <div class="description">{{ data.description }}</div>
@@ -114,7 +111,9 @@
             <div style="display: flex; gap: 1rem; width: 80%; align-items: center; justify-content: flex-end;">
               <input formControlName="primaryColor" type="color" id="primaryColor"
                 style="padding: 0; margin: 0; height: 2rem; width: 30%;">
-              <button style="width: fit-content; color: red; background: transparent; border: 0; font-weight: bolder; cursor: pointer;" (click)="resetMainColor($event)">Reset</button>
+              <button
+                style="width: fit-content; color: red; background: transparent; border: 0; font-weight: bolder; cursor: pointer;"
+                (click)="resetMainColor($event)">Reset</button>
             </div>
           </div>
         </div>

@@ -2,10 +2,7 @@
   width: 100%;
   height: 100%;
 
-  padding: 0 20% 0 20%;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
+  padding: 10% 20% 0 20%;
 
   background: var(--dark-color);
 
@@ -151,14 +148,14 @@
 }
 .content {
   width: 100%;
-  height: 40vh;
+  min-height: 40vh;
+  height: fit-content;
   background: var(--darker-gray-color);
 
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
 
-  overflow: auto;
   padding-bottom: 2rem;
 }
 .content-header {
