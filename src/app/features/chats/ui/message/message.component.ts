@@ -115,6 +115,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
   @Output() openContextMenu = new EventEmitter();
   @Output() onclick = new EventEmitter();
   @Output() onRead = new EventEmitter<number>();
+  @Output() scrollToMsg = new EventEmitter<string>();
 
   isEditing: boolean = false;
   repliedOn: any;
@@ -140,12 +141,15 @@ export class MessageComponent implements AfterViewInit, OnInit {
     this.showEmoji = true;
     this.openContextMenu.emit(event);
   }
+  onScrollToMsg(){
+    this.scrollToMsg.emit(this.repliedOn.id as string);
+  }
   toggleEmoji(emjId: string) {
     this.chatService.toggleEmoji(this.data.id, emjId);
   }
   markAsRead() {
     if (this.data.wasRead || !this.data.seq) return;
-    this.onRead.emit(this.data.seq)
+    this.onRead.emit(this.data.seq);
   }
   onMediaGallery() {
     this.openMedia.emit(this.data.id);
@@ -213,7 +217,11 @@ export class MessageComponent implements AfterViewInit, OnInit {
     });
     this.webSocketService.on('space:readMessages', (data: any) => {
       const { lastReadSeq, spaceId, userId } = data;
-      if (this.data.seq <= lastReadSeq && this.data.sender.id == userId && !this.data.wasRead) {
+      if (
+        this.data.seq <= lastReadSeq &&
+        this.data.sender.id == userId &&
+        !this.data.wasRead
+      ) {
         this.data.wasRead = true;
       }
     });

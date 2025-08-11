@@ -2,7 +2,7 @@
 <div [ngClass]="{
         message: true,
         'message-sender': isSender,
-      }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
+      }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()" [id]="data.id">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
         'sender': isSender,
@@ -49,7 +49,7 @@
 <div [ngClass]="{
           message: true,
           'message-sender': isSender,
-        }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
+        }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()" [id]="data.id">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
           'sender': isSender,
@@ -85,7 +85,7 @@
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
-    }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
+    }" [id]="data.id" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
 
   <div #wrapper class="wrapper" [ngClass]="{
@@ -96,7 +96,7 @@
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
     @if (this.repliedOn){
-    <div class="replied-on-holder">
+    <div class="replied-on-holder" (click)="onScrollToMsg()">
       <div class="replied-on-username">
         {{ this.repliedOn.sender.username }}
       </div>

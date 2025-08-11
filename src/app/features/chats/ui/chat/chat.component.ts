@@ -28,7 +28,7 @@ import { FriendsService } from '@features/friends/data/friends.service';
 import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.component';
 import { VideoMessageComponent } from '../video-message/video-message.component';
 import { InputFieldComponent } from '../input-field/input-field.component';
-import { max } from 'rxjs';
+import { max, reduce } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -109,6 +109,13 @@ export class ChatComponent
       });
     }
   }
+  scrollToMsg(msgId: string) {
+    const element = document.getElementById(msgId) as HTMLElement
+    element.classList.add('flash-highlight');
+    setTimeout(() => element.classList.remove('flash-highlight'), 1500);
+    element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   onStopRecord(videoDataBLOB: Blob) {
     this.chatService.sendVideoMessage(this.chatData$.chat.id, videoDataBLOB);
   }
@@ -397,14 +404,14 @@ export class ChatComponent
   toggleEmoji(emjId: string) {
     this.chatService.toggleEmoji(this.msgIdOverCM, emjId);
   }
-  OnReadMsg(seqNum: number){
-    if (seqNum < this.maxSeq) return
+  OnReadMsg(seqNum: number) {
+    if (seqNum < this.maxSeq) return;
     clearTimeout(this.readMsgTimeout);
 
-    this.maxSeq = seqNum
-    this.readMsgTimeout = setTimeout(()=>{
-      this.chatService.readMsg(this.chatData.chat.id, this.maxSeq)
-    }, 500)
+    this.maxSeq = seqNum;
+    this.readMsgTimeout = setTimeout(() => {
+      this.chatService.readMsg(this.chatData.chat.id, this.maxSeq);
+    }, 500);
   }
   // Media
   openMedia(comId: string): void {
@@ -473,8 +480,8 @@ export class ChatComponent
       this.setChatData(data)
     );
   }
-  deleteChat(){
-    this.chatService.deleteChat(this.chatId!)
+  deleteChat() {
+    this.chatService.deleteChat(this.chatId!);
   }
   // Event handlers
   onNewMessage(data: any): boolean {
@@ -482,6 +489,14 @@ export class ChatComponent
       return false;
     }
     this.chatData$.messages.push(data);
+    const chat = this.chatService.chats$.find(
+      (item: any) => item.id == this.chatId
+    );
+    console.log(chat);
+    chat.lastMessage = {
+      text: data.text,
+      editedAt: data.editedAt,
+    };
     setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
   }

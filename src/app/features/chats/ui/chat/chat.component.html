@@ -42,7 +42,8 @@
   <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
     (openMedia)="openMedia(message.id)" [data]="message" [isSender]="message.sender.id !== me?.id"
     (openContextMenu)="openContextMenu($event)"
-    (onRead)="OnReadMsg($event)">
+    (onRead)="OnReadMsg($event)"
+    (scrollToMsg)="scrollToMsg($event)">
   </app-message>
   }
 </div>

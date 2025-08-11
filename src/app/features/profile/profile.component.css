@@ -8,6 +8,9 @@
 
   overflow: auto;
 }
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
 .header {
   position: relative;
   width: 100%;
@@ -340,11 +343,18 @@ progress[value]::-webkit-progress-value {
 
 @media (max-width: 1000px) {
   .wrapper {
-    padding: 5% 5% 0 5%;
+    padding: 14vh 5% 0 5%;
   }
 }
 @media (max-width: 800px) {
   .wrapper {
-    padding: 5% 0 0 0;
+    padding: 18vh 0 0 0;
+  }
+  .header {
+    height: 25vh;
+  }
+  .avatar {
+    width: 10vh;
+    height: 10vh;
   }
 }

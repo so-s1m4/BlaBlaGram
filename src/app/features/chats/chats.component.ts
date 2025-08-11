@@ -37,13 +37,7 @@ export class ChatsComponent implements OnInit {
     this.router.navigate(['chats']);
   }
   setChats(chats: any[]) {
-    this.chats = chats.map((item) => ({
-      ...item,
-      lastMessage: {
-        ...item.lastMessage,
-        updatedAt: new Date(item.lastMessage?.updatedAt),
-      },
-    }));
+    this.chats = chats;
   }
   ngOnInit(): void {
     this.chatsService.chats(this.setChats.bind(this));

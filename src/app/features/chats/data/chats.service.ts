@@ -30,7 +30,7 @@ function blobToFile(blob: any, fileName: string) {
 export class ChatsService implements OnInit {
   constructor(private imageCompress: NgxImageCompressService) {}
 
-  private chats$: any[] = [];
+  chats$: any[] = [];
   private currentChatId$: string | null = null;
 
   httpClient = inject(HttpClient);
@@ -294,7 +294,7 @@ export class ChatsService implements OnInit {
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:getList',
-      { spaceId: chatId, limit: 100 },
+      { spaceId: chatId, limit: 9999999999 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
@@ -309,9 +309,8 @@ export class ChatsService implements OnInit {
     );
   }
   deleteChat(chatId: string): void {
-    console.log(chatId);
     this.webSocketService.send(
-      'spaces:deleteSpace',
+      'spaces:delete',
       {
         spaceId: chatId,
       },
