@@ -222,7 +222,7 @@ img.photo-item {
     color: var(--primary-color);
   }
 }
-.content form .item {
+.item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -231,8 +231,11 @@ img.photo-item {
 
   overflow: hidden;
 
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+  }
   p {
-    color: var(--gray-color);
+    color: var(--light-gray-color);
   }
 }
 .content form .item label {

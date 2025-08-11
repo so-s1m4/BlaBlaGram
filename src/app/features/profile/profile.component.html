@@ -10,7 +10,6 @@
       <img [src]="data.img[0] | img" alt="User avatar" />
     </div>
     <div class="username">{{ data.username }}@if (data.username == "s1m4") {<p>CEO</p>}</div>
-    <div class="description">{{ data.description }}</div>
   </div>
 
   <div class="nav" role="tablist" aria-label="Profile sections">
@@ -25,7 +24,11 @@
   </div>
 
   <ng-container *ngIf="selectedNav === 'General'">
-    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    <div class="content" style="gap: .5rem; padding: 1rem; padding-top: .5rem;">
+      <div class="item">
+        <h2>Bio</h2>
+        <p>{{data.description}}</p>
+      </div>
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Gifts'">
