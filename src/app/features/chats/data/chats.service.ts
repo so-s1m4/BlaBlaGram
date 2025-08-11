@@ -54,6 +54,15 @@ export class ChatsService implements OnInit {
   }
 
   // Messages
+  readMsg(spaceId: string, seqNum: number) {
+    this.webSocketService.send(
+      'spaces:readMessages',
+      { spaceId: spaceId, messageSeq: seqNum },
+      (ok: any, error: any, result: any) => {
+        if (!ok) console.error('Помилка:', error);
+      }
+    );
+  }
   editMsg(chatId: string, text: string, callback?: Function) {
     this.webSocketService.send(
       'communication:update',
@@ -299,13 +308,17 @@ export class ChatsService implements OnInit {
       }
     );
   }
-  deleteChat(chatId: string): void{
-    console.log(chatId)
-    this.webSocketService.send("spaces:deleteSpace", {
-      spaceId: chatId
-    }, (ok: any, err: any, data: any)=>{
-      console.log(ok, err, data)
-    })
+  deleteChat(chatId: string): void {
+    console.log(chatId);
+    this.webSocketService.send(
+      'spaces:deleteSpace',
+      {
+        spaceId: chatId,
+      },
+      (ok: any, err: any, data: any) => {
+        console.log(ok, err, data);
+      }
+    );
   }
   selectChat(chatId: string): void {
     this.currentChatId$ = chatId;
@@ -313,7 +326,6 @@ export class ChatsService implements OnInit {
   get currentChatId(): string | null {
     return this.currentChatId$;
   }
-
 
   // Hooks
   ngOnInit(): void {

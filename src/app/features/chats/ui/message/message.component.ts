@@ -19,6 +19,7 @@ import { MediaPreviewComponent } from '../media-preview/media-preview.component'
 import { ImgPipe } from '@utils/img.pipe';
 import { AuthService } from '@services/auth.service';
 import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
+import {OnVisibleOnceDirective} from "@utils/onVisibleOnce"
 
 @Component({
   selector: 'app-message',
@@ -28,6 +29,7 @@ import { AudioMessagePlayerComponent } from '../audio-message-player/audio-messa
     MediaPreviewComponent,
     ImgPipe,
     AudioMessagePlayerComponent,
+    OnVisibleOnceDirective,
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
@@ -112,6 +114,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
   @Output() openMedia: EventEmitter<string> = new EventEmitter<string>();
   @Output() openContextMenu = new EventEmitter();
   @Output() onclick = new EventEmitter();
+  @Output() onRead = new EventEmitter<number>();
 
   isEditing: boolean = false;
   repliedOn: any;
@@ -137,11 +140,13 @@ export class MessageComponent implements AfterViewInit, OnInit {
     this.showEmoji = true;
     this.openContextMenu.emit(event);
   }
-
   toggleEmoji(emjId: string) {
     this.chatService.toggleEmoji(this.data.id, emjId);
   }
-
+  markAsRead() {
+    if (this.data.wasRead || !this.data.seq) return;
+    this.onRead.emit(this.data.seq)
+  }
   onMediaGallery() {
     this.openMedia.emit(this.data.id);
   }
@@ -171,7 +176,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
           emj.members.splice(
             emj.members.indexOf({
               id: data.emoji.user.id,
-              img: data.emoji.user.img[data.emoji.user.img.length-1],
+              img: data.emoji.user.img[data.emoji.user.img.length - 1],
             }),
             1
           );
@@ -183,7 +188,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
           if (found) {
             found.members.push({
               id: data.emoji.user.id,
-              img: data.emoji.user.img[data.emoji.user.img.length-1],
+              img: data.emoji.user.img[data.emoji.user.img.length - 1],
             });
           } else {
             this.emojis.push({
@@ -192,7 +197,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
               members: [
                 {
                   id: data.emoji.user.id,
-                  img: data.emoji.user.img[data.emoji.user.img.length-1],
+                  img: data.emoji.user.img[data.emoji.user.img.length - 1],
                 },
               ],
             });
@@ -204,6 +209,12 @@ export class MessageComponent implements AfterViewInit, OnInit {
             (item: any) => item.id == this.authService.me.id
           );
         });
+      }
+    });
+    this.webSocketService.on('space:readMessages', (data: any) => {
+      const { lastReadSeq, spaceId, userId } = data;
+      if (this.data.seq <= lastReadSeq && this.data.sender.id == userId && !this.data.wasRead) {
+        this.data.wasRead = true;
       }
     });
 

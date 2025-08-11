@@ -1,9 +1,8 @@
 @if (type == "kruzhok"){
-
 <div [ngClass]="{
         message: true,
         'message-sender': isSender,
-      }" [attr.data-id]="data.id" (click)="onClick()">
+      }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
         'sender': isSender,
@@ -46,12 +45,11 @@
   <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
       (change)="selectMessage($event)" name="" id="" /></div>
 </div>
-
 } @else if (type == "gs") {
 <div [ngClass]="{
           message: true,
           'message-sender': isSender,
-        }" [attr.data-id]="data.id" (click)="onClick()">
+        }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
           'sender': isSender,
@@ -60,8 +58,8 @@
         }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-audio-message-player [src]="API_URL + '/mediaserver/public/' + this.data.media[0].path"></app-audio-message-player>
-    
+    <app-audio-message-player
+      [src]="API_URL + '/mediaserver/public/' + this.data.media[0].path"></app-audio-message-player>
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
             my: emj.isMe
@@ -87,7 +85,7 @@
 <div [ngClass]="{
       message: true,
       'message-sender': isSender,
-    }" [attr.data-id]="data.id" (click)="onClick()">
+    }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
 
   <div #wrapper class="wrapper" [ngClass]="{
@@ -134,7 +132,12 @@
         <p>edited </p>
         }
         <p>{{ data.createdAt | date: 'shortTime' }}</p>
+        @if (!isSender) {
+        @if (data.wasRead) {
         <svg icon="doublecheck"></svg>
+        } @else {
+        <svg icon="check"></svg>
+        }}
       </div>
     </div>
     <div class="footer">
@@ -157,5 +160,4 @@
   <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
       (change)="selectMessage($event)" name="" id="" /></div>
 </div>
-
 }

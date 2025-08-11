@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterContentInit,
   Component,
   EventEmitter,
@@ -27,6 +28,7 @@ import { FriendsService } from '@features/friends/data/friends.service';
 import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.component';
 import { VideoMessageComponent } from '../video-message/video-message.component';
 import { InputFieldComponent } from '../input-field/input-field.component';
+import { max } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -82,6 +84,9 @@ export class ChatComponent
   isRecordVM = false;
   isChatsSettings = false;
 
+  readMsgTimeout: any;
+  maxSeq: any;
+
   private chatData$: any;
   @Input() chatId: string | undefined = '';
   @Output('closeChat') close = new EventEmitter<void>();
@@ -117,7 +122,6 @@ export class ChatComponent
     }
     this.isRecordVM = true;
   }
-
   closeContextMenu() {
     this.contextMenuStyle.display = 'none';
     this.emojiSelectorStyle.display = 'none';
@@ -392,6 +396,15 @@ export class ChatComponent
   }
   toggleEmoji(emjId: string) {
     this.chatService.toggleEmoji(this.msgIdOverCM, emjId);
+  }
+  OnReadMsg(seqNum: number){
+    if (seqNum < this.maxSeq) return
+    clearTimeout(this.readMsgTimeout);
+
+    this.maxSeq = seqNum
+    this.readMsgTimeout = setTimeout(()=>{
+      this.chatService.readMsg(this.chatData.chat.id, this.maxSeq)
+    }, 500)
   }
   // Media
   openMedia(comId: string): void {

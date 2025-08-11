@@ -7,7 +7,6 @@ import { API_URL } from 'app/app.config';
 export class ImgPipe implements PipeTransform {
 
   transform(value: {path: string, [key: string]:any} | undefined): unknown {
-    console.log(value)
     if (!value) {
       return "https://www.htlstp.ac.at/lehrer/maus/@@images/1916921a-4a77-48d8-b37e-66094a3be83b.jpeg"
     }
