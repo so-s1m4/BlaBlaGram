@@ -219,7 +219,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
       const { lastReadSeq, spaceId, userId } = data;
       if (
         this.data.seq <= lastReadSeq &&
-        this.data.sender.id == userId &&
+        this.data.sender.id != userId &&
         !this.data.wasRead
       ) {
         this.data.wasRead = true;
