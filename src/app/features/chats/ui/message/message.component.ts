@@ -19,7 +19,7 @@ import { MediaPreviewComponent } from '../media-preview/media-preview.component'
 import { ImgPipe } from '@utils/img.pipe';
 import { AuthService } from '@services/auth.service';
 import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
-import {OnVisibleOnceDirective} from "@utils/onVisibleOnce"
+import {OnVisibleOnceDirective} from "@shared/utils/visibleOnce"
 
 @Component({
   selector: 'app-message',

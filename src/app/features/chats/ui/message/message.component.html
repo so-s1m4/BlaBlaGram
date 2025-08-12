@@ -1,9 +1,9 @@
+@if (type == "kruzhok"){
 <div [ngClass]="{
         message: true,
         'message-sender': isSender,
-      }" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()" [id]="data.id">
+      }" [attr.data-id]="data.id" (click)="onClick()" [id]="data.id">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
-  @if (type == "kruzhok"){
   <div #wrapper class="wrapper" [ngClass]="{
         'sender': isSender,
       }" [ngStyle]="{
@@ -33,7 +33,7 @@
 
         <div class="users-holder">
           <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
-            [src]="API_URL + '/public/' + user.img.path" alt="" [ngStyle]="{
+            [src]="user.img | img" alt="" [ngStyle]="{
                 transform: index!==0 ? 'translate(-50%)': '',
                 'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
               }">
@@ -41,7 +41,16 @@
       </div>
     </div>
   </div>
-  } @else if (type == "gs") {
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div>
+} @else if (type == "gs") {
+<div [ngClass]="{
+          message: true,
+          'message-sender': isSender,
+        }" [attr.data-id]="data.id" (click)="onClick()" [id]="data.id">
+  <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
           'sender': isSender,
         }" [ngStyle]="{
@@ -59,7 +68,7 @@
 
         <div class="users-holder">
           <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
-            [src]="API_URL + '/public/' + user.img.path" alt="" [ngStyle]="{
+            [src]="user.img | img" alt="" [ngStyle]="{
                   transform: index!==0 ? 'translate(-50%)': '',
                   'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
                 }">
@@ -67,7 +76,18 @@
       </div>
     </div>
   </div>
-  } @else {
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div>
+
+} @else {
+<div [ngClass]="{
+      message: true,
+      'message-sender': isSender,
+    }" [id]="data.id" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
+  <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
+
   <div #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
     }" [ngStyle]="{
@@ -136,7 +156,8 @@
       </div>
     </div>
   </div>
-  }
+
   <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
       (change)="selectMessage($event)" name="" id="" /></div>
 </div>
+}
