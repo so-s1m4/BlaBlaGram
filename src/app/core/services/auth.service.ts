@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
-import { catchError } from 'rxjs';
+import { catchError, windowTime } from 'rxjs';
 import { WebSocketService } from '@services/web-socket.service';
 
 import { API_URL } from '../../app.config';
@@ -12,9 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private isAuthed: null | boolean = null;
   private webSocketService = inject(WebSocketService);
-
   me: any = null;
-
   onInit() {
     this.token = localStorage.getItem('token');
     if (!this.token) {
@@ -31,12 +29,10 @@ export class AuthService {
 
     this.webSocketService.connect(this.token);
   }
-
   httpClient = inject(HttpClient);
   router = inject(Router);
   token: string | null = null;
   constructor() {}
-
   async login(payload: { username: string; password: string }) {
     try {
       const response: any = await this.httpClient
@@ -68,6 +64,7 @@ export class AuthService {
     this.isAuthed = false;
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+    window.location.reload()
   }
   async register(payload: {
     username: string;

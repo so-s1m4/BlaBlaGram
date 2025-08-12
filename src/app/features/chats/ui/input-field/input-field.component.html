@@ -51,14 +51,14 @@
 
 
 @if (isVoice){
-<button id="send-btn" class="btn" (mousedown)="onPressStart('audio')" (mouseup)="onPressEnd('audio')"
-  (touchstart)="onPressStart('audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
+<button id="send-btn" class="btn" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
+  (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
   *ngIf="!this.value.length && !this.filesList.length">
   <svg icon="microphone"></svg>
 </button>
 } @else {
-<button id="send-btn" class="btn" (mousedown)="onPressStart('video')" (mouseup)="onPressEnd('video')"
-  (touchstart)="onPressStart('video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
+<button id="send-btn" class="btn" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
+  (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
   *ngIf="!this.value.length && !this.filesList.length">
   <svg icon="camera"></svg>
 </button>

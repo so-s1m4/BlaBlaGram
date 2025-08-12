@@ -492,12 +492,11 @@ export class ChatComponent
     const chat = this.chatService.chats$.find(
       (item: any) => item.id == this.chatId
     );
-    console.log(chat);
     chat.lastMessage = {
       text: data.text,
       editedAt: data.editedAt,
     };
-    setTimeout(() => this.scrollToBottom(), 0.1);
+    if (data.sender.id == this.authService.me.id || true) setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
   }
   // Lifecycle hooks
