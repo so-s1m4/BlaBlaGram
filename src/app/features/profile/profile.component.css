@@ -20,7 +20,7 @@
   border-radius: 50px 50px 0 0;
   overflow: hidden;
 }
-.giftBtn {
+.giftBtn, .logoutBtn {
   position: absolute;
   top: 35px;
   left: 35px;
@@ -40,8 +40,14 @@
     height: 100%;
   }
 }
-.giftBtn:hover {
+.giftBtn:hover, .logoutBtn:hover {
   color: var(--primary-color);
+}
+.logoutBtn {
+  color: var(--dark-gray-color);
+  right: 35px;
+  left: initial;
+  transform: translate(50%, -50%);
 }
 .background {
   position: absolute;

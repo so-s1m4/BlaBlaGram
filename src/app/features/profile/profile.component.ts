@@ -112,12 +112,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loadProfile(username);
       });
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   changeTo(page: string) {
     // narrow to allowed tabs only
     if (['General', 'Gifts', 'Photos', 'Posts', 'Settings'].includes(page)) {
@@ -129,11 +127,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.selectedPhoto = path;
     this.showGallery = true;
   }
-
   closePhotoGallery() {
     this.showGallery = false;
   }
-
   deletePhoto(path: string) {
     this.profileService
       .deletePhoto(path)
@@ -222,6 +218,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.appComponent.resetMainColor();
   }
 
+  logout(){
+    this.authService.logout()
+  }
   private loadProfile(username: string) {
     if (username === 'me') {
       this.isMyProfile = true;
@@ -253,7 +252,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.buildNavPanel();
       });
   }
-
   private patchFormFromData(data: ProfileData) {
     this.settingsFormGroup.patchValue({
       name: data.name ?? '',
@@ -263,7 +261,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       // password intentionally not prefilled
     });
   }
-
   private buildNavPanel() {
     this.navPanel = [
       { label: 'General', guard: true },
@@ -273,7 +270,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       { label: 'Settings', guard: this.isMyProfile },
     ];
   }
-
   private getMockGifts(): Gift[] {
     return [
       {

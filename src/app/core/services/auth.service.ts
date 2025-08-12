@@ -4,6 +4,7 @@ import { catchError } from 'rxjs';
 import { WebSocketService } from '@services/web-socket.service';
 
 import { API_URL } from '../../app.config';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,7 @@ export class AuthService {
   }
 
   httpClient = inject(HttpClient);
+  router = inject(Router);
   token: string | null = null;
   constructor() {}
 
@@ -60,6 +62,12 @@ export class AuthService {
       this.isAuthed = false;
     }
     return this.isAuthed;
+  }
+  logout() {
+    this.token = null;
+    this.isAuthed = false;
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
   async register(payload: {
     username: string;
