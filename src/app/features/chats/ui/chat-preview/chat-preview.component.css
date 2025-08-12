@@ -24,6 +24,7 @@
   height: 55px;
   border-radius: 50%;
   background-color: var(--secondary-color);
+  object-fit: cover;
 }
 .chat-info {
   width: 80%;
