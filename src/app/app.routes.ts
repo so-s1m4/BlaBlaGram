@@ -26,15 +26,22 @@ export const routes: Routes = [
       {
         path: '',
         component: ChatsComponent,
+        pathMatch: 'full',
       },
       {
         path: 'chats',
-        redirectTo: ""
+        redirectTo: '',
+        pathMatch: 'full',
       },
       {
         path: 'friends',
         component: FriendsComponent,
       },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
   },
 ];
