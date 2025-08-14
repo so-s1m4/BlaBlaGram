@@ -1,13 +1,13 @@
 @if (this.type == "user"){
 <img class="avatar" [ngClass]="{
     'online': this.data.isOnline
-  }" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" [routerLink]="['/profile', this.data!.id]" />
+  }" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" (click)="clickEmit($event)" />
 } @else if (this.type == "inc_request"){
 <img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.img.length-1] | img" alt=""
-  [routerLink]="['/profile', this.data!.id]" />
+  (click)="clickEmit($event)" />
 } @else if (this.type == "my_request"){
 <img class="avatar" [src]="this.data!.receiver_id.img[this.data!.receiver_id.img.length-1] | img" alt=""
-  [routerLink]="['/profile', this.data!.id]" />
+  (click)="clickEmit($event)" />
 }
 
 <div class="friend-info">

@@ -23,6 +23,6 @@ export class AppComponent implements OnInit {
     const color = localStorage.getItem('mainColor');
     document.documentElement.style.setProperty('--primary-color', color);
 
-    navigator.mediaDevices.getUserMedia();
+    navigator.mediaDevices.getUserMedia({audio: true, video: true});
   }
 }

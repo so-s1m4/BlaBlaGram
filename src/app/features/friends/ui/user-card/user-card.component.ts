@@ -1,4 +1,12 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   ProfileData,
   ProfileService,
@@ -6,17 +14,22 @@ import {
 import { ImgPipe } from '@utils/img.pipe';
 import { SvgIconComponent } from '@utils/svg.component';
 import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { FriendsService } from '@features/friends/data/friends.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-card',
-  imports: [SvgIconComponent, ImgPipe, RouterLink, CommonModule],
+  imports: [SvgIconComponent, ImgPipe, CommonModule],
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.css',
 })
 export class UserCardComponent implements OnInit {
+  clickEmit($event: Event) {
+    $event.stopPropagation()
+    this.onClick.emit(this.data.id);
+  }
+  @Output() onClick = new EventEmitter<string>();
+
   @Input() data: any | undefined;
   @Input() type: string = 'user';
 
@@ -49,8 +62,7 @@ export class UserCardComponent implements OnInit {
     this.isSent = true;
   }
   removeFriend() {
-    this.friendsService.delFriend(this.data.id, (data: any) => {
-    });
+    this.friendsService.delFriend(this.data.id, (data: any) => {});
   }
   acceptRequest() {
     this.friendsService.acceptRequest(this.data.id);

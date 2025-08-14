@@ -250,7 +250,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
-        console.log(profile);
         this.data = { ...profile };
         if (this.data.username === 's1m4') {
           this.data.gifts = this.getMockGifts();

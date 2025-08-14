@@ -1,14 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ProfileData, ProfileService } from "@features/profile/data/profile.service";
+import {
+  ProfileData,
+  ProfileService,
+} from '@features/profile/data/profile.service';
 import { UserCardComponent } from './ui/user-card/user-card.component';
 import { SearchComponent } from '@commonUI/search/search.component';
 import { FriendsService } from '@features/friends/data/friends.service';
 import { AuthService } from '../../core/services/auth.service';
 import { WebSocketService } from '../../core/services/web-socket.service';
+import { Modal } from '@shared/common-ui/modal/modal';
+import { ProfileComponent } from '@features/profile/profile.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-friends',
-  imports: [UserCardComponent, SearchComponent],
+  imports: [UserCardComponent, SearchComponent, Modal, ProfileComponent, CommonModule],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css',
 })
@@ -32,8 +38,8 @@ export class FriendsComponent implements OnInit {
     list: [],
   };
 
-  private incomingReq$: ProfileData[] = [];
-  private myReq$: ProfileData[] = [];
+  private incomingReq$: any[] = [];
+  private myReq$: any[] = [];
   private searchResults$: any = [];
 
   friendsService = inject(FriendsService);
@@ -115,5 +121,16 @@ export class FriendsComponent implements OnInit {
   }
   get incomingReq() {
     return this.incomingReq$;
+  }
+
+  profileOf: string | undefined;
+  closeInfo() {
+    this.profileOf = undefined;
+  }
+  openProfileOf(id: string) {
+    this.profileOf = id;
+  }
+  stopPropagation($event: Event) {
+    $event.stopPropagation();
   }
 }

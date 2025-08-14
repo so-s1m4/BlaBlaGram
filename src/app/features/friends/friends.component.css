@@ -57,10 +57,27 @@ app-search {
 .select {
   background: var(--dark-color);
   color: var(--primary-color);
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 1rem;
 }
 
+@keyframes showingUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.info-container {
+  position: absolute;
+  width: 50vw;
+  height: fit-content;
+  animation: showingUp 500ms ease-in-out;
+
+  top: calc(100svh - (40svh + 6svh + 48svh));
+}
 
 @media (max-width: 1000px) {
   :host {
@@ -83,3 +100,10 @@ app-search {
     }
   }
 }
+@media (max-width: 800px) {
+  .info-container {
+    width: 100vw;
+    top: calc(100svh - (25svh + 6svh + 48svh));
+  }
+}
+

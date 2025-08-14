@@ -14,27 +14,29 @@
       </option>
     </select>
   </div>
-  <app-search
-    [placeholder]="'Search friends...'"
-    (search)="searchFriends($event)"
-  ></app-search>
+  <app-search [placeholder]="'Search friends...'" (search)="searchFriends($event)"></app-search>
   <div class="friends-list">
     @if (whatToShow == "friends") {
-      @for (friend of this.friends.list; track friend) {
-        <app-user-card [data]="friend"></app-user-card>
-      } 
+    @for (friend of this.friends.list; track friend) {
+    <app-user-card (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
+    }
     } @else if (whatToShow == "search") {
-      @for (friend of this.searchResults; track friend) {
-        <app-user-card [data]="friend"></app-user-card>
-      } 
+    @for (friend of this.searchResults; track friend) {
+    <app-user-card [data]="friend"></app-user-card>
+    }
     } @else if ( whatToShow == "requestsGot") {
-      @for (friend of this.incomingReq; track friend) {
-        <app-user-card [data]="friend" type="inc_request"></app-user-card>
-      } 
+    @for (friend of this.incomingReq; track friend) {
+    <app-user-card [data]="friend" type="inc_request"></app-user-card>
+    }
     } @else if ( whatToShow == "requestsSent") {
-      @for (friend of this.myReq; track friend) {
-        <app-user-card [data]="friend" type="my_request"></app-user-card>
-      } 
+    @for (friend of this.myReq; track friend) {
+    <app-user-card [data]="friend" type="my_request"></app-user-card>
+    }
     }
   </div>
 </div>
+<app-modal *ngIf="profileOf" (click)="closeInfo()">
+  <div class="info-container" (click)="stopPropagation($event)">
+    <app-profile [username]="profileOf"></app-profile>
+  </div>
+</app-modal>
