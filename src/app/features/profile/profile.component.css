@@ -367,7 +367,4 @@ progress[value]::-webkit-progress-value {
     width: 10vh;
     height: 10vh;
   }
-  .nav {
-    justify-content: flex-start;
-  }
 }
