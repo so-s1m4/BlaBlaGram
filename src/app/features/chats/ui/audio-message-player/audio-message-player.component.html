@@ -1,4 +1,4 @@
-<audio #audio [src]="src"></audio>
+<audio preload="metadata" #audio [src]="src"></audio>
 
 <button class="play-btn" (click)="togglePlay()">
   @if (isPlaying) {<svg icon="pause"></svg>}
