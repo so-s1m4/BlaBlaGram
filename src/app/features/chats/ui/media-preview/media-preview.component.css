@@ -22,11 +22,13 @@
 }
 
 .wrapperVM {
-  width: 350px;
-  height: 350px;
+  width: min(350px, 50vw);
+
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 50%;
 
+  border: 2px solid var(--primary-color);
 
   video {
     width: 100%;

@@ -25,6 +25,7 @@
 }
 .modal img {
   width: 40%;
+  aspect-ratio: 1 / 1;
 }
 .modal .info {
   width: 60%;

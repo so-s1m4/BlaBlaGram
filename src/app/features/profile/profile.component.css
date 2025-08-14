@@ -325,8 +325,8 @@ progress[value]::-webkit-progress-value {
   }
 }
 .content form .item .input-holder .upload {
-  width: 5rem;
-  height: 5rem;
+  width: 8vh;
+  height: 8vh;
   border-radius: 50%;
   border: 5px solid var(--primary-color);
 

@@ -134,6 +134,7 @@
   color: var(--gray-color);
   gap: 1rem;
   flex-wrap: wrap;
+  width: fit-content;
 }
 
 .emoji-wrapper {
