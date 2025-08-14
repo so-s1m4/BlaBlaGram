@@ -7,6 +7,7 @@ import {
   ViewChild,
   ElementRef,
   Renderer2,
+  Input,
 } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -59,6 +60,8 @@ interface ProfileData {
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  @Input() username: string | undefined = undefined;
+
   data!: ProfileData;
   isMyProfile = false;
 
@@ -105,6 +108,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (this.username) {
+      this.loadProfile(this.username);
+      return;
+    }
     this.route.paramMap
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: ParamMap) => {
@@ -243,7 +250,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
-        console.log(profile)
+        console.log(profile);
         this.data = { ...profile };
         if (this.data.username === 's1m4') {
           this.data.gifts = this.getMockGifts();

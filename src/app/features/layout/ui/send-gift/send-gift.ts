@@ -21,6 +21,7 @@ export class SendGift implements OnInit {
 
   selectedUser: string | null = null;
   friendList:any[] = [];
+  giftList:any[] = []
 
   stopPropagation(event: Event){
     event.stopPropagation()

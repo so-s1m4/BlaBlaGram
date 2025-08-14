@@ -1,6 +1,9 @@
 <div class="chats-container">
   <div class="chats-header">
     <h1>Chats</h1>
+    <div class="btn create">
+      <svg icon="plus"></svg>
+    </div>
   </div>
   <div class="chats-list">
     @for (chat of getChats; track chat.id) {
@@ -11,7 +14,6 @@
     }
   </div>
 </div>
-
 <div class="chats-content" id="chatsContent" [style] = "{ 'display': currentChat == null ? 'none' : 'block' }" *ngIf="isThisChatAtMe(currentChat)">
   <app-chat
     [chatId]="currentChat"

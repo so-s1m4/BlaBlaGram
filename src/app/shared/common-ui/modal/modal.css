@@ -13,4 +13,10 @@
   backdrop-filter: blur(10px);
 
   z-index: 1000000;
+
+  overflow: auto;
+}
+
+:host::-webkit-scrollbar {
+  display: none;
 }

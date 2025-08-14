@@ -20,20 +20,18 @@
         </div>
       </div>
       @if (selectedUser) {
-      <div class="gifts holder">
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-        <div class="gift item"></div>
-      </div>
+      @if (!this.giftList.length) {
+
+      <p style="transform: translateY(-3rem);">At the moment, there aren't any gifts available</p>
       } @else {
-        @if (window.isDesktop()) {<p style="transform: translateY(-3rem);">Select the user!</p>}
+
+      <div class="gifts holder">
+        <div class="gift item" *ngFor="let gift of this.giftList"></div>
+      </div>
+      }
+
+      } @else {
+      @if (window.isDesktop()) {<p style="transform: translateY(-3rem);">Select the user!</p>}
       }
     </div>
   </div>

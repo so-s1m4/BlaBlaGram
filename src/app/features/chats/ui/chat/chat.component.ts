@@ -29,6 +29,8 @@ import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.compone
 import { VideoMessageComponent } from '../video-message/video-message.component';
 import { InputFieldComponent } from '../input-field/input-field.component';
 import { max, reduce } from 'rxjs';
+import { Modal } from "@shared/common-ui/modal/modal";
+import { ProfileComponent } from "@features/profile/profile.component";
 
 @Component({
   selector: 'app-chat',
@@ -42,6 +44,8 @@ import { max, reduce } from 'rxjs';
     EmojiSelectorComponent,
     VideoMessageComponent,
     InputFieldComponent,
+    Modal,
+    ProfileComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -83,6 +87,7 @@ export class ChatComponent
   isOnline = false;
   isRecordVM = false;
   isChatsSettings = false;
+  showInfo = false;
 
   readMsgTimeout: any;
   maxSeq: any;
@@ -101,6 +106,9 @@ export class ChatComponent
   toggleChatsSettigns(): void {
     this.isChatsSettings = !this.isChatsSettings;
   }
+  toggleInfo(){
+    this.showInfo = !this.showInfo
+  }
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
     if (messagesHolder) {
@@ -110,7 +118,7 @@ export class ChatComponent
     }
   }
   scrollToMsg(msgId: string) {
-    const element = document.getElementById(msgId) as HTMLElement
+    const element = document.getElementById(msgId) as HTMLElement;
     element.classList.add('flash-highlight');
     setTimeout(() => element.classList.remove('flash-highlight'), 1500);
     element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -443,6 +451,7 @@ export class ChatComponent
     this.me = this.authService.me;
     this.chatData$ = chatData;
     this.scrollToBottom();
+    console.log(this.chatData$)
     this.friendsService.getFriendsList((friends: any) => {
       if (
         friends.list.find(
@@ -496,7 +505,8 @@ export class ChatComponent
       text: data.text,
       editedAt: data.editedAt,
     };
-    if (data.sender.id == this.authService.me.id || true) setTimeout(() => this.scrollToBottom(), 0.1);
+    if (data.sender.id == this.authService.me.id || true)
+      setTimeout(() => this.scrollToBottom(), 0.1);
     return true;
   }
   // Lifecycle hooks

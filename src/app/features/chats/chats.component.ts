@@ -6,10 +6,12 @@ import { ChatComponent } from './ui/chat/chat.component';
 import { WebSocketService } from '../../core/services/web-socket.service';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { SvgIconComponent } from '@shared/utils/svg.component';
+import { Modal } from "@shared/common-ui/modal/modal";
 
 @Component({
   selector: 'app-chats',
-  imports: [ChatPreviewComponent, ChatComponent, CommonModule],
+  imports: [ChatPreviewComponent, ChatComponent, CommonModule, SvgIconComponent, Modal],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
 })
@@ -48,11 +50,9 @@ export class ChatsComponent implements OnInit {
       this.chatsService.chats(this.setChats.bind(this));
     });
   }
-
   isThisChatAtMe(chatId: string) {
     return !!this.chats.find((item) => item.id == chatId);
   }
-
   get getChats(): any[] {
     return this.chats;
   }

@@ -6,4 +6,6 @@ import { Component, EventEmitter, HostBinding, Input } from '@angular/core';
   templateUrl: './modal.html',
   styleUrl: './modal.css'
 })
-export class Modal {}
+export class Modal {
+  @HostBinding("style") @Input() style: any;
+}

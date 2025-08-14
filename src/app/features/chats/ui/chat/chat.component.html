@@ -9,8 +9,8 @@
   </button>
   <img [ngClass]="{
     'online': this.isOnline
-  }" [src]="chatData.chat.img[chatData.chat.img.length-1] | img" class="avatar" alt="" />
-  <div class="header-info">
+  }" [src]="chatData.chat.img[chatData.chat.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
+  <div class="header-info" (click)="toggleInfo()">
     <h2 class="name">{{ chatData.chat.title }}</h2>
   </div>
   <div class="header-actions">
@@ -30,7 +30,19 @@
     </div>
   </div>
 </div>
-
+@if (this.chatData.chat.type == 'chat') {
+<app-modal *ngIf="showInfo" (click)="toggleInfo()">
+  <div class="info-container" (click)="stopPropagation($event)">
+    <app-profile [username]="this.chatData.chat.chat.friendId"></app-profile>
+  </div>
+</app-modal>
+} @else if (this.chatData.chat.type == 'group') {
+  <app-modal *ngIf="showInfo" (click)="toggleInfo()">
+    <div class="info-container" (click)="stopPropagation($event)">
+      <app-profile [username]="this.chatData.chat.chat.friendId"></app-profile>
+    </div>
+  </app-modal>
+}
 <app-video-message *ngIf="this.isRecordVM" (onstop)="onStopRecord($event)"></app-video-message>
 <div id="messages-holder" class="messages-holder">
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
@@ -41,9 +53,7 @@
   @for (message of this.chatData.messages; track message.id; let last = $last) {
   <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
     (openMedia)="openMedia(message.id)" [data]="message" [isSender]="message.sender.id !== me?.id"
-    (openContextMenu)="openContextMenu($event)"
-    (onRead)="OnReadMsg($event)"
-    (scrollToMsg)="scrollToMsg($event)">
+    (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)" (scrollToMsg)="scrollToMsg($event)">
   </app-message>
   }
 </div>

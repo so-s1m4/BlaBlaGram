@@ -1,11 +1,7 @@
 .wrapper {
   width: 100%;
-  height: 100%;
-
-  padding: 14vh 20% 0 20%;
-
-  background: var(--dark-color);
-
+  height: fit-content;
+  padding: 0;
   overflow: auto;
 }
 .wrapper::-webkit-scrollbar {
@@ -14,13 +10,14 @@
 .header {
   position: relative;
   width: 100%;
-  height: 40vh;
+  height: 40svh;
 
   border: 0px solid var(--light-color);
   border-radius: 50px 50px 0 0;
   overflow: hidden;
 }
-.giftBtn, .logoutBtn {
+.giftBtn,
+.logoutBtn {
   position: absolute;
   top: 35px;
   left: 35px;
@@ -40,7 +37,8 @@
     height: 100%;
   }
 }
-.giftBtn:hover, .logoutBtn:hover {
+.giftBtn:hover,
+.logoutBtn:hover {
   color: var(--primary-color);
 }
 .logoutBtn {
@@ -115,7 +113,7 @@
   align-items: center;
   gap: 1rem;
   width: 100%;
-  height: 6vh;
+  height: 6svh;
   background: var(--dark-gray-color);
   overflow: auto;
 }
@@ -157,7 +155,7 @@
 }
 .content {
   width: 100%;
-  min-height: 40vh;
+  min-height: 48svh;
   height: fit-content;
   background: var(--darker-gray-color);
 
@@ -236,7 +234,12 @@ img.photo-item {
 
   overflow: hidden;
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--primary-color);
   }
   p {
@@ -324,8 +327,7 @@ progress[value]::-webkit-progress-value {
   }
 }
 .settings.content form .item .input-holder .upload {
-
-  margin: .5rem 0;
+  margin: 0.5rem 0;
   width: 8vh;
   height: 8vh;
   border-radius: 50%;
@@ -350,15 +352,9 @@ progress[value]::-webkit-progress-value {
     display: none;
   }
 }
-
-@media (max-width: 1000px) {
-  .wrapper {
-    padding: 14vh 5% 0 5%;
-  }
-}
 @media (max-width: 800px) {
   .wrapper {
-    padding: 18vh 0 0 0;
+    padding: 0;
   }
   .header {
     height: 25vh;

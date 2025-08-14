@@ -35,14 +35,6 @@ export const routes: Routes = [
         path: 'friends',
         component: FriendsComponent,
       },
-      {
-        path: 'profile',
-        redirectTo: 'profile/me',
-      },
-      {
-        path: 'profile/:username',
-        component: ProfileComponent,
-      },
     ],
   },
 ];
