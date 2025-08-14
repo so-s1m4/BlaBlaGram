@@ -11,10 +11,11 @@ import {
 } from '@angular/core';
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
+import { MediaPipe } from "@utils/media.pipe";
 
 @Component({
   selector: 'app-media-preview',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, MediaPipe],
   templateUrl: './media-preview.component.html',
   styleUrl: './media-preview.component.css',
 })

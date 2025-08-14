@@ -87,11 +87,10 @@ export class InputFieldComponent {
   pressTimer: any;
   pressDuration = 500;
   wasLongPress = false;
-  onPressStart(event:Event, type: string): void {
+  onPressStart(event: Event, type: string): void {
     this.wasLongPress = false;
-    event.preventDefault()
-    event.stopPropagation()
-
+    event.preventDefault();
+    event.stopPropagation();
 
     this.pressTimer = setTimeout(() => {
       this.wasLongPress = true;
@@ -108,7 +107,6 @@ export class InputFieldComponent {
     if (this.wasLongPress) {
       if (type == 'video') this.toggleRecVideoMsg.emit();
       else this.audio_msg?.endRecording();
-
       this.isRecording = false;
     } else {
       this.switchVideo2Voice();
