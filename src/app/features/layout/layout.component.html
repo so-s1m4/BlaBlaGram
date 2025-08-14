@@ -23,5 +23,11 @@
     <router-outlet></router-outlet>
   </div>
   <app-send-gift *ngIf="this.showSendGift" (onClose)="toggleSendGift()"></app-send-gift>
+
+  <app-modal *ngIf="showProfile" (click)="toggleShowProfile()">
+    <div class="info-container" (click)="stopPropagation($event)">
+      <app-profile username="me"></app-profile>
+    </div>
+  </app-modal>
 </div>
 }

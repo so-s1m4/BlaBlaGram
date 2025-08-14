@@ -7,7 +7,9 @@ import { ChatsService } from '@features/chats/data/chats.service';
 import { PopupComponent } from '@commonUI/popup/popup.component';
 import { AuthService } from '@services/auth.service';
 import { FriendsService } from '@features/friends/data/friends.service';
-import { SendGift } from "./ui/send-gift/send-gift";
+import { SendGift } from './ui/send-gift/send-gift';
+import { Modal } from '@shared/common-ui/modal/modal';
+import { ProfileComponent } from '@features/profile/profile.component';
 
 @Component({
   selector: 'app-layout',
@@ -18,11 +20,16 @@ import { SendGift } from "./ui/send-gift/send-gift";
     CommonModule,
     PopupComponent,
     SendGift,
+    Modal,
+    ProfileComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
 export class LayoutComponent implements OnInit {
+  stopPropagation($event: Event) {
+    $event.stopPropagation();
+  }
   router: Router = inject(Router);
 
   webSocketService = inject(WebSocketService);
@@ -39,22 +46,23 @@ export class LayoutComponent implements OnInit {
       onclick: this.toggleSendGift.bind(this),
     },
     {
-      name: 'chats',
-      icon: 'chats',
-      title: 'Messages',
-      isRoute: true,
-    },
-    {
       name: 'friends',
       icon: 'friends',
       title: 'Friends',
       isRoute: true,
     },
     {
+      name: 'chats',
+      icon: 'chats',
+      title: 'Messages',
+      isRoute: true,
+    },
+    {
       name: 'profile',
       icon: 'person',
       title: 'Profile',
-      isRoute: true,
+      isRoute: false,
+      onclick: this.toggleShowProfile.bind(this),
     },
   ];
   isCollapsed: boolean = true;
@@ -75,9 +83,13 @@ export class LayoutComponent implements OnInit {
   }
 
   showSendGift = false;
+  showProfile = false;
 
   toggleSendGift() {
     this.showSendGift = !this.showSendGift;
+  }
+  toggleShowProfile() {
+    this.showProfile = !this.showProfile;
   }
 
   ngOnInit(): void {

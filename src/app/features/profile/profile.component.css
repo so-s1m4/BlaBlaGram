@@ -2,7 +2,6 @@
   width: 100%;
   height: fit-content;
   padding: 0;
-  overflow: auto;
 }
 .wrapper::-webkit-scrollbar {
   display: none;
