@@ -61,15 +61,6 @@ app-search {
   border-radius: 1rem;
 }
 
-@keyframes showingUp {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .info-container {
   position: absolute;
   width: 50vw;
