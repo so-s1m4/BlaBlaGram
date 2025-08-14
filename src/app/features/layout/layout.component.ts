@@ -7,6 +7,7 @@ import { ChatsService } from '@features/chats/data/chats.service';
 import { PopupComponent } from '@commonUI/popup/popup.component';
 import { AuthService } from '@services/auth.service';
 import { FriendsService } from '@features/friends/data/friends.service';
+import { SendGift } from "./ui/send-gift/send-gift";
 
 @Component({
   selector: 'app-layout',
@@ -16,6 +17,7 @@ import { FriendsService } from '@features/friends/data/friends.service';
     SvgIconComponent,
     CommonModule,
     PopupComponent,
+    SendGift,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -30,17 +32,17 @@ export class LayoutComponent implements OnInit {
 
   pages = [
     {
+      name: 'gifts',
+      icon: 'gift',
+      title: 'Send gift',
+      isRoute: false,
+      onclick: this.toggleSendGift.bind(this),
+    },
+    {
       name: 'home',
       icon: 'home',
       title: 'Home page',
       isRoute: true,
-    },
-    {
-      name: 'notifications',
-      icon: 'heart',
-      title: 'News',
-      isRoute: false,
-      onclick: this.openNotifications.bind(this),
     },
     {
       name: 'chats',
@@ -78,6 +80,12 @@ export class LayoutComponent implements OnInit {
     }, 5000);
   }
 
+  showSendGift = false;
+
+  toggleSendGift() {
+    this.showSendGift = !this.showSendGift;
+  }
+
   ngOnInit(): void {
     this.chatsService.chats();
     this.friendsService.getFriendsList();
@@ -98,7 +106,7 @@ export class LayoutComponent implements OnInit {
       if (data.sender_id.id === this.authService.me.id) return;
       const popUpData = {
         type: 'newRequest',
-        img: data.sender_id.img[data.sender_id.img.length-1],
+        img: data.sender_id.img[data.sender_id.img.length - 1],
         title: data.sender_id.username,
         message: data.text,
       };

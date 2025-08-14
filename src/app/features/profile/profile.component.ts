@@ -40,6 +40,7 @@ interface ProfileData {
   phone?: string | null;
   email?: string | null;
   img: { path: string }[];
+  isOnline: boolean;
   gifts?: Gift[];
   [key: string]: any; // fallback for unknown fields coming from API
 }
@@ -218,8 +219,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.appComponent.resetMainColor();
   }
 
-  logout(){
-    this.authService.logout()
+  logout() {
+    this.authService.logout();
   }
   private loadProfile(username: string) {
     if (username === 'me') {
@@ -242,6 +243,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
+        console.log(profile)
         this.data = { ...profile };
         if (this.data.username === 's1m4') {
           this.data.gifts = this.getMockGifts();

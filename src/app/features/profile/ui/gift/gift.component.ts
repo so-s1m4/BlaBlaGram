@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { SvgIconComponent } from '@utils/svg.component';
+import { Modal } from "@shared/common-ui/modal/modal";
 
 @Component({
   selector: 'app-gift',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, Modal],
   templateUrl: './gift.component.html',
   styleUrl: './gift.component.css',
 })

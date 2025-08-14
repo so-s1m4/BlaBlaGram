@@ -8,24 +8,6 @@
   background: var(--dark-gray-color);
   border-radius: 1rem;
 }
-.modal-wrapper {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100dvw;
-  height: 100dvh;
-
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background: rgba(0, 0, 0, 0.4);
-}
-.modal-wrapper.showed {
-  display: flex;
-}
 .modal {
   position: relative;
 

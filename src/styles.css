@@ -66,17 +66,14 @@ h1 {
   background-color: var(--primary-color);
   color: var(--light-color);
 }
-
 .btn:active {
   transition: all 0.1s ease-in;
   transform: scale(0.95);
 }
-
 .btn:disabled {
   display: none;
   cursor: not-allowed;
 }
-
 .btn-danger {
   color: red;
   border-color: red;
@@ -85,7 +82,6 @@ h1 {
   background-color: red;
   color: var(--light-color);
 }
-
 *::-webkit-scrollbar {
   width: 0.25rem;
 }
@@ -93,7 +89,6 @@ h1 {
   background: var(--primary-color);
   border-radius: 10px;
 }
-
 textarea:focus,
 input:focus {
   border: none;
@@ -212,9 +207,24 @@ input[type="checkbox"]:disabled {
 
 .avatar {
   border: 3px solid var(--gray-color);
+  object-fit: cover;
 }
 .online {
   border: 3px solid var(--primary-color);
+}
+
+.flex {
+  display: flex;
+  gap: .5rem;
+}
+.bold {
+  font-weight: bold;
+}
+.ai-center {
+  align-items: center;
+}
+.primary-color {
+  color: var(--primary-color);
 }
 
 @media (max-width: 800px) {

@@ -10,10 +10,11 @@ import {
 } from '@angular/core';
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
+import { Modal } from "@shared/common-ui/modal/modal";
 
 @Component({
   selector: 'app-media-gallery',
-  imports: [SvgIconComponent],
+  imports: [SvgIconComponent, Modal],
   templateUrl: './media-gallery.component.html',
   styleUrl: './media-gallery.component.css',
 })

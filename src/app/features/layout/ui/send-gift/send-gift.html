@@ -1,0 +1,40 @@
+<app-modal (click)="close()">
+  <div class="wrapper" (click)="stopPropagation($event)">
+    <div class="header">
+      <div class="btn close" (click)="close()">
+        <svg icon="plus"></svg>
+      </div>
+      <div class="flex ai-center primary-color">
+        <h4 class="bold">6666</h4> 💾
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="friends holder">
+        <div class="friend item" *ngFor="let friend of this.friendList" (click)="selectUser(friend.id)">
+          <img [src]="friend.img[friend.img.length-1] | img" alt="" class="avatar" [ngClass]="{
+            'online': friend.isOnline
+          }">
+          <p>{{ friend.username }}</p>
+          <svg icon="arrowRight"></svg>
+        </div>
+      </div>
+      @if (selectedUser) {
+      <div class="gifts holder">
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+        <div class="gift item"></div>
+      </div>
+      } @else {
+        @if (window.isDesktop()) {<p style="transform: translateY(-3rem);">Select the user!</p>}
+      }
+    </div>
+  </div>
+</app-modal>

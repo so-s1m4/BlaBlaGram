@@ -4,11 +4,12 @@
 
 <div class="wrapper">
   <div class="header">
-    <button class="giftBtn"><svg icon="gift"></svg></button>
     <button class="logoutBtn" (click)="logout()" *ngIf="this.isMyProfile"><svg icon="logout"></svg></button>
     <div class="background"></div>
     <div class="avatar">
-      <img [src]="data.img[0] | img" alt="User avatar" />
+      <img [src]="data.img[0] | img" alt="User avatar" [ngClass]="{
+        'online': data.isOnline
+      }" />
     </div>
     <div class="username">{{ data.username }}@if (data.username == "s1m4") {<p>CEO</p>}</div>
   </div>

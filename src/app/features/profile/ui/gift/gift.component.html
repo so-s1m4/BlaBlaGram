@@ -1,7 +1,5 @@
 <img [src]="this.data.url" alt="" (click)="open()">
-<div class="modal-wrapper" [ngClass]="{
-  showed: this.showed
-}" (click)="close()">
+<app-modal (click)="close()" *ngIf="this.showed">
   <div class="modal" (click)="stopPropagation($event)">
     <div class="btn close" (click)="close()">
       <svg icon="plus"></svg>
@@ -19,4 +17,4 @@
     <p style="width: 80%; color: var(--light-gray-color); text-align: center;">{{ this.data.text }}</p>
     <button class="btn done" (click)="close()">Done</button>
   </div>
-</div>
+</app-modal>
