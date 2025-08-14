@@ -23,6 +23,13 @@ export class AppComponent implements OnInit {
     const color = localStorage.getItem('mainColor');
     document.documentElement.style.setProperty('--primary-color', color);
 
-    navigator.mediaDevices.getUserMedia({audio: true, video: true});
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    Notification.requestPermission().then((result) => {
+      console.log(result);
+    });
+
+    new Notification("BlaBlaGram", 
+      { body: "New message", icon: "" }
+    )
   }
 }

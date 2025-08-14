@@ -61,15 +61,6 @@ app-search {
   border-radius: 1rem;
 }
 
-.info-container {
-  position: absolute;
-  width: 50vw;
-  height: fit-content;
-  animation: showingUp 500ms ease-in-out;
-
-  top: calc(100svh - (40svh + 6svh + 48svh));
-}
-
 @media (max-width: 1000px) {
   :host {
     flex-direction: column;
@@ -91,10 +82,3 @@ app-search {
     }
   }
 }
-@media (max-width: 800px) {
-  .info-container {
-    width: 100vw;
-    top: calc(100svh - (25svh + 6svh + 48svh));
-  }
-}
-

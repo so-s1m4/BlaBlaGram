@@ -300,3 +300,20 @@ input[type="checkbox"]:disabled {
     transform: translateY(0);
   }
 }
+
+.info-container {
+  position: absolute;
+  width: 50vw;
+  height: fit-content;
+  animation: showingUp 500ms ease-in-out;
+
+  top: calc(100svh - (40svh + 6svh + 48svh));
+}
+
+
+@media (max-width: 1000px) {
+  .info-container {
+    width: 80vw;
+    top: calc(100svh - (40svh + 6svh + 48svh));
+  }
+}

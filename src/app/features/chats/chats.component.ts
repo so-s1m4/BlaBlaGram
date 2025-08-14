@@ -7,15 +7,26 @@ import { WebSocketService } from '../../core/services/web-socket.service';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@shared/utils/svg.component';
-import { Modal } from "@shared/common-ui/modal/modal";
+import { Modal } from '@shared/common-ui/modal/modal';
+import { CreateModal } from './ui/create-modal/create-modal';
 
 @Component({
   selector: 'app-chats',
-  imports: [ChatPreviewComponent, ChatComponent, CommonModule, SvgIconComponent, Modal],
+  imports: [
+    ChatPreviewComponent,
+    ChatComponent,
+    CommonModule,
+    SvgIconComponent,
+    Modal,
+    CreateModal,
+  ],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
 })
 export class ChatsComponent implements OnInit {
+  stopPropagation(event: Event) {
+    event.stopPropagation()
+  }
   window: any;
 
   router = inject(Router);
@@ -26,6 +37,11 @@ export class ChatsComponent implements OnInit {
 
   private chats: any[] = [];
   chatsService = inject(ChatsService);
+  showCreateModal = false;
+
+  toggleCreateModal() {
+    this.showCreateModal = !this.showCreateModal;
+  }
 
   selectChat(chat: any) {
     this.currentChat = chat.id;

@@ -158,15 +158,6 @@
 .btn.back:hover {
   color: var(--primary-color);
 }
-
-.info-container {
-  position: absolute;
-  width: 50vw;
-  height: fit-content;
-  animation: showingUp 500ms ease-in-out;
-
-  top: calc(100svh - (40svh + 6svh + 48svh));
-}
 @media (max-width: 800px) {
   .header {
     gap: 1rem;
@@ -186,9 +177,5 @@
       width: 1.5rem;
       height: 1.5rem;
     }
-  }
-  .info-container {
-    width: 100vw;
-    top: calc(100svh - (25svh + 6svh + 48svh));
   }
 }
