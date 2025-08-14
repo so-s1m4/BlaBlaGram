@@ -24,15 +24,6 @@
     </button>
     }
   </div>
-
-  <ng-container *ngIf="selectedNav === 'General'">
-    <div class="content" style="gap: .5rem; padding: 1rem; padding-top: .5rem;">
-      <div class="item">
-        <h2>Bio</h2>
-        <p>{{data.description}}</p>
-      </div>
-    </div>
-  </ng-container>
   <ng-container *ngIf="selectedNav === 'Gifts'">
     <div class="content" style="gap: .5rem; padding-top: .5rem;">
       <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
@@ -41,7 +32,7 @@
   <ng-container *ngIf="selectedNav === 'Photos'">
     <app-photo-gallery *ngIf="showGallery" [media]="data.img || []" [selected]="selectedPhoto"
       (close)="closePhotoGallery()" (delete)="deletePhoto($event)"></app-photo-gallery>
-    <div class="content">
+    <div class="content" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; row-gap: .5rem;">
       <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
         (click)="openGallery(image.path)" />
     </div>
@@ -52,7 +43,7 @@
   </ng-container>
 
   <ng-container *ngIf="selectedNav === 'Settings'">
-    <div class="content">
+    <div class="settings content">
       <form [formGroup]="settingsFormGroup" (ngSubmit)="onSubmit($event)">
         <div class="item">
           <h2>Used Memory</h2>

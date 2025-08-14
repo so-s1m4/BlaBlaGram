@@ -204,9 +204,8 @@
 
 /* Photos page */
 img.photo-item {
-  display: block; /* or inline-block if you need them side-by-side */
-  width: 25%;
-  aspect-ratio: 1 / 1; /* → height will match width */
+  width: 100%;
+  aspect-ratio: 3 / 4; /* → height will match width */
   object-fit: cover; /* crop/fill the square */
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -216,7 +215,7 @@ img.photo-item {
 }
 
 /* Settings page */
-.content form {
+.settings.content form {
   width: 100%;
 
   position: relative;
@@ -244,13 +243,13 @@ img.photo-item {
     color: var(--light-gray-color);
   }
 }
-.content form .item label {
+.settings.content form .item label {
   position: relative;
   left: 100%;
   width: fit-content;
   transform: translate(-100%);
 }
-.content form .item progress {
+.settings.content form .item progress {
   width: 100%;
   border-radius: 2rem;
   height: 2rem;
@@ -264,7 +263,7 @@ progress[value]::-webkit-progress-value {
   background: var(--primary-color);
 }
 
-.content form .item .input-holder {
+.settings.content form .item .input-holder {
   position: relative;
   background: var(--dark-gray-color);
   height: fit-content;
@@ -273,7 +272,7 @@ progress[value]::-webkit-progress-value {
     width: 100%;
   }
 }
-.content form .item .input-holder.inline {
+.settings.content form .item .input-holder.inline {
   padding: 0 1rem;
   display: flex;
   align-items: center;
@@ -284,7 +283,7 @@ progress[value]::-webkit-progress-value {
     width: initial;
   }
 }
-.content form .btn {
+.settings.content form .btn {
   position: relative;
   left: 100%;
   transform: translate(-100%);
@@ -306,11 +305,11 @@ progress[value]::-webkit-progress-value {
     cursor: not-allowed;
   }
 }
-.content form .btn:hover {
+.settings.content form .btn:hover {
   background: var(--primary-color);
   color: var(--light-color);
 }
-.content form .item .input-holder input {
+.settings.content form .item .input-holder input {
   min-width: 10%;
   height: 100%;
   background: transparent;
@@ -324,11 +323,13 @@ progress[value]::-webkit-progress-value {
     color: var(--gray-color);
   }
 }
-.content form .item .input-holder .upload {
+.settings.content form .item .input-holder .upload {
+
+  margin: .5rem 0;
   width: 8vh;
   height: 8vh;
   border-radius: 50%;
-  border: 5px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
 
   background: var(--dark-gray-color);
   z-index: 2;
@@ -338,13 +339,13 @@ progress[value]::-webkit-progress-value {
   align-items: center;
 
   svg {
-    width: 90%;
-    height: 90%;
+    height: 60%;
+    aspect-ratio: 1 / 1;
     margin: 0;
     padding: 0;
   }
 }
-.content form .item .input-holder .upload.selected {
+.settings.content form .item .input-holder .upload.selected {
   svg {
     display: none;
   }

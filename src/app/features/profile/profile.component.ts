@@ -265,7 +265,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   private buildNavPanel() {
     this.navPanel = [
-      { label: 'General', guard: true },
       { label: 'Gifts', guard: true },
       { label: 'Photos', guard: true },
       { label: 'Posts', guard: true },
