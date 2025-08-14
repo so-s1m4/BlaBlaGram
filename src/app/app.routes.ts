@@ -25,15 +25,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent,
-      },
-      {
-        path: 'home',
-        redirectTo: '',
+        component: ChatsComponent,
       },
       {
         path: 'chats',
-        component: ChatsComponent,
+        redirectTo: ""
       },
       {
         path: 'friends',

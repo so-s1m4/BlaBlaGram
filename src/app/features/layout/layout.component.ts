@@ -39,12 +39,6 @@ export class LayoutComponent implements OnInit {
       onclick: this.toggleSendGift.bind(this),
     },
     {
-      name: 'home',
-      icon: 'home',
-      title: 'Home page',
-      isRoute: true,
-    },
-    {
       name: 'chats',
       icon: 'chats',
       title: 'Messages',
