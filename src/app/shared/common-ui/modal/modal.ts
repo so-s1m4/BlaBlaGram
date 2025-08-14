@@ -1,11 +1,12 @@
-import { Component, EventEmitter, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
   imports: [],
   templateUrl: './modal.html',
-  styleUrl: './modal.css'
+  styleUrl: './modal.css',
 })
-export class Modal {
-  @HostBinding("style") @Input() style: any;
+export class Modal{
+
+  @HostBinding('style') @Input() style: any;
 }

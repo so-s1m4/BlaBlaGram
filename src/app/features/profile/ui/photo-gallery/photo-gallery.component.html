@@ -1,33 +1,35 @@
-<div #wrapper class="wrapper">
-  <div class="gallery-header">
-    <button (click)="onClose()" class="close-button"><svg icon="arrowBack"></svg></button>
+<app-modal>
+  <div #wrapper class="wrapper">
+    <div class="gallery-header">
+      <button (click)="onClose()" class="close-button"><svg icon="arrowBack"></svg></button>
 
-    <div class="action-buttons-holder">
-      <button class="actBtn" (click)="onDelete()">
-        <svg icon="trashcan"></svg>
-      </button>
+      <div class="action-buttons-holder">
+        <button class="actBtn" (click)="onDelete()">
+          <svg icon="trashcan"></svg>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="gallery-content">
-    <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
+    <div class="gallery-content">
+      <div class="actionBtn back" (click)="goBack()"> <svg icon="arrowBack"></svg></div>
 
-    <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
-      @if (selectedMedia) {
-      <img [src]="selectedMedia | img" alt="Selected Media" />
-      } @else {
-      <span>No media selected</span>
+      <div class="media-viewer" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
+        @if (selectedMedia) {
+        <img [src]="selectedMedia | img" alt="Selected Media" />
+        } @else {
+        <span>No media selected</span>
+        }
+      </div>
+
+      <div class="actionBtn forward" (click)="goForward()"> <svg icon="arrowBack"
+          style="transform: rotate(180deg);"></svg></div>
+    </div>
+
+    <div class="gallery-footer">
+      @for (mediaItem of media; track mediaItem; let i = $index) {
+      <div class="media-item-preview" (click)="goToMedia(mediaItem.path)">
+        <img [src]="mediaItem | img" alt="Media Item" />
+      </div>
       }
     </div>
-
-    <div class="actionBtn forward" (click)="goForward()"> <svg icon="arrowBack"
-        style="transform: rotate(180deg);"></svg></div>
   </div>
-
-  <div class="gallery-footer">
-    @for (mediaItem of media; track mediaItem; let i = $index) {
-    <div class="media-item-preview" (click)="goToMedia(mediaItem.path)">
-      <img [src]="mediaItem | img" alt="Media Item" />
-    </div>
-    }
-  </div>
-</div>
+</app-modal>

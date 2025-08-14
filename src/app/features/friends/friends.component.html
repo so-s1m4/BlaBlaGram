@@ -22,11 +22,11 @@
     }
     } @else if (whatToShow == "search") {
     @for (friend of this.searchResults; track friend) {
-    <app-user-card [data]="friend"></app-user-card>
+    <app-user-card (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
     }
     } @else if ( whatToShow == "requestsGot") {
     @for (friend of this.incomingReq; track friend) {
-    <app-user-card [data]="friend" type="inc_request"></app-user-card>
+    <app-user-card (onClick)="openProfileOf($event)" [data]="friend" type="inc_request"></app-user-card>
     }
     } @else if ( whatToShow == "requestsSent") {
     @for (friend of this.myReq; track friend) {

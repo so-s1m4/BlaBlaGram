@@ -35,6 +35,12 @@
     <div class="content" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; row-gap: .5rem;">
       <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
         (click)="openGallery(image.path)" />
+      <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
+        (click)="openGallery(image.path)" />
+      <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
+        (click)="openGallery(image.path)" />
+      <img class="photo-item" *ngFor="let image of (data.img || [])" [src]="image | img" alt="User photo"
+        (click)="openGallery(image.path)" />
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Posts'">

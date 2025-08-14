@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ImgPipe } from '@utils/img.pipe';
 import { SvgIconComponent } from '@utils/svg.component';
+import { Modal } from "@shared/common-ui/modal/modal";
 
 @Component({
   selector: 'app-photo-gallery',
-  imports: [ImgPipe, SvgIconComponent],
+  imports: [ImgPipe, SvgIconComponent, Modal],
   templateUrl: './photo-gallery.component.html',
   styleUrl: './photo-gallery.component.css',
 })
