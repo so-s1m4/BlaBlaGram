@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
     document.documentElement.style.setProperty('--primary-color', color);
   }
   resetMainColor() {
-    console.log('reset');
     localStorage.setItem('mainColor', '');
 
     document.documentElement.style.setProperty('--primary-color', '');
@@ -24,12 +23,5 @@ export class AppComponent implements OnInit {
     document.documentElement.style.setProperty('--primary-color', color);
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-    Notification.requestPermission().then((result) => {
-      console.log(result);
-    });
-
-    new Notification("BlaBlaGram", 
-      { body: "New message", icon: "" }
-    )
   }
 }

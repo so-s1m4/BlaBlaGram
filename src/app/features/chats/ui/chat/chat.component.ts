@@ -451,7 +451,6 @@ export class ChatComponent
     this.me = this.authService.me;
     this.chatData$ = chatData;
     this.scrollToBottom();
-    console.log(this.chatData$)
     this.friendsService.getFriendsList((friends: any) => {
       if (
         friends.list.find(

@@ -1,11 +1,11 @@
-
+<div class="header">.</div>
 <div class="item" *ngFor="let item of options">
   <svg [icon]="item.svg"></svg>
-  <h3>{{ item.label }}</h3>
+  <h2>{{ item.label }}</h2>
 </div>
 <div class="user item" *ngFor="let item of friends.list">
   <img class="avatar" [ngClass]="{
     'online': item.isOnline
   }" [src]="item.img[item.img.length - 1] | img">
-  <h4>{{ item.username }}</h4>
+  <h3>{{ item.username }}</h3>
 </div>

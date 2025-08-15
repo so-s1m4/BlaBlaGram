@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from './data/chats.service';
@@ -24,10 +24,12 @@ import { CreateModal } from './ui/create-modal/create-modal';
   styleUrl: './chats.component.css',
 })
 export class ChatsComponent implements OnInit {
+  @ViewChild('contextmenu') cm: any;
+
   stopPropagation(event: Event) {
-    event.stopPropagation()
+    event.stopPropagation();
   }
-  window: any;
+  window = window;
 
   router = inject(Router);
   aRoute = inject(ActivatedRoute);
@@ -40,7 +42,8 @@ export class ChatsComponent implements OnInit {
   showCreateModal = false;
 
   toggleCreateModal() {
-    this.showCreateModal = !this.showCreateModal;
+    if (this.window.isDesktop()) {
+    } else this.showCreateModal = !this.showCreateModal;
   }
 
   selectChat(chat: any) {
