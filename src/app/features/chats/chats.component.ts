@@ -8,7 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@shared/utils/svg.component';
 import { Modal } from '@shared/common-ui/modal/modal';
-import { CreateModal } from './ui/create-modal/create-modal';
+import { CreateModalPopUp } from './ui/create-space-pop-up-modal/create-space-pop-up-modal';
 
 @Component({
   selector: 'app-chats',
@@ -18,7 +18,7 @@ import { CreateModal } from './ui/create-modal/create-modal';
     CommonModule,
     SvgIconComponent,
     Modal,
-    CreateModal,
+    CreateModalPopUp,
   ],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
@@ -42,8 +42,7 @@ export class ChatsComponent implements OnInit {
   showCreateModal = false;
 
   toggleCreateModal() {
-    if (this.window.isDesktop()) {
-    } else this.showCreateModal = !this.showCreateModal;
+    this.showCreateModal = !this.showCreateModal;
   }
 
   selectChat(chat: any) {

@@ -4,6 +4,12 @@
     <div class="btn create" (click)="toggleCreateModal()">
       <svg icon="plus"></svg>
     </div>
+    <app-modal *ngIf="showCreateModal" (click)="toggleCreateModal()" [showBackdrop]="!window.isDesktop()"
+      [style]='"background: " + (window.isDesktop() ? "transparent" : "rgba(0,0,0,.4)")'>
+      <app-create-modal (click)="stopPropagation($event)">
+
+      </app-create-modal>
+    </app-modal>
   </div>
   <div class="chats-list">
     @for (chat of getChats; track chat.id) {
@@ -15,9 +21,3 @@
   *ngIf="isThisChatAtMe(currentChat)">
   <app-chat [chatId]="currentChat" (closeChat)="closeChat()"></app-chat>
 </div>
-
-<app-modal *ngIf="showCreateModal" (click)="toggleCreateModal()">
-  <app-create-modal (click)="stopPropagation($event)">
-
-  </app-create-modal>
-</app-modal>
