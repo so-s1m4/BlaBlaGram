@@ -29,8 +29,8 @@ import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.compone
 import { VideoMessageComponent } from '../video-message/video-message.component';
 import { InputFieldComponent } from '../input-field/input-field.component';
 import { max, reduce } from 'rxjs';
-import { Modal } from "@shared/common-ui/modal/modal";
-import { ProfileComponent } from "@features/profile/profile.component";
+import { Modal } from '@shared/common-ui/modal/modal';
+import { ProfileComponent } from '@features/profile/profile.component';
 
 @Component({
   selector: 'app-chat',
@@ -106,8 +106,8 @@ export class ChatComponent
   toggleChatsSettigns(): void {
     this.isChatsSettings = !this.isChatsSettings;
   }
-  toggleInfo(){
-    this.showInfo = !this.showInfo
+  toggleInfo() {
+    this.showInfo = !this.showInfo;
   }
   scrollToBottom(): void {
     const messagesHolder = document.getElementById('messages-holder');
@@ -451,33 +451,29 @@ export class ChatComponent
     this.me = this.authService.me;
     this.chatData$ = chatData;
     this.scrollToBottom();
-    this.friendsService.getFriendsList((friends: any) => {
-      if (
-        friends.list.find(
-          (item: any) => item.id == this.chatData$.chat.chat.friendId
-        )?.isOnline
-      ) {
-        this.isOnline = true;
-      } else {
-        this.isOnline = false;
-      }
-    });
-    this.webSocketService.on('friends:friendOnline', (data: any) => {
-      if (
-        data.userId == this.chatData$.chat.user1_id ||
-        data.userId == this.chatData$.chat.user2_id
-      ) {
-        this.isOnline = true;
-      }
-    });
-    this.webSocketService.on('friends:friendOffline', (data: any) => {
-      if (
-        data.userId == this.chatData$.chat.user1_id ||
-        data.userId == this.chatData$.chat.user2_id
-      ) {
-        this.isOnline = false;
-      }
-    });
+    if (chatData.chat.type == 'chat') {
+      this.friendsService.getFriendsList((friends: any) => {
+        if (
+          friends.list.find(
+            (item: any) => item.id == this.chatData$.chat.chat.friendId
+          )?.isOnline
+        ) {
+          this.isOnline = true;
+        } else {
+          this.isOnline = false;
+        }
+      });
+      this.webSocketService.on('friends:friendOnline', (data: any) => {
+        if (data.userId == this.chatData$.chat.chat.friendId) {
+          this.isOnline = true;
+        }
+      });
+      this.webSocketService.on('friends:friendOffline', (data: any) => {
+        if (data.userId == this.chatData$.chat.chat.friendId) {
+          this.isOnline = false;
+        }
+      });
+    }
   }
   loadChat() {
     if (!this.chatId) {
