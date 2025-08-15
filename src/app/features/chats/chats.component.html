@@ -6,7 +6,7 @@
     </div>
     <app-modal *ngIf="showCreateModal" (click)="toggleCreateModal()" [showBackdrop]="!window.isDesktop()"
       [style]='"background: " + (window.isDesktop() ? "transparent" : "rgba(0,0,0,.4)")'>
-      <app-create-modal (click)="stopPropagation($event)">
+      <app-create-modal (click)="stopPropagation($event)" (onClick)="toggleCreateModal()">
 
       </app-create-modal>
     </app-modal>

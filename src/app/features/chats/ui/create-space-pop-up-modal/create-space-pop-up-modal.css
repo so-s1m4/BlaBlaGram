@@ -13,12 +13,13 @@
   padding: 0.5rem;
   border-radius: 2rem;
 }
-
 .wrapper {
   width: fit-content;
   height: fit-content;
   display: flex;
   flex-direction: column;
+
+  gap: 1rem;
 }
 .item {
   min-width: fit-content;
@@ -39,37 +40,41 @@
     color: var(--primary-color);
   }
 }
-
 .avatar {
   height: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
 }
-
 .item:hover {
   background: var(--dark-gray-color);
 }
-@media (min-width: 1200px) {
-  :host:has(.wrapper.desktop) {
-    position: absolute;
-    top: 5%;
-    left: 23%;
-    transform: none;
-    border: 2px solid var(--dark-gray-color);
-  }
+:host {
+  position: absolute;
+  top: 5%;
+  left: 23%;
+  transform: none;
+  border: 2px solid var(--dark-gray-color);
+}
+.item.user, .header {
+  display: none;
 }
 @media (max-width: 1200px) {
-  :host:has(.wrapper.desktop) {
+  :host {
     position: absolute;
     top: 5%;
     right: 5%;
+    left: initial;
     transform: none;
     border: 2px solid var(--dark-gray-color);
+  }
+  .item.user {
+    display: flex;
   }
 }
 @media (max-width: 800px) {
   :host {
     top: 0;
+    right: 0;
     transform: none;
     width: 100vw;
     height: 100vh;
@@ -78,11 +83,9 @@
   }
   .item,.wrapper {
     width: 100%;
+    border-radius: 0;
   }
-  :host:has(.wrapper.desktop) {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: none;
+  .item.user, .header {
+    display: flex;
   }
 }

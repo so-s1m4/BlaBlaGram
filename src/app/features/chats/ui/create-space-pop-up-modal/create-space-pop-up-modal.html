@@ -1,23 +1,15 @@
-@if (window.isDesktop())
-{
-<div class="wrapper desktop">
-  <div class="item" *ngFor="let item of options">
-    <svg [icon]="item.svg"></svg>
-    <h4>{{ item.label }}</h4>
-  </div>
-</div>
-} @else {
 <div class="wrapper">
-  <div class="header">.</div>
-  <div class="item" *ngFor="let item of options">
-    <svg [icon]="item.svg"></svg>
-    <h2>{{ item.label }}</h2>
+  <div class="header">
+    <div class="item" (click)="onClick.emit()"><svg icon="arrowBack"></svg> <h2>Go Back</h2></div>
   </div>
-  <div class="user item" *ngFor="let item of friends.list">
+  <div class="item" *ngFor="let item of options" (click)="select(item.type)">
+    <svg [icon]="item.svg"></svg>
+    <h3>{{ item.label }}</h3>
+  </div>
+  <div class="user item" *ngFor="let item of friends.list" (click)="select(item.id)">
     <img class="avatar" [ngClass]="{
       'online': item.isOnline
     }" [src]="item.img[item.img.length - 1] | img">
     <h3>{{ item.username }}</h3>
   </div>
 </div>
-}
