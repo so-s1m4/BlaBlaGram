@@ -93,8 +93,8 @@ export class ChatComponent
   maxSeq: any;
 
   private chatData$: any;
-  @Input() chatId: string | undefined = '';
-  @Output('closeChat') close = new EventEmitter<void>();
+  chatId: string = '';
+
   @ViewChild(VideoMessageComponent)
   videoComp?: VideoMessageComponent;
   @ViewChild(InputFieldComponent) inputComp?: InputFieldComponent;
@@ -444,7 +444,7 @@ export class ChatComponent
   }
   // File
   goBack(): void {
-    this.close.emit();
+    this.route.navigate(["chats"])
   }
   // Chat data
   setChatData(chatData: any): void {
@@ -506,7 +506,11 @@ export class ChatComponent
   }
   // Lifecycle hooks
   ngOnInit(): void {
-    this.loadChat();
+    this.router.paramMap.subscribe((params) => {
+      const id = params.get('chatId');
+      this.chatId = id as string;
+      this.loadChat();
+    });
     this.webSocketService.on('communication:newMessage', (data: any) => {
       this.onNewMessage(data);
     });

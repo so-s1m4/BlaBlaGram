@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChatsService } from '@features/chats/data/chats.service';
 import { FriendsService } from '@features/friends/data/friends.service';
 import { ProfileService } from '@features/profile/data/profile.service';
 import { ImgPipe } from '@shared/utils/img.pipe';
@@ -34,17 +33,17 @@ export class CreateModalPopUp {
   router = inject(Router);
 
   friends = this.friendsService.friends;
-  type: string = '';
 
   @Output() onClick = new EventEmitter();
 
   select(option: string) {
     if (this.AVAILABLE_TYPES.includes(option)) {
-      console.log(option)
+      this.onClick.emit();
+      this.router.navigate(['/chats/create', option]);
     } else {
       this.profileService.openChat(option, (data: any) => {
-        this.onClick.emit()
-        this.router.navigate(['/chats'], { queryParams: { id: data.chat.id } });
+        this.onClick.emit();
+        this.router.navigate(['/chat', data.chat.id]);
       });
     }
   }

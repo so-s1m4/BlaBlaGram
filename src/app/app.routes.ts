@@ -8,6 +8,8 @@ import { FriendsComponent } from '@features/friends/friends.component';
 import { MobileGuard } from '@core/guards/mobile-guard.module';
 import { RegisterPage } from '@features/register/register.component';
 import { ProfileComponent } from '@features/profile/profile.component';
+import { ChatComponent } from '@features/chats/ui/chat/chat.component';
+import { CreateComponent } from '@features/chats/ui/create-component/create-component';
 
 export const routes: Routes = [
   {
@@ -25,13 +27,22 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: ChatsComponent,
+        redirectTo: 'chats',
         pathMatch: 'full',
       },
       {
         path: 'chats',
-        redirectTo: '',
-        pathMatch: 'full',
+        component: ChatsComponent,
+        children: [
+          {
+            path: ':chatId',
+            component: ChatComponent,
+          },
+          {
+            path: "create/:type",
+            component: CreateComponent
+          }
+        ],
       },
       {
         path: 'friends',

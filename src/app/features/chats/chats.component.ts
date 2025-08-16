@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, createEnvironmentInjector, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from './data/chats.service';
@@ -14,11 +14,11 @@ import { CreateModalPopUp } from './ui/create-space-pop-up-modal/create-space-po
   selector: 'app-chats',
   imports: [
     ChatPreviewComponent,
-    ChatComponent,
     CommonModule,
     SvgIconComponent,
     Modal,
     CreateModalPopUp,
+    RouterOutlet,
   ],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
@@ -35,8 +35,6 @@ export class ChatsComponent implements OnInit {
   aRoute = inject(ActivatedRoute);
   webSocketService = inject(WebSocketService);
 
-  currentChat: any = null;
-
   private chats: any[] = [];
   chatsService = inject(ChatsService);
   showCreateModal = false;
@@ -46,30 +44,22 @@ export class ChatsComponent implements OnInit {
   }
 
   selectChat(chat: any) {
-    this.currentChat = chat.id;
-
-    this.router.navigate(['chats'], {
-      queryParams: { id: this.currentChat },
-    });
+    this.router.navigate(['chats', chat.id]);
   }
   closeChat() {
-    this.currentChat = null;
-    this.router.navigate(['chats']);
+    this.router.navigate(['']);
   }
   setChats(chats: any[]) {
     this.chats = chats;
   }
   ngOnInit(): void {
     this.chatsService.chats(this.setChats.bind(this));
-    this.aRoute.queryParamMap.subscribe((params) => {
-      this.currentChat = params.get('id')?.trim();
-    });
+    // this.aRoute.queryParamMap.subscribe((params) => {
+    //   this.currentChat = params.get('id')?.trim();
+    // });
     this.webSocketService.on('space:addedToNew', (data: any) => {
       this.chatsService.chats(this.setChats.bind(this));
     });
-  }
-  isThisChatAtMe(chatId: string) {
-    return !!this.chats.find((item) => item.id == chatId);
   }
   get getChats(): any[] {
     return this.chats;
