@@ -4,7 +4,7 @@
     <div class="item" style="color: var(--primary-color);" (click)="goBack()">
       <svg icon="arrowBack"></svg>Back
     </div>
-    <div class="item">
+    <div class="item column-800px">
       <h3>Select Users</h3>
       <p>{{selected.length}} / 200 000</p>
     </div>
@@ -61,8 +61,8 @@
     </div>
   </div>
 </div>
-<form class="content" style="gap: 3rem;" [formGroup]="values">
-  <div class="content item" style="flex-direction: row;">
+<form class="content" style="gap: 1rem;" [formGroup]="values">
+  <div class="content item" style="flex-direction: row; justify-content: flex-start;">
     <div class="selectImg">
       <label #label for="inputImg" class="upload" [ngClass]="{ selected: values.get('img')?.value }">
         <svg icon="camera"></svg>
@@ -72,6 +72,7 @@
     <div><input type="text" [placeholder]="type + ' Name'" style="text-transform: capitalize; font-size: 1.5rem;"
         formControlName="title"></div>
   </div>
+  <div class="line"></div>
   @if (type=="group") {
   <div class="content item">
     <div class="user-select item" (click)="goBack()">

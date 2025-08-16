@@ -31,6 +31,7 @@ import { InputFieldComponent } from '../input-field/input-field.component';
 import { max, reduce } from 'rxjs';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
+import { SpaceInfoComponent } from "../space-info-component/space-info";
 
 @Component({
   selector: 'app-chat',
@@ -46,7 +47,8 @@ import { ProfileComponent } from '@features/profile/profile.component';
     InputFieldComponent,
     Modal,
     ProfileComponent,
-  ],
+    SpaceInfoComponent
+],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })

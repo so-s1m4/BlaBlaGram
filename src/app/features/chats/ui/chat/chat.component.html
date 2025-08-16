@@ -39,7 +39,7 @@
 } @else if (this.chatData.chat.type == 'group') {
   <app-modal *ngIf="showInfo" (click)="toggleInfo()">
     <div class="info-container" (click)="stopPropagation($event)">
-      <app-profile [username]="this.chatData.chat.chat.friendId"></app-profile>
+      <app-space-info [id]="this.chatData.chat.id"></app-space-info>
     </div>
   </app-modal>
 }
@@ -51,7 +51,7 @@
 
 
   @for (message of this.chatData.messages; track message.id; let last = $last) {
-  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode" [showSender]="chatData.chat.type == 'group'"
     (openMedia)="openMedia(message.id)" [data]="message" [isSender]="message.sender.id !== me?.id"
     (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)" (scrollToMsg)="scrollToMsg($event)">
   </app-message>

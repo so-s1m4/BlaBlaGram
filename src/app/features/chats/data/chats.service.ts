@@ -4,6 +4,7 @@ import { WebSocketService } from '../../../core/services/web-socket.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { API_URL } from '../../../app.config';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { Router } from '@angular/router';
 
 function base64ToBlob(base64Data: string, contentType = 'image/png'): Blob {
   const byteCharacters = atob(base64Data.split(',')[1]);
@@ -36,6 +37,7 @@ export class ChatsService implements OnInit {
   httpClient = inject(HttpClient);
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   toggleEmoji(communicationId: string, emojiId: string) {
     this.webSocketService.send(
@@ -290,6 +292,21 @@ export class ChatsService implements OnInit {
             messages: data,
           });
         } else {
+          this.router.navigate(['chats']);
+          console.error('Error receiving chats:', err);
+        }
+      }
+    );
+  }
+  getInfoAboutChat(chatId: string, callback?: any) {
+    this.webSocketService.send(
+      'spaces:getInfo',
+      { spaceId: chatId },
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          callback(res);
+        } else {
+          this.router.navigate(['chats', chatId]);
           console.error('Error receiving chats:', err);
         }
       }
@@ -304,8 +321,23 @@ export class ChatsService implements OnInit {
 
   // Spaces
   createSpace(type: string, args: any) {
-    if (type == "group") {
-      console.log(args)
+    if (type == 'group') {
+      console.log(type, args);
+
+      this.webSocketService.send(
+        'spaces:group:create',
+        {
+          title: args.title,
+          members: [...args.selected.map((item: any) => item.id)],
+        },
+        (ok: any, error: any, result: any) => {
+          if (ok) {
+            console.log('Успіх:', result);
+          } else {
+            console.error('Помилка:', error);
+          }
+        }
+      );
     }
   }
   deleteChat(chatId: string): void {
@@ -325,6 +357,9 @@ export class ChatsService implements OnInit {
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           this.chats$ = res;
+          this.chats$.sort((a, b) => {
+            return -(a.updatedAt as string).localeCompare(b.updatedAt);
+          });
           callback?.(this.chats$);
         } else {
           console.error('Error receiving chats:', err);

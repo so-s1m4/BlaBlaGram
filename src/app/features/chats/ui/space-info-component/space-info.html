@@ -1,0 +1,31 @@
+@if (!data) {
+<p>Loading...</p>
+} @else {
+
+<div class="wrapper">
+  <div class="header">
+    <div class="background"></div>
+    <div class="avatar">
+      <img [src]="(data.img[data.img.length-1] || null) | img" alt="User avatar" [ngClass]="{
+        'online': data.isOnline
+      }" />
+    </div>
+    <div class="info"><h5>{{ data.title }}</h5> <p>{{ data.memberCount }} members</p></div>
+  </div>
+
+  <div class="nav" role="tablist" aria-label="Profile sections">
+    @for (navItem of navPanel; track navItem.label){
+    <button *ngIf="navItem.guard" type="button" class="navItem" role="tab"
+      [attr.aria-selected]="navItem.label === selectedNav" [ngClass]="{ 'selected': navItem.label === selectedNav }"
+      (click)="changeTo(navItem.label)">
+      {{ navItem.label }}
+      <div class="line"></div>
+    </button>
+    }
+  </div>
+  <ng-container>
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    </div>
+  </ng-container>
+</div>
+}

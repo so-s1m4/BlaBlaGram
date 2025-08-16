@@ -231,7 +231,13 @@ input[type="checkbox"]:disabled {
 .primary-color {
   color: var(--primary-color);
 }
-
+@media (max-width: 800px) {
+  .column-800px {
+    display: flex;
+    flex-direction: column;
+    gap: 0 !important;
+  }
+}
 @media (max-width: 800px) {
   h1 {
     font-size: 2rem;
@@ -239,15 +245,15 @@ input[type="checkbox"]:disabled {
 }
 @media (prefers-color-scheme: light) {
   :root {
-  --dark-color: #f9f9f9; /* was darkest, now lightest background */
-  --light-color: #101010; /* was light, now dark text */
-  --primary-color: #8bbd1f; /* slightly deeper green for contrast on light bg */
-  --secondary-color: #ffffff; /* secondary background lighter */
-  --darker-gray-color: #e5e5e5;
-  --dark-gray-color: #cccccc;
-  --gray-color: #999999;
-  --lightgray-color: #777777;
-}
+    --dark-color: #f9f9f9; /* was darkest, now lightest background */
+    --light-color: #101010; /* was light, now dark text */
+    --primary-color: #8bbd1f; /* slightly deeper green for contrast on light bg */
+    --secondary-color: #ffffff; /* secondary background lighter */
+    --darker-gray-color: #e5e5e5;
+    --dark-gray-color: #cccccc;
+    --gray-color: #999999;
+    --lightgray-color: #777777;
+  }
 
   .btn {
     cursor: pointer;
@@ -310,7 +316,6 @@ input[type="checkbox"]:disabled {
 
   top: calc(100svh - (40svh + 6svh + 48svh));
 }
-
 
 @media (max-width: 1000px) {
   .info-container {

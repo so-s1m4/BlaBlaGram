@@ -2,9 +2,7 @@ import { Component, createEnvironmentInjector, inject, OnInit, ViewChild } from 
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from './data/chats.service';
-import { ChatComponent } from './ui/chat/chat.component';
 import { WebSocketService } from '../../core/services/web-socket.service';
-import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@shared/utils/svg.component';
 import { Modal } from '@shared/common-ui/modal/modal';
@@ -38,6 +36,7 @@ export class ChatsComponent implements OnInit {
   private chats: any[] = [];
   chatsService = inject(ChatsService);
   showCreateModal = false;
+  hasChildRoute = false;
 
   toggleCreateModal() {
     this.showCreateModal = !this.showCreateModal;

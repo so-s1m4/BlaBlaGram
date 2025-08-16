@@ -135,7 +135,7 @@ input {
 }
 
 .selectImg {
-  width: 4rem;
+  min-width: 4rem;
   height: 4rem;
   border-radius: 50%;
   border: 2px solid var(--gray-color);
@@ -177,4 +177,20 @@ input {
 
 img {
   aspect-ratio: 1 / 1;
+}
+
+
+@media (max-width: 800px) {
+  .item.content {
+    width: 100%;
+  }
+  .content:has(.content.item) {
+    background: var(--secondary-color);
+    gap: 1rem;
+  }
+  .line {
+    width: 100%;
+    height: 1px;
+    background: var(--gray-color);
+  }
 }
