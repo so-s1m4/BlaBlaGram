@@ -1,1 +1,101 @@
-<p>create-component works!</p>
+@if (step == 0) {
+<div class="header">
+  <div class="row" style="justify-content: space-between;">
+    <div class="item" style="color: var(--primary-color);" (click)="goBack()">
+      <svg icon="arrowBack"></svg>Back
+    </div>
+    <div class="item">
+      <h3>Select Users</h3>
+      <p>{{selected.length}} / 200 000</p>
+    </div>
+    <div class="item" style="color: var(--primary-color);" (click)="goForward()">
+      Next
+    </div>
+  </div>
+  <div class="line"></div>
+  <div class="row">
+    <div class="wrapper" style="background: var(--dark-gray-color);">
+      <div class="selected-users">
+        <div class="user item" *ngFor="let user of selected">
+          {{ user.username }}
+          <div class="toggleBtn" (click)="toggleSelect(user)">
+            <svg icon="plus" style="transform: rotate(45deg);"></svg>
+          </div>
+        </div>
+      </div>
+      <input (input)="onInput($event)" type="text" placeholder="Who would you like to add?">
+    </div>
+  </div>
+</div>
+<div class="content">
+  <div class="user-select item" *ngFor="let friend of friends">
+    <img class="avatar" [src]="friend.img[friend.img.length-1] | img">
+    <div class="holder">
+      <div class="info">
+        <div class="nickname">
+          {{ friend.username }}
+        </div>
+        <div class="wasRecently">
+          {{ 'was recently' }}
+        </div>
+      </div>
+      <div class="selectBtn" (click)="toggleSelect(friend)">
+        <input type="checkbox"
+          [checked]="isChecked(friend)">
+      </div>
+      <div class="line"></div>
+    </div>
+  </div>
+</div>
+} @else if (step==1) {
+<div class="header">
+  <div class="row" style="justify-content: space-between;">
+    <div class="item" style="color: var(--primary-color);" (click)="goBack()">
+      <svg icon="arrowBack"></svg>Back
+    </div>
+    <div class="item" style="text-transform: capitalize;">
+      New {{type}}
+    </div>
+    <div class="item" style="color: var(--primary-color);" (click)="goForward()">
+      Create
+    </div>
+  </div>
+</div>
+<form class="content" style="gap: 3rem;" [formGroup]="values">
+  <div class="content item" style="flex-direction: row;">
+    <div class="selectImg">
+      <label #label for="inputImg" class="upload" [ngClass]="{ selected: values.get('img')?.value }">
+        <svg icon="camera"></svg>
+      </label> <input (change)="onFileSelected($event)" type="file" id="inputImg" accept="image/*" formControlName="img"
+        hidden>
+    </div>
+    <div><input type="text" [placeholder]="type + ' Name'" style="text-transform: capitalize; font-size: 1.5rem;"
+        formControlName="title"></div>
+  </div>
+  @if (type=="group") {
+  <div class="content item">
+    <div class="user-select item" (click)="goBack()">
+      <svg icon="addMember"></svg> Edit members
+    </div>
+    <div class="user-select item" *ngFor="let user of selected">
+      <img class="avatar" [src]="user.img | img">
+      <div class="holder">
+        <div class="info">
+          <div class="nickname">
+            {{ user.username }}
+          </div>
+          <div class="wasRecently">
+            {{ 'was recently' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else {
+    <div class="content item" style="flex-direction: row;">
+      <div><input type="text" placeholder="Description" style="text-transform: capitalize; font-size: 1rem;"
+          formControlName="title"></div>
+    </div>
+  }
+</form>
+}

@@ -278,19 +278,6 @@ export class ChatsService implements OnInit {
   chats(callback?: (chats: any[]) => void): void | any[] {
     this.updateChats(callback);
   }
-  updateChats(callback?: any) {
-    this.webSocketService.send(
-      'spaces:getList',
-      (ok: boolean, err: string, res: any) => {
-        if (ok) {
-          this.chats$ = res;
-          callback?.(this.chats$);
-        } else {
-          console.error('Error receiving chats:', err);
-        }
-      }
-    );
-  }
   getChatById(chatId: string, callback: any): void {
     this.webSocketService.send(
       'communication:getList',
@@ -308,6 +295,19 @@ export class ChatsService implements OnInit {
       }
     );
   }
+  selectChat(chatId: string): void {
+    this.currentChatId$ = chatId;
+  }
+  get currentChatId(): string | null {
+    return this.currentChatId$;
+  }
+
+  // Spaces
+  createSpace(type: string, args: any) {
+    if (type == "group") {
+      console.log(args)
+    }
+  }
   deleteChat(chatId: string): void {
     this.webSocketService.send(
       'spaces:delete',
@@ -319,13 +319,19 @@ export class ChatsService implements OnInit {
       }
     );
   }
-  selectChat(chatId: string): void {
-    this.currentChatId$ = chatId;
+  updateChats(callback?: any) {
+    this.webSocketService.send(
+      'spaces:getList',
+      (ok: boolean, err: string, res: any) => {
+        if (ok) {
+          this.chats$ = res;
+          callback?.(this.chats$);
+        } else {
+          console.error('Error receiving chats:', err);
+        }
+      }
+    );
   }
-  get currentChatId(): string | null {
-    return this.currentChatId$;
-  }
-
   // Hooks
   ngOnInit(): void {
     this.chats();

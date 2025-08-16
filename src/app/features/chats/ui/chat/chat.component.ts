@@ -55,14 +55,14 @@ export class ChatComponent
 {
   API_URL = API_URL;
   URL = URL;
-  constructor(private router: ActivatedRoute) {}
+  constructor(private aRoute: ActivatedRoute) {}
 
   layout = inject(LayoutComponent);
   chatService = inject(ChatsService);
   webSocketService = inject(WebSocketService);
   friendsService = inject(FriendsService);
   authService = inject(AuthService);
-  route: Router = inject(Router);
+  router: Router = inject(Router);
 
   contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
   contextMenuStyle: {
@@ -444,7 +444,7 @@ export class ChatComponent
   }
   // File
   goBack(): void {
-    this.route.navigate(["chats"])
+    this.router.navigate(['chats']);
   }
   // Chat data
   setChatData(chatData: any): void {
@@ -506,7 +506,7 @@ export class ChatComponent
   }
   // Lifecycle hooks
   ngOnInit(): void {
-    this.router.paramMap.subscribe((params) => {
+    this.aRoute.paramMap.subscribe((params) => {
       const id = params.get('chatId');
       this.chatId = id as string;
       this.loadChat();

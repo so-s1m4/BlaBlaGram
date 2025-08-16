@@ -56,7 +56,7 @@
             style="display: grid; grid-template-columns: 6rem calc(100% - 6rem); padding-left: 1rem; align-items: center; justify-items: start;">
             <label #label for="uploadAvatar" class="upload" style="left: initial; transform: initial;"
               [ngClass]="{ selected: settingsFormGroup.get('img')?.value }">
-              <svg icon="plus"></svg>
+              <svg icon="camera"></svg>
             </label>
             <input hidden id="uploadAvatar" type="file" accept="image/*" formControlName="img"
               (change)="onFileSelected($event)" />
