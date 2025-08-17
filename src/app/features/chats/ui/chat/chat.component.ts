@@ -1,14 +1,10 @@
 import {
-  AfterContentChecked,
   AfterContentInit,
   Component,
-  EventEmitter,
   inject,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
