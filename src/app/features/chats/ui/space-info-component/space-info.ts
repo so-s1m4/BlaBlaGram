@@ -24,6 +24,8 @@ import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.componen
 import { Subject, takeUntil } from 'rxjs';
 import { AppComponent } from 'app/app.component';
 import { ChatsService } from '@features/chats/data/chats.service';
+import { Modal } from "@shared/common-ui/modal/modal";
+import { ProfileComponent } from "@features/profile/profile.component";
 
 @Component({
   selector: 'app-space-info',
@@ -33,7 +35,10 @@ import { ChatsService } from '@features/chats/data/chats.service';
     ReactiveFormsModule,
     SvgIconComponent,
     PhotoGalleryComponent,
-  ],
+    Modal,
+    ProfileComponent,
+    ReactiveFormsModule
+],
   templateUrl: './space-info.html',
   styleUrl: './space-info.css',
 })
@@ -45,6 +50,16 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
   navPanel: { label: string; guard: boolean }[] = [];
 
   data: any = undefined;
+
+
+  showProfile = ""
+
+  settingsFrom = new FormGroup({
+    img: new FormControl(),
+    title: new FormControl(),
+    description: new FormControl()
+  })
+
 
   changeTo(page: string) {
     // narrow to allowed tabs only
@@ -61,7 +76,6 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
       { label: 'Settings', guard: true },
     ];
   }
-
   ngOnInit(): void {
     this.chatsService.getInfoAboutChat(this.id, (data: any) => {
       this.data = data;

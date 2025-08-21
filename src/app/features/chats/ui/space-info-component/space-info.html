@@ -10,7 +10,10 @@
         'online': data.isOnline
       }" />
     </div>
-    <div class="info"><h5>{{ data.title }}</h5> <p>{{ data.memberCount }} members</p></div>
+    <div class="info">
+      <h5>{{ data.title }}</h5>
+      <p>{{ data.memberCount }} members</p>
+    </div>
   </div>
 
   <div class="nav" role="tablist" aria-label="Profile sections">
@@ -23,9 +26,44 @@
     </button>
     }
   </div>
-  <ng-container>
-    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+  <ng-container *ngIf="selectedNav == 'Members'">
+    <div class="members content" style="padding-top: .5rem;">
+      <div class="user item" (click)="showProfile = ''"><img src="" alt="" class="avatar-mini">
+        <div class="row">
+          <div class="name">S1M4</div>
+          <p class="role">owner</p>
+          <div class="line"></div>
+        </div>
+      </div>
+    </div>
+    <app-modal *ngIf="showProfile">
+      <app-profile [username]="showProfile"></app-profile>
+    </app-modal>
+  </ng-container>
+  <ng-container *ngIf="selectedNav == 'Settings'">
+    <div class="settings content" style="gap: .5rem; padding-top: .5rem;">
+      <form [formGroup]="settingsFrom">
+        <h2>Main Settings</h2>
+        <div class="row">
+
+          <div class="holderInputImg">
+            <label for="uploadPhoto" class="upload">
+              <svg icon="plus"></svg>
+            </label>
+            <input type="file" id="uploadPhoto" hidden>
+          </div>
+          <div class="holder">
+            <input type="text" placeholder="Title" formControlName="title" />
+            <textarea placeholder="Description" formControlName="description"></textarea>
+          </div>
+        </div>
+        <button class="btn">Save</button>
+      </form>
     </div>
   </ng-container>
+  <!-- <ng-container *ngIf="selectedNav != 'Members'">
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    </div>
+  </ng-container> -->
 </div>
 }
