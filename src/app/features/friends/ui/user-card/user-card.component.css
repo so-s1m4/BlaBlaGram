@@ -31,6 +31,8 @@
 .name {
   color: var(--lightgray-color);
   text-align: center;
+
+  font-size: .8rem;
 }
 .actionBtns {
   display: flex;
@@ -75,8 +77,18 @@
 }
 .actionBtns {
   display: flex;
+  gap: 2rem;
 }
 .actionBtns button {
+  border: 0;
+
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    background: transparent;
+  }
+
   svg {
     color: inherit;
     padding: 0;

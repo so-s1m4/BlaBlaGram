@@ -5,6 +5,7 @@
   height: fit-content;
   gap: 1rem;
 
+  padding: 0;
   position: relative;
 }
 .message-sender {
@@ -19,7 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: 60%;
+  max-width: 450px;
   height: fit-content;
   background: var(--secondary-color);
   padding: 1rem;
@@ -234,3 +235,5 @@
     height: auto;
   }
 }
+
+

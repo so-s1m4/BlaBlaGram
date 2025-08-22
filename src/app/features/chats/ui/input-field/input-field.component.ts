@@ -74,6 +74,11 @@ export class InputFieldComponent {
   }
   onKeyPress(event: any): void {
     this.value = event.currentTarget.value;
+    
+    event.currentTarget.style.height = 'auto'; // reset to shrink if needed
+    event.currentTarget.style.height = event.currentTarget.scrollHeight + 'px'; // set height to content
+
+
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       if (this.editMode) {

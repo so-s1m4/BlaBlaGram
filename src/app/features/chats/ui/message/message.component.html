@@ -101,7 +101,7 @@
         {{ this.repliedOn.sender.username }}
       </div>
       <div class="replied-on-text">
-        {{ this.repliedOn.text }}
+        {{ this.repliedOn.text || `${this.repliedOn.media.length} Medias` }}
       </div>
     </div>
     }

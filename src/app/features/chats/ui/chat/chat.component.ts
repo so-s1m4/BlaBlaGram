@@ -27,7 +27,7 @@ import { InputFieldComponent } from '../input-field/input-field.component';
 import { max, reduce } from 'rxjs';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
-import { SpaceInfoComponent } from "../space-info-component/space-info";
+import { SpaceInfoComponent } from '../space-info-component/space-info';
 
 @Component({
   selector: 'app-chat',
@@ -43,8 +43,8 @@ import { SpaceInfoComponent } from "../space-info-component/space-info";
     InputFieldComponent,
     Modal,
     ProfileComponent,
-    SpaceInfoComponent
-],
+    SpaceInfoComponent,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
@@ -122,7 +122,11 @@ export class ChatComponent
     element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  onStopRecord(videoDataBLOB: Blob) {
+  onStopRecord(videoDataBLOB: Blob | 'error') {
+    if (videoDataBLOB == 'error') {
+      this.isRecordVM = false;
+      return;
+    }
     this.chatService.sendVideoMessage(this.chatData$.chat.id, videoDataBLOB);
   }
   async toggleRecVideoMsg() {
@@ -477,6 +481,15 @@ export class ChatComponent
     if (!this.chatId) {
       return;
     }
+    this.msgIdOverCM = '';
+    this.isSelectMode = false;
+    this.isOnline = false;
+    this.isRecordVM = false;
+    this.isChatsSettings = false;
+    this.showInfo = false;
+
+    if (this.inputComp) this.inputComp.repliedOn = '';
+
     this.chatService.selectChat(this.chatId!);
     this.chatService.getChatById(this.chatId, (data: any) =>
       this.setChatData(data)

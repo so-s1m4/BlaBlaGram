@@ -24,7 +24,7 @@
       Reply to {{this.repliedOn.sender.username}}
     </div>
     <div class="reply-to-text">
-      {{this.repliedOn.text}}
+      {{this.repliedOn.text || `${this.repliedOn.media.length} Medias` }}
     </div>
   </div>
 
@@ -32,7 +32,7 @@
       style="transform: rotate(45deg);"></svg></button>
 </div>
 }
-<div class="attachFileBtn">
+<div class="attachFileBtn btn">
   <label for="files-input" class="btn attachFile">
     <svg icon="attach"></svg>
   </label>
@@ -49,15 +49,14 @@
   display: isRecording && isVoice ? 'flex' : 'none'
 }"></app-audio-message>
 
-
 @if (isVoice){
-<button id="send-btn" class="btn" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
+<button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
   (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
   *ngIf="!this.value.length && !this.filesList.length">
   <svg icon="microphone"></svg>
 </button>
 } @else {
-<button id="send-btn" class="btn" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
+<button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
   (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
   *ngIf="!this.value.length && !this.filesList.length">
   <svg icon="camera"></svg>

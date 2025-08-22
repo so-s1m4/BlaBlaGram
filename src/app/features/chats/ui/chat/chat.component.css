@@ -3,8 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-
   background: var(--dark-color);
+  align-items: center;
   position: relative;
 }
 
@@ -118,6 +118,9 @@
 
   padding: 0 1rem;
   padding-top: 2rem;
+
+  padding-left: 10%;
+  padding-right: 10%;
   overflow-y: auto;
 
   padding-bottom: 3rem;
@@ -129,11 +132,25 @@
 
 .input-holder {
   display: flex;
+  flex-direction: column;
 
+  align-items: center;
   width: 100%;
-  min-height: 5%;
-  background: var(--secondary-color);
+
   position: relative;
+  gap: 2rem;
+  padding: 1rem 0;
+
+  background: transparent;
+
+  .line {
+    position: absolute;
+    top: 0;
+    width: 82%;
+    height: 2px;
+    background: transparent;
+    box-shadow: 0 -5px 5px var(--light-color);
+  }
 }
 
 .btn.back {
@@ -177,5 +194,12 @@
       width: 1.5rem;
       height: 1.5rem;
     }
+  }
+  .messages-holder {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .input-holder .line {
+    display: none;
   }
 }

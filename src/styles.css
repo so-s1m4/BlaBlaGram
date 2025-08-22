@@ -174,7 +174,7 @@ input[type="checkbox"] {
   width: 1.15em;
   height: 1.15em;
   border: 0.15em solid currentColor;
-  border-radius: 0.15em;
+  border-radius: 50%;
   transform: translateY(-0.075em);
 
   display: grid;
@@ -192,6 +192,10 @@ input[type="checkbox"]::before {
   box-shadow: inset 1em 1em var(--light-color);
   /* Windows High Contrast Mode */
   background-color: CanvasText;
+}
+input[type="checkbox"]:checked {
+  background: var(--primary-color);
+  transform: scale(1.05);
 }
 
 input[type="checkbox"]:checked::before {
@@ -317,7 +321,7 @@ input[type="checkbox"]:disabled {
   top: calc(100svh - (40svh + 6svh + 48svh));
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .info-container {
     width: 80vw;
     top: calc(100svh - (40svh + 6svh + 48svh));

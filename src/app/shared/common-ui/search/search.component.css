@@ -6,23 +6,44 @@
   max-width: 100%;
 
   color: var(--primary-color);
+
+  background: var(--secondary-color);
+
+  padding: .5rem;
+  position: relative;
 }
 
 .input.search {
   width: 100%;
   height: 100%;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn.search {
   height: 100%;
-  width: 10rem;
-  max-width: 25%;
+  width: fit-content;
+  padding: 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 0;
+  color: var(--light-color);
 
   svg {
+    color: currentColor;
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  &:hover {
     color: var(--primary-color);
+    background: transparent;
   }
 }

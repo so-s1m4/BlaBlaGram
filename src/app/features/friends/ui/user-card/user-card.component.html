@@ -40,7 +40,8 @@
     <input id="message-req-input" placeholder="Some message?"
       style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100" />
     }
-    <button class="btn btn-primary" (click)="sendRequest()" [disabled]="isSent">
+    <button class="btn btn-primary" style="border: 2px solid var(--primary-color); padding: .5rem 1rem;"
+      (click)="sendRequest()" [disabled]="isSent">
       <svg icon="repost"></svg>
       {{isSent ? "Sent" : "Send request"}}
     </button>

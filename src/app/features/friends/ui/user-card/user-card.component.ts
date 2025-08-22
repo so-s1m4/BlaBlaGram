@@ -50,7 +50,7 @@ export class UserCardComponent implements OnInit {
   }
   openChat() {
     this.profileService.openChat(this.data.id, (data: any) => {
-      this.router.navigate(['/chats'], { queryParams: { id: data.chat.id } });
+      this.router.navigate(['/chats',data.chat.id]);
     });
   }
   sendRequest() {
