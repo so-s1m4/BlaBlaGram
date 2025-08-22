@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatsService } from '@features/chats/data/chats.service';
@@ -96,6 +97,8 @@ export class ChatComponent
   @ViewChild(VideoMessageComponent)
   videoComp?: VideoMessageComponent;
   @ViewChild(InputFieldComponent) inputComp?: InputFieldComponent;
+
+  @ViewChildren('video') videos: any;
 
   // Actions
   toggleSelectMode(): void {
@@ -567,7 +570,20 @@ export class ChatComponent
     this.chatService.selectChat('');
   }
   ngAfterContentInit(): void {
-    this.scrollToBottom();
+    setTimeout(this.scrollToBottom.bind(this), 600);
+    setTimeout(() => {
+      const videos = document.querySelectorAll('video');
+
+      videos.forEach((video) => {
+        video.addEventListener('play', () => {
+          videos.forEach((otherVideo) => {
+            if (otherVideo !== video) {
+              otherVideo.pause();
+            }
+          });
+        });
+      });
+    }, 3000);
   }
   get chatData(): any {
     return this.chatData$;

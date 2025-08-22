@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
-import { MediaPipe } from "@utils/media.pipe";
+import { MediaPipe } from '@utils/media.pipe';
 
 @Component({
   selector: 'app-media-preview',
@@ -121,8 +121,15 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
     if (!el) return;
     if (el.paused) {
       const p = el.play();
+      el.classList.add('playing');
+      el.onended = () => {
+        el.classList.remove('playing');
+      };
+      el.onpause = () => {
+        el.classList.remove('playing');
+      };
       if (p && typeof (p as any).then === 'function') {
-        (p as Promise<void>).catch(err => {
+        (p as Promise<void>).catch((err) => {
           console.warn('Playback failed:', err);
         });
       }
