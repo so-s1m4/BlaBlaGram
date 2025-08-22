@@ -327,3 +327,9 @@ input[type="checkbox"]:disabled {
     top: calc(100svh - (40svh + 6svh + 48svh));
   }
 }
+@media (max-width: 800px) {
+  .info-container {
+    width: 100vw;
+    top: calc(100svh - (25svh + 6svh + 48svh));
+  }
+}
