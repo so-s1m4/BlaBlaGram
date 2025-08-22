@@ -117,10 +117,17 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
   }
 
   playPause() {
-    if (this.video.nativeElement.paused) {
-      this.video.nativeElement.play();
+    const el = this.video?.nativeElement;
+    if (!el) return;
+    if (el.paused) {
+      const p = el.play();
+      if (p && typeof (p as any).then === 'function') {
+        (p as Promise<void>).catch(err => {
+          console.warn('Playback failed:', err);
+        });
+      }
     } else {
-      this.video.nativeElement.pause();
+      el.pause();
     }
   }
 }

@@ -1,7 +1,7 @@
 @if (this.imageToShow && this.imageToShow[0].type == "video_message"){
 <div class="wrapperVM">
-  <video preload="metadata" #video 
-    [playsInline]="true" (click)="playPause()">
+  <video preload="metadata" #video [playsInline]="true" playsinline webkit-playsinline [attr.playsinline]="''"
+    [attr.webkit-playsinline]="''" [attr.crossorigin]="'anonymous'" (click)="playPause()">
     <source [src]="this.imageToShow[0] | media" [type]="this.imageToShow[0].mime">
     Ваш браузер не поддерживает видео
   </video>
@@ -10,12 +10,11 @@
 <div #holder id="holder" class="holder" (click)="openMedia.emit()">
   @for (media of this.imageToShow; track media.id) {
   @if (media.mime.startsWith('image/')) {
-  <img class="media-item" [src]="media | media"
-    [ngStyle]="{'grid-area': media.gridArea}" />
+  <img class="media-item" [src]="media | media" [ngStyle]="{'grid-area': media.gridArea}" />
   } @else {
   <div class="media-item" [ngStyle]="{'grid-area': media.gridArea, 'position': 'relative'}">
-    <video [src]="media | media"
-      style="width: 100%; height: 100%; display: block; object-fit: cover; filter: blur(2px)" muted></video>
+    <video [src]="media | media" style="width: 100%; height: 100%; display: block; object-fit: cover; filter: blur(2px)"
+      muted></video>
     <svg icon="video"
       style="color: var(--dark-color); width: 3rem; height: 3rem; z-index: 3; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;"></svg>
   </div>
