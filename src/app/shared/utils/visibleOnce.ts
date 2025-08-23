@@ -11,7 +11,7 @@ import {
   selector: '[appOnVisibleOnce]',
 })
 export class OnVisibleOnceDirective implements AfterViewInit, OnDestroy {
-  @Output() visibleOnce = new EventEmitter<void>();
+  @Output() visibleOnce = new EventEmitter<HTMLElement>();
   private observer?: IntersectionObserver;
 
   constructor(private el: ElementRef) {}
@@ -21,7 +21,7 @@ export class OnVisibleOnceDirective implements AfterViewInit, OnDestroy {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            this.visibleOnce.emit();
+            this.visibleOnce.emit(this.el.nativeElement);
             this.observer?.unobserve(this.el.nativeElement); // stop after first trigger
           }
         });

@@ -119,6 +119,7 @@ export class ChatComponent
     }
   }
   scrollToMsg(msgId: string) {
+    this.showInfo = false;
     const element = document.getElementById(msgId) as HTMLElement;
     element.classList.add('flash-highlight');
     setTimeout(() => element.classList.remove('flash-highlight'), 1500);

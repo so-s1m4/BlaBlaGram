@@ -26,12 +26,35 @@
     </button>
     }
   </div>
+  <ng-container *ngIf="selectedNav == 'Media'">
+    <div class="content media">
+      @for (media of data.media; track media.id) {
+      @if (media.mime.startsWith("image/")){
+      <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, media, 'media')" alt="" class="media item"
+        (click)="showInChat.emit(media.communicationId)">
+      }@else if (media.mime.startsWith("video/") && media.type != "video_message") {
+      <video appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, media, 'media')" alt="" class="media item"
+        (click)="showInChat.emit(media.communicationId)"></video>
+      }
+      }
+    </div>
+  </ng-container>
   <ng-container *ngIf="selectedNav == 'Members'">
     <div class="members content" style="padding-top: .5rem;">
-      <div class="user item" (click)="showProfile = ''"><img src="" alt="" class="avatar-mini">
+      <div class="user item">
+        <svg icon="addMember"></svg>
         <div class="row">
-          <div class="name">S1M4</div>
-          <p class="role">owner</p>
+          <div class="name">
+            Add Member
+          </div>
+        </div>
+      </div>
+      <div class="user item" (click)="showProfile = ''" *ngFor="let user of data.group.members">
+        <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, user.user.img[user.user.img.length-1], 'img')"
+          alt="" class="avatar-mini">
+        <div class="row">
+          <div class="name">{{user.user.username}}</div>
+          <p class="role" *ngIf="user.role != 'member'">{{user.role}}</p>
           <div class="line"></div>
         </div>
       </div>
@@ -39,6 +62,41 @@
     <app-modal *ngIf="showProfile">
       <app-profile [username]="showProfile"></app-profile>
     </app-modal>
+  </ng-container>
+  <ng-container *ngIf="selectedNav == 'Files'">
+    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+      @for (file of data.media; track file.id) {
+      @if (!file.mime.startsWith("image/") && !file.mime.startsWith("video/") && file.type != 'audio' && file.type !=
+      "video_message"){
+      <div class="file item" (click)="showInChat.emit(file.communicationId)">
+        <svg icon="file">
+        </svg>
+        <div class="name">
+          {{file.path}}
+        </div>
+        <div class="size">
+          {{file.size / 1024 / 1024 | number:"1.0-0"}}MB
+        </div>
+        <div class="download">
+          <a [href]="file.path | media"><svg icon="reply"></svg></a>
+        </div>
+      </div>
+      }}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="selectedNav == 'Voice'">
+    <div class="voice content" style="gap: .5rem; padding-top: .5rem;">
+      @for (media of data.media; track media.id) {
+      @if (media.type == 'video_message' || media.type == 'audio') {
+      <div class="voice item" (click)="showInChat.emit(media.communicationId)">
+        <div>
+          <video appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, media, 'media')" autoplayMuted></video>
+          <svg icon="play"></svg>
+        </div>
+      </div>
+      }
+      }
+    </div>
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Settings'">
     <div class="settings content" style="gap: .5rem; padding-top: .5rem;">
@@ -61,9 +119,6 @@
       </form>
     </div>
   </ng-container>
-  <!-- <ng-container *ngIf="selectedNav != 'Members'">
-    <div class="content" style="gap: .5rem; padding-top: .5rem;">
-    </div>
-  </ng-container> -->
+
 </div>
 }

@@ -8,9 +8,11 @@ import {
   ElementRef,
   Renderer2,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, Event, ParamMap } from '@angular/router';
 import { ImgPipe } from '@utils/img.pipe';
 import {
   FormControl,
@@ -24,8 +26,13 @@ import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.componen
 import { Subject, takeUntil } from 'rxjs';
 import { AppComponent } from 'app/app.component';
 import { ChatsService } from '@features/chats/data/chats.service';
-import { Modal } from "@shared/common-ui/modal/modal";
-import { ProfileComponent } from "@features/profile/profile.component";
+import { Modal } from '@shared/common-ui/modal/modal';
+import { ProfileComponent } from '@features/profile/profile.component';
+import { MediaPipe } from '../../../../shared/utils/media.pipe';
+import { OnVisibleOnceDirective } from '@shared/utils/visibleOnce';
+import { MediaPreviewComponent } from "../media-preview/media-preview.component";
+import { AudioMessagePlayerComponent } from "../audio-message-player/audio-message-player.component";
+import { AutoplayMutedDirective } from "@shared/utils/autoplayMuted";
 
 @Component({
   selector: 'app-space-info',
@@ -37,13 +44,20 @@ import { ProfileComponent } from "@features/profile/profile.component";
     PhotoGalleryComponent,
     Modal,
     ProfileComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MediaPipe,
+    OnVisibleOnceDirective,
+    MediaPreviewComponent,
+    AudioMessagePlayerComponent,
+    AutoplayMutedDirective
 ],
   templateUrl: './space-info.html',
   styleUrl: './space-info.css',
 })
 export class SpaceInfoComponent implements OnInit, OnDestroy {
   @Input() id: string = '';
+  @Output() showInChat = new EventEmitter<string>(); 
+
   private readonly chatsService = inject(ChatsService);
 
   selectedNav: 'Media' | 'Members' | 'Files' | 'Voice' | 'Settings' = 'Members';
@@ -51,15 +65,18 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
 
   data: any = undefined;
 
-
-  showProfile = ""
+  showProfile = '';
 
   settingsFrom = new FormGroup({
     img: new FormControl(),
     title: new FormControl(),
-    description: new FormControl()
-  })
+    description: new FormControl(),
+  });
 
+  loadSRCforMedia(element: any, media: any, type: 'media' | 'img') {
+    if (type == 'media') element.src = `${new MediaPipe().transform(media)}`;
+    else element.src = `${new ImgPipe().transform(media)}`;
+  }
 
   changeTo(page: string) {
     // narrow to allowed tabs only
@@ -79,10 +96,8 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.chatsService.getInfoAboutChat(this.id, (data: any) => {
       this.data = data;
-      console.log(data)
     });
-
-    this.buildNavPanel()
+    this.buildNavPanel();
   }
   ngOnDestroy(): void {}
 }

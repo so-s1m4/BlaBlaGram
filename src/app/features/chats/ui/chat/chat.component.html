@@ -39,7 +39,7 @@
 } @else if (this.chatData.chat.type == 'group') {
   <app-modal *ngIf="showInfo" (click)="toggleInfo()">
     <div class="info-container" (click)="stopPropagation($event)">
-      <app-space-info [id]="this.chatData.chat.id"></app-space-info>
+      <app-space-info [id]="this.chatData.chat.id" (showInChat)="scrollToMsg($event)"></app-space-info>
     </div>
   </app-modal>
 }

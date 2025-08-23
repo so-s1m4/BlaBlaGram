@@ -58,8 +58,7 @@
         }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-audio-message-player
-      [src]="API_URL + '/mediaserver/public/' + this.data.media[0].path"></app-audio-message-player>
+    <app-audio-message-player [src]="this.data.media[0] | media"></app-audio-message-player>
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
             my: emj.isMe

@@ -20,6 +20,7 @@ import { ImgPipe } from '@utils/img.pipe';
 import { AuthService } from '@services/auth.service';
 import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
 import {OnVisibleOnceDirective} from "@shared/utils/visibleOnce"
+import { MediaPipe } from "../../../../shared/utils/media.pipe";
 
 @Component({
   selector: 'app-message',
@@ -30,7 +31,8 @@ import {OnVisibleOnceDirective} from "@shared/utils/visibleOnce"
     ImgPipe,
     AudioMessagePlayerComponent,
     OnVisibleOnceDirective,
-  ],
+    MediaPipe
+],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
