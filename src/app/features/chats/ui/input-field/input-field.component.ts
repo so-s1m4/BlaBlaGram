@@ -74,10 +74,13 @@ export class InputFieldComponent {
   }
   onKeyPress(event: any): void {
     this.value = event.currentTarget.value;
-    
-    event.currentTarget.style.height = 'auto'; // reset to shrink if needed
-    event.currentTarget.style.height = event.currentTarget.scrollHeight + 'px'; // set height to content
 
+    event.currentTarget.style.height = 'auto'; // reset to shrink if needed
+    event.currentTarget.style.height =
+      Math.min(event.currentTarget.scrollHeight, 120) + 'px'; // set height to content
+    (event.currentTarget as HTMLTextAreaElement).scrollTo({
+      top: event.currentTarget.scrollTop,
+    });
 
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();

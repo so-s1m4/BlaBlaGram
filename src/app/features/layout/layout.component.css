@@ -53,6 +53,8 @@
   text-align: left;
   padding-left: 1vw;
   font-size: 25px;
+
+  color: var(--primary-color);
 }
 
 .button svg {
@@ -62,7 +64,7 @@
 
 .button:hover {
   background: rgba(1, 1, 1, 0.5);
-  color: var(--primary-color);
+  color: var(--light-color);
 }
 .sidebar .page-link:hover {
   background: var(--secondary-color);

@@ -59,6 +59,7 @@ input {
   border-radius: 8px;
   margin-right: 0.5rem;
   background: var(--primary-color);
+  color: white;
 }
 .toggleBtn {
   width: 1.25rem;

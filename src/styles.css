@@ -3,7 +3,7 @@
 
 :root {
   --dark-color: #0f0f0f;
-  --light-color: #f0f0f0;
+  --light-color: color-mix(in srgb, var(--primary-color) 40%, white);
   --primary-color: #9cce2b;
   --secondary-color: #1a1a1a;
   --darker-gray-color: #202020;
@@ -63,7 +63,7 @@ h1 {
   svg {
     width: inherit;
     height: inherit;
-    fill: var(--primary-color);
+    color: var(--primary-color);
     margin-right: 0.5rem;
   }
 }
@@ -250,7 +250,7 @@ input[type="checkbox"]:disabled {
 @media (prefers-color-scheme: light) {
   :root {
     --dark-color: #f9f9f9; /* was darkest, now lightest background */
-    --light-color: #101010; /* was light, now dark text */
+    --light-color: color-mix(in srgb, var(--primary-color) 40%, black);
     --primary-color: #8bbd1f; /* slightly deeper green for contrast on light bg */
     --secondary-color: #ffffff; /* secondary background lighter */
     --darker-gray-color: #e5e5e5;
