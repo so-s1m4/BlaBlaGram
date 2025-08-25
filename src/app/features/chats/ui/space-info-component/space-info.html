@@ -18,7 +18,7 @@
 
   <div class="nav" role="tablist" aria-label="Profile sections">
     @for (navItem of navPanel; track navItem.label){
-    <button *ngIf="navItem.guard" type="button" class="navItem" role="tab"
+    <button *ngIf="navItem.guard()" type="button" class="navItem" role="tab"
       [attr.aria-selected]="navItem.label === selectedNav" [ngClass]="{ 'selected': navItem.label === selectedNav }"
       (click)="changeTo(navItem.label)">
       {{ navItem.label }}
@@ -109,8 +109,8 @@
                 icon="upgrade"></svg>Promote user
             </div>
             } @else {
-            <div class="btn btn-danger" (click)="degradeMember(showEditMemberModal.user.id)"><svg style="transform: rotate(180deg);"
-                icon="upgrade"></svg>Degrade user
+            <div class="btn btn-danger" (click)="degradeMember(showEditMemberModal.user.id)"><svg
+                style="transform: rotate(180deg);" icon="upgrade"></svg>Degrade user
             </div>
             }
             }
@@ -189,15 +189,16 @@
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Settings'">
     <div class="settings content" style="gap: .5rem; padding-top: .5rem;">
-      <form [formGroup]="settingsFrom">
+      <form [formGroup]="settingsForm">
         <h2>Main Settings</h2>
         <div class="row">
 
           <div class="holderInputImg">
-            <label for="uploadPhoto" class="upload">
-              <svg icon="plus"></svg>
+            <label #label for="upImg" class="upload" style="left: initial; transform: initial;"
+              [ngClass]="{ selected: settingsForm.get('img')?.value }">
+              <svg icon="camera"></svg>
             </label>
-            <input type="file" id="uploadPhoto" hidden>
+            <input hidden id="upImg" type="file" accept="image/*" formControlName="img" (change)="null" />
           </div>
           <div class="holder">
             <input type="text" placeholder="Title" formControlName="title" />

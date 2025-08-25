@@ -56,13 +56,16 @@ import { FriendsService } from '@features/friends/data/friends.service';
   styleUrl: './space-info.css',
 })
 export class SpaceInfoComponent implements OnInit, OnDestroy {
+inputImg($event: globalThis.Event) {
+throw new Error('Method not implemented.');
+}
   @Input() id: string = '';
   @Output() showInChat = new EventEmitter<string>();
 
   private readonly chatsService = inject(ChatsService);
 
   selectedNav: 'Media' | 'Members' | 'Files' | 'Voice' | 'Settings' = 'Members';
-  navPanel: { label: string; guard: boolean }[] = [];
+  navPanel: { label: string; guard: () => boolean }[] = [];
 
   data: any = undefined;
   showProfile = '';
@@ -74,7 +77,7 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
   friends: any = [];
 
-  settingsFrom = new FormGroup({
+  settingsForm = new FormGroup({
     img: new FormControl(),
     title: new FormControl(),
     description: new FormControl(),
@@ -144,11 +147,16 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
   }
   private buildNavPanel() {
     this.navPanel = [
-      { label: 'Media', guard: true },
-      { label: 'Members', guard: true },
-      { label: 'Files', guard: true },
-      { label: 'Voice', guard: true },
-      { label: 'Settings', guard: true },
+      { label: 'Media', guard: () => true },
+      { label: 'Members', guard: () => true },
+      { label: 'Files', guard: () => true },
+      { label: 'Voice', guard: () => true },
+      {
+        label: 'Settings',
+        guard: () => {
+          return this.data.role == 'admin';
+        },
+      },
     ];
   }
   ngOnInit(): void {

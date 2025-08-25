@@ -91,7 +91,7 @@ export class AudioMessageComponent implements AfterViewInit {
   }
 
   private saveRecording(): void {
-    const blob = new Blob(this.chunks, { type: 'audio/webm' });
+    const blob = new Blob(this.chunks, { type: 'video/webm' });
     this.audioReady.emit(blob);
     this.chunks = [];
   }
