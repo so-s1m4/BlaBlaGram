@@ -152,6 +152,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] || null;
+    console.log(file)
 
     if (!file) {
       if (this.label?.nativeElement) {

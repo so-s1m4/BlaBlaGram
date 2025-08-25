@@ -189,23 +189,21 @@
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Settings'">
     <div class="settings content" style="gap: .5rem; padding-top: .5rem;">
-      <form [formGroup]="settingsForm">
+      <form [formGroup]="settingsForm" (click)="stopPropagation($event)" (submit)="onSaveSettings($event)">
         <h2>Main Settings</h2>
         <div class="row">
 
           <div class="holderInputImg">
-            <label #label for="upImg" class="upload" style="left: initial; transform: initial;"
-              [ngClass]="{ selected: settingsForm.get('img')?.value }">
+            <label #label for="inputImg" class="upload" [ngClass]="{ selected: settingsForm.get('img')?.value }">
               <svg icon="camera"></svg>
-            </label>
-            <input hidden id="upImg" type="file" accept="image/*" formControlName="img" (change)="null" />
+            </label> <input (input)="onFileSelect($event)" type="file" id="inputImg" accept="image/*" hidden>
           </div>
           <div class="holder">
             <input type="text" placeholder="Title" formControlName="title" />
             <textarea placeholder="Description" formControlName="description"></textarea>
           </div>
         </div>
-        <button class="btn">Save</button>
+        <button class="btn" type="submit">Save</button>
       </form>
     </div>
   </ng-container>

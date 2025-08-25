@@ -12,7 +12,6 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
-import { ActivatedRoute, Event, ParamMap } from '@angular/router';
 import { ImgPipe } from '@utils/img.pipe';
 import {
   FormControl,
@@ -22,16 +21,11 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { SvgIconComponent } from '@utils/svg.component';
-import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.component';
-import { Subject, takeUntil } from 'rxjs';
-import { AppComponent } from 'app/app.component';
 import { ChatsService } from '@features/chats/data/chats.service';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { MediaPipe } from '../../../../shared/utils/media.pipe';
 import { OnVisibleOnceDirective } from '@shared/utils/visibleOnce';
-import { MediaPreviewComponent } from '../media-preview/media-preview.component';
-import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
 import { AutoplayMutedDirective } from '@shared/utils/autoplayMuted';
 import { FriendsService } from '@features/friends/data/friends.service';
 
@@ -42,23 +36,24 @@ import { FriendsService } from '@features/friends/data/friends.service';
     ImgPipe,
     ReactiveFormsModule,
     SvgIconComponent,
-    PhotoGalleryComponent,
     Modal,
     ProfileComponent,
     ReactiveFormsModule,
     MediaPipe,
     OnVisibleOnceDirective,
-    MediaPreviewComponent,
-    AudioMessagePlayerComponent,
     AutoplayMutedDirective,
   ],
   templateUrl: './space-info.html',
   styleUrl: './space-info.css',
 })
 export class SpaceInfoComponent implements OnInit, OnDestroy {
-inputImg($event: globalThis.Event) {
-throw new Error('Method not implemented.');
-}
+  @ViewChild('label') label: any;
+
+  private readonly renderer = inject(Renderer2);
+
+  inputImg($event: globalThis.Event) {
+    throw new Error('Method not implemented.');
+  }
   @Input() id: string = '';
   @Output() showInChat = new EventEmitter<string>();
 
@@ -78,8 +73,8 @@ throw new Error('Method not implemented.');
   friends: any = [];
 
   settingsForm = new FormGroup({
-    img: new FormControl(),
-    title: new FormControl(),
+    img: new FormControl<File | null>(null),
+    title: new FormControl<string>(this.data?.title),
     description: new FormControl(),
   });
   JSON = JSON;
@@ -139,6 +134,71 @@ throw new Error('Method not implemented.');
     });
   }
 
+  onFileSelect($event: any) {
+    const input = $event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+
+    if (!file) {
+      if (this.label?.nativeElement) {
+        this.renderer.setStyle(
+          this.label.nativeElement,
+          'backgroundImage',
+          'none'
+        );
+      }
+      return;
+    }
+
+    const blobUrl = URL.createObjectURL(file);
+    if (this.label?.nativeElement) {
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundImage',
+        `url(${blobUrl})`
+      );
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundSize',
+        'cover'
+      );
+      this.renderer.setStyle(
+        this.label.nativeElement,
+        'backgroundPosition',
+        'center'
+      );
+    }
+
+    // keep file in form for submit
+    this.settingsForm.patchValue({ img: file });
+  }
+  onSaveSettings(event: Event) {
+    event.preventDefault();
+    if (this.settingsForm.invalid) {
+      this.settingsForm.markAllAsTouched();
+      return;
+    }
+    const values = this.settingsForm.value;
+    const payload = new FormData();
+    const file = this.settingsForm.get('img')?.value;
+    if (file) {
+      payload.append('photo', file, file.name);
+    }
+    if (values.title) payload.append('title', values.title);
+
+    this.chatsService.patchSpace(
+      'group',
+      this.data.id,
+      payload,
+      (data: any) => {
+        this.data = {
+          ...this.data,
+          ...data.data
+        }
+      }
+    );
+    // payload.append('description', values.description || 'about me!');
+  }
+
   changeTo(page: string) {
     // narrow to allowed tabs only
     if (['Media', 'Members', 'Files', 'Voice', 'Settings'].includes(page)) {
@@ -162,6 +222,10 @@ throw new Error('Method not implemented.');
   ngOnInit(): void {
     this.chatsService.getInfoAboutChat(this.id, (data: any) => {
       this.data = data;
+      this.settingsForm.patchValue({
+        title: data.title,
+        description: data.description || '',
+      });
       this.friends = this.friendsService.friends.list
         .filter(
           (item) =>

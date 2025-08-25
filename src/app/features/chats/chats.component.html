@@ -17,8 +17,6 @@
     }
   </div>
 </div>
-<div class="chats-content" id="chatsContent" [ngStyle]="{
-  'display': hasChildRoute ? 'initial': 'none'
-}">
+<div class="chats-content" id="chatsContent" [class.hidden]="!hasChildRoute">
   <router-outlet (activate)="hasChildRoute = true" (deactivate)="hasChildRoute = false"></router-outlet>
 </div>

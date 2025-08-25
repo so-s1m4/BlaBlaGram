@@ -66,6 +66,10 @@
   height: 50vh;
 }
 
+.hidden {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   :host {
     flex-direction: column;

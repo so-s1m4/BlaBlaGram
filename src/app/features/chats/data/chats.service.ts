@@ -343,8 +343,7 @@ export class ChatsService implements OnInit {
       {
         spaceId: chatId,
       },
-      (ok: any, err: any, data: any) => {
-      }
+      (ok: any, err: any, data: any) => {}
     );
   }
   leaveChat(chatId: string) {
@@ -353,8 +352,7 @@ export class ChatsService implements OnInit {
       {
         spaceId: chatId,
       },
-      (ok: any, err: any, data: any) => {
-      }
+      (ok: any, err: any, data: any) => {}
     );
   }
   updateChats(callback?: any) {
@@ -372,6 +370,20 @@ export class ChatsService implements OnInit {
         }
       }
     );
+  }
+  async patchSpace(
+    type: string,
+    id: any,
+    payload: FormData,
+    callback?: (res: any) => void
+  ) {
+    this.httpClient
+      .patch(API_URL + `/api/spaces/${id}`, payload, {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.token,
+        },
+      })
+      .subscribe(callback);
   }
   addMembersToSpace(
     type: string,

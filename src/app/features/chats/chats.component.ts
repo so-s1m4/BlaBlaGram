@@ -32,6 +32,7 @@ export class ChatsComponent implements OnInit {
 
   stopPropagation(event: Event) {
     event.stopPropagation();
+    event.preventDefault();
   }
   window = window;
 
