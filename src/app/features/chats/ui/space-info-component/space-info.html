@@ -102,7 +102,7 @@
             <div class="btn btn-info" (click)="showProfile=showEditMemberModal.user.id"><svg icon="person"></svg>Show
               Profile</div>
             @if (
-            authService.me.id == data.group.owner
+            authService.me.id == data.group.owner.id
             ){
             @if (showEditMemberModal.role != "admin" ) {
             <div class="btn btn-danger" (click)="promoteMember(showEditMemberModal.user.id)"><svg
@@ -135,7 +135,7 @@
         </div>
       </div>
       <div class="user item"
-        (click)="authService.me.id == user.user.id ? null : ((user.user.id != data.group.owner && data.role == 'admin') ? showEditMemberModal = user : showProfile = user.user.id)"
+        (click)="authService.me.id == user.user.id ? null : ((user.user.id != data.group.owner.id && data.role == 'admin') ? showEditMemberModal = user : showProfile = user.user.id)"
         *ngFor="let user of data.group.members">
         <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, user.user.img[user.user.img.length-1], 'img')"
           alt="" class="avatar-mini">

@@ -66,7 +66,7 @@ export class ChatsComponent implements OnInit {
       this.chatsService.chats(this.setChats.bind(this));
     });
     this.webSocketService.on('space:removedFromSpace', (data: any) => {
-      console.log(data)
+      this.chatsService.chats(this.setChats.bind(this));
     });
   }
   get getChats(): any[] {

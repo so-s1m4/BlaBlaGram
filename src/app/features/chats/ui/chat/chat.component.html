@@ -29,7 +29,7 @@
     <div class="setting-item delete" (click)="deleteChat()">
       <svg icon="trashcan"> </svg> Delete Chat
     </div>
-    } @else if (this.chatData.chat.group.owner == authService.me.id){
+    } @else if (this.chatData.chat.group.owner.id == authService.me.id){
     <div class="setting-item delete" (click)="leaveChat()">
       <svg icon="reply"> </svg> Leave
     </div>

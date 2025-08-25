@@ -563,6 +563,9 @@ export class ChatComponent
         };
       }
     });
+    this.webSocketService.on('space:removedFromSpace', (data: any) => {
+      if (data.id == this.chatId) this.router.navigate(['/chats']);
+    });
   }
   ngOnChanges(): void {
     if (this.inputComp) this.inputComp.filesList = [];
