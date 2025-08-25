@@ -79,9 +79,20 @@ h1 {
   display: none;
   cursor: not-allowed;
 }
+.btn-info {
+  color: cyan;
+  border-color: cyan;
+  svg {
+    color: inherit;
+  }
+}
 .btn-danger {
   color: red;
   border-color: red;
+
+  svg {
+    color: inherit;
+  }
 }
 .btn-danger:hover {
   background-color: red;
@@ -274,8 +285,8 @@ input[type="checkbox"]:disabled {
     svg {
       width: inherit;
       height: inherit;
-      fill: var(--primary-color);
       margin-right: 0.5rem;
+      color: inherit;
     }
   }
   .btn:hover {
@@ -294,7 +305,7 @@ input[type="checkbox"]:disabled {
   }
 
   .btn-danger {
-    color: red;
+    color: red !important;
     border-color: red;
   }
   .btn-danger:hover {

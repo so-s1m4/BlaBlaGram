@@ -367,6 +367,42 @@ export class ChatsService implements OnInit {
       }
     );
   }
+  addMembersToSpace(
+    type: string,
+    spaceId: string,
+    members: string[],
+    callback?: Function
+  ) {
+    this.webSocketService.send(
+      `spaces:${type}:addMembers`,
+      {
+        spaceId,
+        members,
+      },
+      (ok: any, err: any, data: any) => {
+        if (ok) callback?.(data);
+        else console.error(err);
+      }
+    );
+  }
+  delMembersFromSpace(
+    type: string,
+    spaceId: string,
+    members: string[],
+    callback?: Function
+  ) {
+    this.webSocketService.send(
+      `spaces:${type}:removeMembers`,
+      {
+        spaceId,
+        members,
+      },
+      (ok: any, err: any, data: any) => {
+        if (ok) callback?.(data);
+        else console.error(err);
+      }
+    );
+  }
   // Hooks
   ngOnInit(): void {
     this.chats();

@@ -40,8 +40,76 @@
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Members'">
+    <app-modal (click)="showAddMemberModal = false" *ngIf="showAddMemberModal">
+      <div class="add-member-holder modal" (click)="stopPropagation($event)">
+        <div class="header">
+          <div class="btn close" (click)="showAddMemberModal = false">
+            <svg icon="cross"></svg>
+          </div>
+          <div class="title">
+            Add Members
+          </div>
+        </div>
+        <div class="search_field">
+          @for (user of friends; track user.id) {
+          @if (user.selected){
+          <div class="user item selected">
+            {{user.username}}
+            <div class="rem" (click)="user.selected = false">
+              <svg icon="cross"></svg>
+            </div>
+          </div>
+          }
+          }
+          <input type="text" class="search_users" placeholder="Search" (input)="filterNames($event)">
+        </div>
+        <div class="users-holder">
+          @for (user of friends; track user.id) {
+          @if (user.username.startsWith(filterName)) {
+          <div class="user item">
+            <img [src]="user.img[user.img.length-1] | img" alt="" class="avatar-user">
+            <div class="row">
+              <div class="username">{{ user.username }}</div>
+              <input class="select" type="checkbox" [checked]="user.selected!"
+                (change)="user.selected = !user.selected">
+            </div>
+          </div>
+          }
+          }
+        </div>
+        <div class="footer" (click)="addMembers()">
+          OK
+        </div>
+      </div>
+    </app-modal>
+    <app-modal (click)="showEditMemberModal = {}" *ngIf="JSON.stringify(showEditMemberModal) != '{}'">
+      <div class="edit-member-holder modal" (click)="stopPropagation($event)">
+        <div class="header">
+          <div class="btn close" (click)="showEditMemberModal = {}">
+            <svg icon="cross"></svg>
+          </div>
+          <div class="title">
+            Edit
+          </div>
+        </div>
+        <div class="content">
+          <div class="user-preview">
+            <img [src]="showEditMemberModal.user.img[showEditMemberModal.user.img.length-1] | img" alt=""
+              class="user-avatar">
+            <div class="nickname">{{showEditMemberModal.user.username}}</div>
+          </div>
+          <div class="action-btns">
+            <div class="btn btn-info" (click)="showProfile=showEditMemberModal.user.id"><svg icon="person"></svg>Show Profile</div>
+            <div class="btn btn-danger" (click)="removeMember(showEditMemberModal.user.id)"><svg icon="trashcan"></svg>Kick User</div>
+          </div>
+        </div>
+        <div class="footer" (click)="showEditMemberModal={}">
+          OK
+        </div>
+      </div>
+    </app-modal>
     <div class="members content" style="padding-top: .5rem;">
-      <div class="user item">
+      <div class="user item" (click)="showAddMemberModal=true">
         <svg icon="addMember"></svg>
         <div class="row">
           <div class="name">
@@ -49,7 +117,9 @@
           </div>
         </div>
       </div>
-      <div class="user item" (click)="showProfile = ''" *ngFor="let user of data.group.members">
+      <div class="user item"
+        (click)="authService.me.id == user.user.id ? null : ((user.user.id != data.group.owner && data.role == 'admin') ? showEditMemberModal = user : showProfile = user.user.id)"
+        *ngFor="let user of data.group.members">
         <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, user.user.img[user.user.img.length-1], 'img')"
           alt="" class="avatar-mini">
         <div class="row">
@@ -59,8 +129,10 @@
         </div>
       </div>
     </div>
-    <app-modal *ngIf="showProfile">
-      <app-profile [username]="showProfile"></app-profile>
+    <app-modal *ngIf="showProfile" (click)="showProfile = ''">
+      <div class="info-container" (click)="stopPropagation($event)">
+        <app-profile [username]="showProfile"></app-profile>
+      </div>
     </app-modal>
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Files'">
