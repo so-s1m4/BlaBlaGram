@@ -322,8 +322,6 @@ export class ChatsService implements OnInit {
   // Spaces
   createSpace(type: string, args: any) {
     if (type == 'group') {
-      console.log(type, args);
-
       this.webSocketService.send(
         'spaces:group:create',
         {
@@ -332,7 +330,6 @@ export class ChatsService implements OnInit {
         },
         (ok: any, error: any, result: any) => {
           if (ok) {
-            console.log('Успіх:', result);
           } else {
             console.error('Помилка:', error);
           }
@@ -347,7 +344,16 @@ export class ChatsService implements OnInit {
         spaceId: chatId,
       },
       (ok: any, err: any, data: any) => {
-        console.log(ok, err, data);
+      }
+    );
+  }
+  leaveChat(chatId: string) {
+    this.webSocketService.send(
+      'spaces:leave',
+      {
+        spaceId: chatId,
+      },
+      (ok: any, err: any, data: any) => {
       }
     );
   }
@@ -396,6 +402,32 @@ export class ChatsService implements OnInit {
       {
         spaceId,
         members,
+      },
+      (ok: any, err: any, data: any) => {
+        if (ok) callback?.(data);
+        else console.error(err);
+      }
+    );
+  }
+  promoteMemberInSpace(spaceId: string, adminId: string, callback?: Function) {
+    this.webSocketService.send(
+      `spaces:addAdmin`,
+      {
+        spaceId,
+        adminId,
+      },
+      (ok: any, err: any, data: any) => {
+        if (ok) callback?.(data);
+        else console.error(err);
+      }
+    );
+  }
+  degradeMemberInSpace(spaceId: string, adminId: string, callback?: Function) {
+    this.webSocketService.send(
+      `spaces:removeAdmin`,
+      {
+        spaceId,
+        adminId,
       },
       (ok: any, err: any, data: any) => {
         if (ok) callback?.(data);

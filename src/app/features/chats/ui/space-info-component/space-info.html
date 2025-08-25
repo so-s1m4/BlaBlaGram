@@ -99,8 +99,25 @@
             <div class="nickname">{{showEditMemberModal.user.username}}</div>
           </div>
           <div class="action-btns">
-            <div class="btn btn-info" (click)="showProfile=showEditMemberModal.user.id"><svg icon="person"></svg>Show Profile</div>
-            <div class="btn btn-danger" (click)="removeMember(showEditMemberModal.user.id)"><svg icon="trashcan"></svg>Kick User</div>
+            <div class="btn btn-info" (click)="showProfile=showEditMemberModal.user.id"><svg icon="person"></svg>Show
+              Profile</div>
+            @if (
+            authService.me.id == data.group.owner
+            ){
+            @if (showEditMemberModal.role != "admin" ) {
+            <div class="btn btn-danger" (click)="promoteMember(showEditMemberModal.user.id)"><svg
+                icon="upgrade"></svg>Promote user
+            </div>
+            } @else {
+            <div class="btn btn-danger" (click)="degradeMember(showEditMemberModal.user.id)"><svg style="transform: rotate(180deg);"
+                icon="upgrade"></svg>Degrade user
+            </div>
+            }
+            }
+            @if (showEditMemberModal.role != "admin" ) {
+            <div class="btn btn-danger" (click)="removeMember(showEditMemberModal.user.id)"><svg
+                icon="trashcan"></svg>Kick User</div>
+            }
           </div>
         </div>
         <div class="footer" (click)="showEditMemberModal={}">

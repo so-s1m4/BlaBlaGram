@@ -1,4 +1,10 @@
-import { Component, createEnvironmentInjector, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  createEnvironmentInjector,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from './data/chats.service';
@@ -58,6 +64,9 @@ export class ChatsComponent implements OnInit {
     // });
     this.webSocketService.on('space:addedToNew', (data: any) => {
       this.chatsService.chats(this.setChats.bind(this));
+    });
+    this.webSocketService.on('space:removedFromSpace', (data: any) => {
+      console.log(data)
     });
   }
   get getChats(): any[] {

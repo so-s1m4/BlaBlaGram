@@ -25,9 +25,23 @@
     </button>
   </div>
   <div class="chatsSettings" *ngIf="this.isChatsSettings">
+    @if (this.chatData.chat.type != "group") {
     <div class="setting-item delete" (click)="deleteChat()">
       <svg icon="trashcan"> </svg> Delete Chat
     </div>
+    } @else if (this.chatData.chat.group.owner == authService.me.id){
+    <div class="setting-item delete" (click)="leaveChat()">
+      <svg icon="reply"> </svg> Leave
+    </div>
+    <div class="setting-item delete" (click)="deleteChat()">
+      <svg icon="trashcan"> </svg> Delete Group
+    </div>
+    } @else {
+    <div class="setting-item delete" (click)="leaveChat()">
+      <svg icon="reply"> </svg> Leave
+    </div>
+    }
+
   </div>
 </div>
 @if (this.chatData.chat.type == 'chat') {
@@ -37,11 +51,11 @@
   </div>
 </app-modal>
 } @else if (this.chatData.chat.type == 'group') {
-  <app-modal *ngIf="showInfo" (click)="toggleInfo()">
-    <div class="info-container" (click)="stopPropagation($event)">
-      <app-space-info [id]="this.chatData.chat.id" (showInChat)="scrollToMsg($event)"></app-space-info>
-    </div>
-  </app-modal>
+<app-modal *ngIf="showInfo" (click)="toggleInfo()">
+  <div class="info-container" (click)="stopPropagation($event)">
+    <app-space-info [id]="this.chatData.chat.id" (showInChat)="scrollToMsg($event)"></app-space-info>
+  </div>
+</app-modal>
 }
 <app-video-message *ngIf="this.isRecordVM" (onstop)="onStopRecord($event)"></app-video-message>
 <div id="messages-holder" class="messages-holder">
@@ -51,9 +65,10 @@
 
 
   @for (message of this.chatData.messages; track message.id; let last = $last) {
-  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode" [showSender]="chatData.chat.type == 'group'"
-    (openMedia)="openMedia(message.id)" [data]="message" [isSender]="message.sender.id !== me?.id"
-    (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)" (scrollToMsg)="scrollToMsg($event)">
+  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+    [showSender]="chatData.chat.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
+    [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
+    (scrollToMsg)="scrollToMsg($event)">
   </app-message>
   }
 </div>

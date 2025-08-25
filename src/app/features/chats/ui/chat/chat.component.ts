@@ -502,6 +502,9 @@ export class ChatComponent
   deleteChat() {
     this.chatService.deleteChat(this.chatId!);
   }
+  leaveChat() {
+    this.chatService.leaveChat(this.chatId!);
+  }
   // Event handlers
   onNewMessage(data: any): boolean {
     if (data.spaceId !== this.chatId) {

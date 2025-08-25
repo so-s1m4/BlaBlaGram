@@ -121,6 +121,20 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
       }
     );
   }
+  promoteMember(userId: any) {
+    this.showEditMemberModal = {};
+    this.chatsService.promoteMemberInSpace(this.data.id, userId, () => {
+      this.data.group.members.find((item: any) => item.user.id == userId).role =
+        'admin';
+    });
+  }
+  degradeMember(userId: any) {
+    this.showEditMemberModal = {};
+    this.chatsService.degradeMemberInSpace(this.data.id, userId, () => {
+      this.data.group.members.find((item: any) => item.user.id == userId).role =
+        'member';
+    });
+  }
 
   changeTo(page: string) {
     // narrow to allowed tabs only

@@ -95,14 +95,14 @@
   z-index: 99;
 }
 .setting-item {
+  width: 100%;
   display: flex;
   align-items: center;
-
   gap: 0.5rem;
   padding: 0 1rem;
 
   height: 2rem;
-  width: fit-content;
+  min-width: fit-content;
   cursor: pointer;
 
   color: var(--light-color);
