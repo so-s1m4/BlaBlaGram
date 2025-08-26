@@ -214,7 +214,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.data = {...this.data, ...res.data}
+          this.data.img = res.data.img.reverse()
         },
         error: (err) => {
           console.error('Save failed', err);
