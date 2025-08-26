@@ -28,7 +28,7 @@ export class InputFieldComponent {
   public messageIdForEdit: string | null = null;
   public messageTextForEdit: string | null = null;
 
-  isVoice = true;
+  isVoice = false;
   isRecording = false;
 
   public value: string = '';
@@ -124,6 +124,7 @@ export class InputFieldComponent {
     this.chatsService.sendAudioMessage(this.chatData.chat.id, blob);
   }
   switchVideo2Voice() {
+    if (!window.isDesktop()) return
     this.isVoice = !this.isVoice;
   }
   stopPropagation($event: Event) {
