@@ -2,7 +2,7 @@
 <div id="upload-bars-holder" class="upload-bars-holder">
 </div>
 <div [ngClass]="{
-        'withReply': this.repliedOn
+        'withReply': this.repliedOn$
       }" class="filesPopUp" *ngIf="filesList.length">
   @for (file of filesList; track file.name) {
   <div class="fileItem">
@@ -16,15 +16,15 @@
   </div>
   }
 </div>
-@if (this.repliedOn) {
+@if (this.repliedOn$) {
 <div class="reply-on">
   <svg icon="reply"></svg>
   <div class="reply-content-holder">
     <div class="reply-to-person">
-      Reply to {{this.repliedOn.sender.username}}
+      Reply to {{this.repliedOn$.sender.username}}
     </div>
     <div class="reply-to-text">
-      {{this.repliedOn.text || `${this.repliedOn.media.length} Medias` }}
+      {{this.repliedOn$.text || `${this.repliedOn$.media.length} Medias` }}
     </div>
   </div>
 

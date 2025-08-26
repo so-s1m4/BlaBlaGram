@@ -471,16 +471,16 @@ export class ChatComponent
           )?.wasOnline;
         }
       });
-      // this.webSocketService.on('friends:friendOnline', (data: any) => {
-      //   if (data.userId == this.chatData$.chat.chat.friendId) {
-      //     this.isOnline = true;
-      //   }
-      // });
-      // this.webSocketService.on('friends:friendOffline', (data: any) => {
-      //   if (data.userId == this.chatData$.chat.chat.friendId) {
-      //     this.isOnline = data.wasOnline;
-      //   }
-      // });
+      this.webSocketService.on('friends:friendOnline', (data: any) => {
+        if (data.userId == this.chatData$.chat.chat.friendId) {
+          this.isOnline = true;
+        }
+      });
+      this.webSocketService.on('friends:friendOffline', (data: any) => {
+        if (data.userId == this.chatData$.chat.chat.friendId) {
+          this.isOnline = data.wasOnline;
+        }
+      });
     }
   }
   loadChat() {

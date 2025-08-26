@@ -187,7 +187,7 @@
 .reply-content-holder {
   padding: 5px;
   border-left: 5px solid var(--primary-color);
-  width: 85%;
+  flex: 1;
   border-radius: 0 .5rem .5rem 0;
 
   background: color-mix(in srgb, var(--primary-color) 30%, transparent 70%);
@@ -203,8 +203,9 @@
   max-width: 80%;
 }
 .btn-undo {
-  position: absolute;
+  position: relative;
   right: 5px;
+  margin-left: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

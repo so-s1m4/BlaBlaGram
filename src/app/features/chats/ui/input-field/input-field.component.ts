@@ -23,7 +23,7 @@ export class InputFieldComponent {
   webSocketService = inject(WebSocketService);
   chatsService = inject(ChatsService);
 
-  public repliedOn: any = null;
+  repliedOn$: any = null;
   public editMode = false;
   public messageIdForEdit: string | null = null;
   public messageTextForEdit: string | null = null;
@@ -55,6 +55,7 @@ export class InputFieldComponent {
         (msg: any) => msg.id === msgId
       ).text;
     }
+    setTimeout(() => this.inputField.nativeElement.focus());
   }
   editMessage() {
     const text = this.value;
@@ -148,5 +149,10 @@ export class InputFieldComponent {
   public clearInputField() {
     this.value = '';
     if (this.inputField) this.inputField.nativeElement!.value = '';
+  }
+  public set repliedOn(value: any) {
+    console.log(value)
+    this.repliedOn$ = value;
+    setTimeout(() => this.inputField.nativeElement.focus());
   }
 }
