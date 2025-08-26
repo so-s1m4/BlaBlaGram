@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 
-import { API_URL } from 'app/app.config';
+import { WEB_SOCKET_URL } from 'app/app.config';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class WebSocketService {
   connect(token: string): void {
     if (this.socket?.connected) return;
 
-    this.socket = io(API_URL, {
+    this.socket = io(WEB_SOCKET_URL, {
       transports: ['websocket'],
       auth: {
         token: token,

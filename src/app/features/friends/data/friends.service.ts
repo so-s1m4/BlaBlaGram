@@ -51,7 +51,7 @@ export class FriendsService {
   async getFriendsList(callback?: any): Promise<ProfileData[]> {
     //@ts-ignore
     return this.httpClient
-      .get<ProfileData[]>(`${API_URL}/api/users/me/friends`, {
+      .get<ProfileData[]>(`${API_URL}/users/me/friends`, {
         headers: {
           Authorization: `Bearer ${this.authService.token}`,
         },
@@ -64,7 +64,7 @@ export class FriendsService {
   async delFriend(friendId: string, callback: any) {
     //@ts-ignore
     return this.httpClient
-      .delete(`${API_URL}/api/users/me/friends`, {
+      .delete(`${API_URL}/users/me/friends`, {
         headers: {
           Authorization: `Bearer ${this.authService.token}`,
         },

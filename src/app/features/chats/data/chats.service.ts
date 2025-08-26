@@ -2,7 +2,7 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
 import { WebSocketService } from '../../../core/services/web-socket.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { API_URL } from '../../../app.config';
+import { API_URL, MEDIA_SERVER_URL } from '../../../app.config';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
 
@@ -242,7 +242,7 @@ export class ChatsService implements OnInit {
         payl.append('type', 'file');
 
         this.httpClient
-          .post(API_URL + '/mediaserver/media', payl, {
+          .post(MEDIA_SERVER_URL + '/media', payl, {
             headers: {
               Authorization: 'Bearer ' + this.authService.token,
             },
@@ -378,7 +378,7 @@ export class ChatsService implements OnInit {
     callback?: (res: any) => void
   ) {
     await this.httpClient
-      .patch(API_URL + `/api/spaces/${id}`, payload, {
+      .patch(API_URL + `/spaces/${id}`, payload, {
         headers: {
           Authorization: 'Bearer ' + this.authService.token,
         },

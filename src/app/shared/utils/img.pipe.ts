@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { API_URL } from 'app/app.config';
+import { API_PUBLIC_URL, API_URL, DEFAULT_AVATAR_URL } from 'app/app.config';
 
 @Pipe({
   name: 'img',
@@ -9,9 +9,8 @@ export class ImgPipe implements PipeTransform {
     value: { path: string; [key: string]: any } | undefined
   ): unknown {
     if (!value) {
-      return 'https://www.htlstp.ac.at/lehrer/maus/@@images/1916921a-4a77-48d8-b37e-66094a3be83b.jpeg';
+      return DEFAULT_AVATAR_URL;
     }
-
-    return API_URL + '/public/' + value.path;
+    return API_PUBLIC_URL + "/" + value.path;
   }
 }

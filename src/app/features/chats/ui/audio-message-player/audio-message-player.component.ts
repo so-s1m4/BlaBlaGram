@@ -10,6 +10,8 @@ import {
   OnDestroy,
   ViewChild,
   NgZone,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,6 +27,7 @@ import { SvgIconComponent } from '@utils/svg.component';
 export class AudioMessagePlayerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('audio') audioRef!: ElementRef<HTMLAudioElement>;
   @Input() src?: string;
+  @Output() read = new EventEmitter();
 
   private readonly destroy$ = new Subject<void>();
 
@@ -87,6 +90,7 @@ export class AudioMessagePlayerComponent implements AfterViewInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.ngZone.run(() => {
+            this.read.emit();
             this.isPlaying = true;
             this.cdr.markForCheck();
           });

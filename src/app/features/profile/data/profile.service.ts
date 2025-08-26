@@ -23,7 +23,7 @@ export class ProfileService {
   constructor() {}
 
   public getProfile(userId: string | null): any {
-    return this.httpClient.get(API_URL + '/api/users/' + userId, {
+    return this.httpClient.get(API_URL + '/users/' + userId, {
       headers: {
         Authorization: 'Bearer ' + this.authService.token,
       },
@@ -32,7 +32,7 @@ export class ProfileService {
   editProfile(payload: FormData): Observable<{ data: any }> {
     // adjust URL to match your backend
     return this.httpClient.patch<{ data: any }>(
-      API_URL + `/api/users/me`,
+      API_URL + `/users/me`,
       payload,
       {
         headers: {
@@ -43,7 +43,7 @@ export class ProfileService {
   }
   deletePhoto(path: string) {
     return this.httpClient.delete<{ data: any }>(
-      API_URL + `/api/users/me/photos/` + path,
+      API_URL + `/users/me/photos/` + path,
       {
         headers: {
           Authorization: 'Bearer ' + this.authService.token,
@@ -53,7 +53,7 @@ export class ProfileService {
   }
   getUsersStartsWith(data: string, callback?: Function) {
     this.httpClient
-      .get(API_URL + '/api/users', {
+      .get(API_URL + '/users', {
         headers: {
           Authorization: 'Bearer ' + this.authService.token,
         },

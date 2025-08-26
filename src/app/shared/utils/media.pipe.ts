@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { API_URL } from 'app/app.config';
+import { DEFAULT_AVATAR_URL, MEDIA_SERVER_PUBLIC_URL } from 'app/app.config';
 
 @Pipe({
   name: 'media',
@@ -7,9 +7,8 @@ import { API_URL } from 'app/app.config';
 export class MediaPipe implements PipeTransform {
   public transform(value: { path: string; size: number } | undefined): string {
     if (!value) {
-      return 'https://www.htlstp.ac.at/lehrer/maus/@@images/1916921a-4a77-48d8-b37e-66094a3be83b.jpeg';
+      return DEFAULT_AVATAR_URL;
     }
-
-    return API_URL + '/mediaserver/public/' + value.path;
+    return MEDIA_SERVER_PUBLIC_URL + '/' + value.path;
   }
 }

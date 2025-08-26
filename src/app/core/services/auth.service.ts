@@ -36,7 +36,7 @@ export class AuthService {
   async login(payload: { username: string; password: string }) {
     try {
       const response: any = await this.httpClient
-        .post(`${API_URL}/api/users/login`, payload)
+        .post(`${API_URL}/users/login`, payload)
         .toPromise();
 
       const token = response?.data;
@@ -64,7 +64,7 @@ export class AuthService {
     this.isAuthed = false;
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
-    window.location.reload()
+    window.location.reload();
   }
   async register(payload: {
     username: string;
@@ -73,7 +73,7 @@ export class AuthService {
   }) {
     try {
       const response: any = await this.httpClient
-        .post(`${API_URL}/api/users/register`, payload)
+        .post(`${API_URL}/users/register`, payload)
         .toPromise();
 
       const token = response?.data;
@@ -103,7 +103,7 @@ export class AuthService {
 
     try {
       const response: any = await this.httpClient
-        .get(`${API_URL}/api/users/me`, {
+        .get(`${API_URL}/users/me`, {
           headers: {
             Authorization: `Bearer ${
               this.token || localStorage.getItem('token')
