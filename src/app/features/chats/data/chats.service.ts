@@ -122,7 +122,7 @@ export class ChatsService implements OnInit {
         payl.append('type', 'video_message');
 
         this.httpClient
-          .post(API_URL + '/mediaserver/media', payl, {
+          .post(`${MEDIA_SERVER_URL}/media`, payl, {
             headers: {
               Authorization: 'Bearer ' + this.authService.token,
             },
@@ -157,7 +157,7 @@ export class ChatsService implements OnInit {
         payl.append('type', 'audio');
 
         this.httpClient
-          .post(API_URL + '/mediaserver/media', payl, {
+          .post(`${MEDIA_SERVER_URL}/media`, payl, {
             headers: {
               Authorization: 'Bearer ' + this.authService.token,
             },
@@ -211,7 +211,7 @@ export class ChatsService implements OnInit {
       payl.append('type', 'file');
 
       this.httpClient
-        .post(API_URL + '/mediaserver/media', payl, {
+        .post(`${MEDIA_SERVER_URL}/media`, payl, {
           headers: {
             Authorization: 'Bearer ' + this.authService.token,
           },

@@ -11,10 +11,11 @@ import {
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
 import { Modal } from "@shared/common-ui/modal/modal";
+import { MediaPipe } from "../../../../shared/utils/media.pipe";
 
 @Component({
   selector: 'app-media-gallery',
-  imports: [SvgIconComponent, Modal],
+  imports: [SvgIconComponent, Modal, MediaPipe],
   templateUrl: './media-gallery.component.html',
   styleUrl: './media-gallery.component.css',
 })
