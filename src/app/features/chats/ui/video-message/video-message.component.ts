@@ -50,7 +50,7 @@ export class VideoMessageComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
     await this.startCamera();
-    setTimeout(this.startRecording.bind(this), 500)
+    setTimeout(this.startRecording.bind(this), 500);
 
     setTimeout(this.stop.bind(this), 60000);
   }
@@ -67,7 +67,7 @@ export class VideoMessageComponent implements AfterViewInit {
     this.mediaRecorder.ondataavailable = (e) => this.chunks.push(e.data);
     this.mediaRecorder.onstop = () => {
       try {
-        const blob = new Blob(this.chunks, { type: 'video/webm' });
+        const blob = new Blob(this.chunks, { type: 'video/webm; codecs=opus' });
         this.videoUrl = URL.createObjectURL(blob);
         this.onstop.emit(blob);
       } catch {
