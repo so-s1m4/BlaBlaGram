@@ -214,7 +214,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log('Settings saved', res);
+          this.data = {...this.data, ...res.data}
         },
         error: (err) => {
           console.error('Save failed', err);
