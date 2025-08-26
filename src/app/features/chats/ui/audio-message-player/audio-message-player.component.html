@@ -9,4 +9,4 @@
   <div class="progress-bar" [style.width.%]="this.progress"></div>
 </div>
 
-<span class="time">{{ this.currentTime * 1000 | date:"mm:ss"}}</span>
+<span class="time">{{ this.currentTime * 1000 | date:"mm:ss"}} / {{ this.duration * 1000 | date:"mm:ss"}}</span>
