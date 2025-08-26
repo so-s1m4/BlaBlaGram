@@ -29,14 +29,16 @@
 </div>
 <div class="content">
   <div class="user-select item" *ngFor="let friend of friends">
-    <img class="avatar" [src]="friend.img[friend.img.length-1] | img">
+    <img class="avatar" [src]="friend.img[friend.img.length-1] | img" [ngClass]="{
+      'online': (friend.isOnline === true)
+    }">
     <div class="holder">
       <div class="info">
         <div class="nickname">
           {{ friend.username }}
         </div>
-        <div class="wasRecently">
-          {{ 'was recently' }}
+        <div class="wasRecently" style="font-size: 12px; color: var(--light-color);">
+          {{ friend.isOnline === true ? "online" : ('was at ' + (friend.wasOnline | date:"HH:mm dd/MM/yy")) }}
         </div>
       </div>
       <div class="selectBtn" (click)="toggleSelect(friend)">
@@ -66,7 +68,7 @@
     <div class="selectImg">
       <label #label for="inputImg" class="upload" [ngClass]="{ selected: values.get('img')?.value }">
         <svg icon="camera"></svg>
-      </label> <input (change)="onFileSelected($event)" type="file" id="inputImg" accept="image/*" formControlName="img"
+      </label> <input [disabled]="true" (change)="onFileSelected($event)" type="file" id="inputImg" accept="image/*" formControlName="img"
         hidden>
     </div>
     <div><input type="text" [placeholder]="type + ' Name'" style="text-transform: capitalize; font-size: 1.5rem;"

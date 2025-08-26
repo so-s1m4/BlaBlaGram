@@ -377,13 +377,16 @@ export class ChatsService implements OnInit {
     payload: FormData,
     callback?: (res: any) => void
   ) {
-    this.httpClient
+    await this.httpClient
       .patch(API_URL + `/api/spaces/${id}`, payload, {
         headers: {
           Authorization: 'Bearer ' + this.authService.token,
         },
       })
-      .subscribe(callback);
+      .subscribe((res: any) => {
+        window.location.reload();
+        callback?.(res)
+      });
   }
   addMembersToSpace(
     type: string,

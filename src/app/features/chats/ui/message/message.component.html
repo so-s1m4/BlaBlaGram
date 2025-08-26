@@ -11,7 +11,7 @@
       }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-media-preview (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
+    <app-media-preview (read)="markAsRead()" (openMedia)="onMediaGallery()" *ngIf="imageMedia.length > 0"
       [imageMedia]="imageMedia"></app-media-preview>
     <div class="text">
       {{ data.text }}
@@ -22,7 +22,12 @@
         <p>edited </p>
         }
         <p>{{ data.createdAt | date: 'shortTime' }}</p>
+        @if (!isSender) {
+        @if (data.wasRead) {
         <svg icon="doublecheck"></svg>
+        } @else {
+        <svg icon="check"></svg>
+        }}
       </div>
     </div>
     <div class="footer">
@@ -58,7 +63,7 @@
         }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-audio-message-player [src]="this.data.media[0] | media"></app-audio-message-player>
+    <app-audio-message-player (read)="markAsRead()" [src]="this.data.media[0] | media"></app-audio-message-player>
     <div class="footer">
       <div class="emoji-wrapper" [ngClass]="{
             my: emj.isMe

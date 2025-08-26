@@ -20,11 +20,11 @@ export class CreateModalPopUp {
       type: 'group',
       svg: 'group',
     },
-    {
-      label: 'Create channel',
-      type: 'channel',
-      svg: 'channel',
-    },
+    // {
+    //   label: 'Create channel',
+    //   type: 'channel',
+    //   svg: 'channel',
+    // },
   ];
 
   window = window;

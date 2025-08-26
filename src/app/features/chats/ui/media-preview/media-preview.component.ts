@@ -26,6 +26,7 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
 
   @Input() imageMedia: any[] = [];
   @Output() openMedia = new EventEmitter<void>();
+  @Output() read = new EventEmitter<void>()
 
   imageToShow: any[] = [];
 
@@ -122,6 +123,8 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
     if (el.paused) {
       const p = el.play();
       el.classList.add('playing');
+      this.read.emit()
+
       el.onended = () => {
         el.classList.remove('playing');
       };

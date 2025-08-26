@@ -153,7 +153,7 @@
     </app-modal>
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Files'">
-    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    <div class="content" style="gap: .5rem; padding-top: .5rem; flex-direction: column;" >
       @for (file of data.media; track file.id) {
       @if (!file.mime.startsWith("image/") && !file.mime.startsWith("video/") && file.type != 'audio' && file.type !=
       "video_message"){

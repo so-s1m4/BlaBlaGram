@@ -124,7 +124,6 @@ export class InputFieldComponent {
     this.chatsService.sendAudioMessage(this.chatData.chat.id, blob);
   }
   switchVideo2Voice() {
-    if (!window.isDesktop()) return
     this.isVoice = !this.isVoice;
   }
   stopPropagation($event: Event) {

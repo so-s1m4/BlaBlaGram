@@ -224,10 +224,11 @@ img.photo-item {
     color: var(--primary-color);
   }
 }
-.item {
+.settings.content form .item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  padding: 0 10px;
   border-radius: 10px;
   height: fit-content;
 
@@ -242,7 +243,8 @@ img.photo-item {
     color: var(--primary-color);
   }
   p {
-    color: var(--light-gray-color);
+    color: var(--lightgray-color);
+    font-size: 12px;
   }
 }
 .settings.content form .item label {
@@ -254,7 +256,7 @@ img.photo-item {
 .settings.content form .item progress {
   width: 100%;
   border-radius: 2rem;
-  height: 2rem;
+  height: 1.5rem;
 }
 progress[value]::-webkit-progress-bar {
   border-radius: 10em;
@@ -270,6 +272,8 @@ progress[value]::-webkit-progress-value {
   background: var(--dark-gray-color);
   height: fit-content;
   row-gap: 0.5rem;
+
+  border-radius: 10px;
   input {
     width: 100%;
   }
@@ -285,6 +289,7 @@ progress[value]::-webkit-progress-value {
     width: initial;
   }
 }
+
 .settings.content form .btn {
   position: relative;
   left: 100%;
@@ -317,6 +322,7 @@ progress[value]::-webkit-progress-value {
   background: transparent;
 
   min-height: 2rem;
+  font-size: 12px;
 
   &:focus {
     outline: none;

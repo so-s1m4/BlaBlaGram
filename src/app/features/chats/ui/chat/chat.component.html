@@ -8,10 +8,15 @@
     <svg icon="arrowBack"></svg>
   </button>
   <img [ngClass]="{
-    'online': this.isOnline
+    'online': this.isOnline === true
   }" [src]="chatData.chat.img[chatData.chat.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
   <div class="header-info" (click)="toggleInfo()">
     <h2 class="name">{{ chatData.chat.title }}</h2>
+    <p style="font-size: 12px; color: var(--light-color);">
+      @if (chatData.chat.type == "chat") {
+      {{ this.isOnline === true ? 'online' : ('was at ' + (this.isOnline | date: 'HH:mm dd/MM/yy')) }}
+      }
+    </p>
   </div>
   <div class="header-actions">
     <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">

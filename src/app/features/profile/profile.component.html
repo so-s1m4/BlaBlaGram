@@ -24,8 +24,9 @@
     }
   </div>
   <ng-container *ngIf="selectedNav === 'Gifts'">
-    <div class="content" style="gap: .5rem; padding-top: .5rem;">
+    <div class="content" style="gap: .5rem; padding-top: .5rem; position: relative;">
       <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
+      <p *ngIf="!data.gifts" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">No gifts yet</p>
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Photos'">
@@ -67,7 +68,6 @@
         </div>
 
         <div class="item">
-          <p>BIO</p>
           <div class="input-holder">
             <input formControlName="bio" placeholder="Tell something about yourself"
               [attr.aria-invalid]="settingsFormGroup.get('bio')?.invalid && settingsFormGroup.get('bio')?.touched" />
@@ -76,23 +76,22 @@
           <p>Example: 23 y.o. designer from Odessa</p>
         </div>
 
-        <div class="item">
+        <!-- <div class="item">
           <div class="input-holder inline">
             <h5>Date of Birth</h5>
-            <!-- formControlName="birthday" (awaiting backend support) -->
-            <input type="date" />
+            <input type="date" formControlName="birthday />
           </div>
-        </div>
+        </div> -->
 
         <div class="item">
-          <div class="input-holder inline">
+          <!-- <div class="input-holder inline">
             <h5>Phone</h5>
             <input formControlName="phone" type="tel" autocomplete="tel" placeholder="+431234567890" />
           </div>
           <div class="input-holder inline">
             <h5>Email</h5>
             <input formControlName="email" type="email" autocomplete="email" placeholder="email@example.com" />
-          </div>
+          </div> -->
           <div class="input-holder inline">
             <h5>Password</h5>
             <input formControlName="password" type="password" autocomplete="new-password" placeholder="********" />

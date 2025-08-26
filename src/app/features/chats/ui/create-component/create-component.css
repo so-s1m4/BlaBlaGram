@@ -101,7 +101,7 @@ input {
 .holder {
   position: relative;
 
-  width: 100%;
+  flex: 1;
   height: 3rem;
   padding-right: 0.5rem;
 

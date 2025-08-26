@@ -83,7 +83,7 @@ export class ChatComponent
   mediaToShow: any[] = [];
 
   isSelectMode = false;
-  isOnline = false;
+  isOnline: any = false;
   isRecordVM = false;
   isChatsSettings = false;
   showInfo = false;
@@ -466,19 +466,21 @@ export class ChatComponent
         ) {
           this.isOnline = true;
         } else {
-          this.isOnline = false;
+          this.isOnline = friends.list.find(
+            (item: any) => item.id == this.chatData$.chat.chat.friendId
+          )?.wasOnline;
         }
       });
-      this.webSocketService.on('friends:friendOnline', (data: any) => {
-        if (data.userId == this.chatData$.chat.chat.friendId) {
-          this.isOnline = true;
-        }
-      });
-      this.webSocketService.on('friends:friendOffline', (data: any) => {
-        if (data.userId == this.chatData$.chat.chat.friendId) {
-          this.isOnline = false;
-        }
-      });
+      // this.webSocketService.on('friends:friendOnline', (data: any) => {
+      //   if (data.userId == this.chatData$.chat.chat.friendId) {
+      //     this.isOnline = true;
+      //   }
+      // });
+      // this.webSocketService.on('friends:friendOffline', (data: any) => {
+      //   if (data.userId == this.chatData$.chat.chat.friendId) {
+      //     this.isOnline = data.wasOnline;
+      //   }
+      // });
     }
   }
   loadChat() {

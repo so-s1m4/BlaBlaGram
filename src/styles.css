@@ -18,7 +18,7 @@
   margin: 0;
   box-sizing: border-box;
 
-  font-family: "JetBrains Mono Thin";
+  font-family: "JetBrains Mono";
   font-optical-sizing: auto;
   font-style: normal;
 
@@ -30,7 +30,12 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "JetBrains Mono Light";
+  font-family: "JetBrains Mono";
+  font-weight: 500;
+  font-optical-sizing: auto;
+  font-style: normal;
+
+  user-select: none;
 }
 body {
   background-color: var(--dark-color);
@@ -229,8 +234,36 @@ input[type="checkbox"]:disabled {
   border: 3px solid var(--gray-color);
   object-fit: cover;
 }
-.online {
-  border: 3px solid var(--primary-color);
+@keyframes lgbt {
+  0% {
+    color: color-mix(in srgb, red 100%, transparent 30%);
+  }
+  20% {
+    color: color-mix(in srgb, orange 100%, transparent 30%);
+
+  }
+  40% {
+    color: color-mix(in srgb, yellow 100%, transparent 30%);
+
+  }
+  60% {
+    color: color-mix(in srgb, green 100%, transparent 30%);
+
+  }
+  80% {
+    color: color-mix(in srgb, cyan 100%, transparent 30%);
+  }
+  90% {
+    color: color-mix(in srgb, purple 100%, transparent 30%);
+  }
+  100% {
+    color: color-mix(in srgb, red 100%, transparent 30%);
+  }
+}
+.avatar.online {
+  border: 3px solid;
+  animation: lgbt 5s ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 .flex {

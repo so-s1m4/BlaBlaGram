@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   data!: ProfileData;
   isMyProfile = false;
 
-  selectedNav: 'General' | 'Gifts' | 'Photos' | 'Posts' | 'Settings' = 'Gifts';
+  selectedNav: 'Gifts' | 'Photos' | 'Posts' | 'Settings' = 'Photos';
   navPanel: { label: string; guard: boolean }[] = [];
   showGallery = false;
   selectedPhoto = '';
@@ -274,7 +274,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.navPanel = [
       { label: 'Gifts', guard: true },
       { label: 'Photos', guard: true },
-      { label: 'Posts', guard: true },
+      // { label: 'Posts', guard: true },
       { label: 'Settings', guard: this.isMyProfile },
     ];
   }
