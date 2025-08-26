@@ -109,14 +109,14 @@
     flex-direction: row;
 
     justify-content: space-between;
+    align-items: center;
 
-    padding: 0 0.5rem;
+    padding: 0 1 rem;
 
-    border-bottom: 1px solid var(--primary-color);
-    border-radius: 0;
-    padding-bottom: 0.7rem;
+    border-radius: 1rem;
 
-    background: transparent;
+    background: var(--darker-gray-color);
+
   }
 
   .avatar {

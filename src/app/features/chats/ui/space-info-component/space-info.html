@@ -178,9 +178,13 @@
       @for (media of data.media; track media.id) {
       @if (media.type == 'video_message' || media.type == 'audio') {
       <div class="voice item" (click)="showInChat.emit(media.communicationId)">
-        <div>
+        <div class="playBtn">
           <video appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, media, 'media')" autoplayMuted></video>
           <svg icon="play"></svg>
+        </div>
+        <div class="infoContainer">
+          <p style="font-size: 20px;">{{media.createdAt | date: 'short'}}</p>
+          <p style="color: var(--primary-color); text-transform: capitalize; font-size: 16px; font-weight: bolder;">{{media.owner.username}}</p>
         </div>
       </div>
       }
@@ -200,7 +204,7 @@
           </div>
           <div class="holder">
             <input type="text" placeholder="Title" formControlName="title" />
-            <textarea placeholder="Description" formControlName="description"></textarea>
+            <!-- <textarea placeholder="Description" formControlName="description"></textarea> -->
           </div>
         </div>
         <button class="btn" type="submit">Save</button>

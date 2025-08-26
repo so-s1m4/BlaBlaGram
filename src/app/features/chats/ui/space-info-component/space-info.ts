@@ -103,6 +103,7 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
         this.data.group.members.push(
           ...data.map((item: any) => ({ role: 'member', user: item }))
         );
+        this.data.memberCount += data.length;
       }
     );
   }
@@ -116,6 +117,7 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
         this.data.group.members = this.data.group.members.filter(
           (item: any) => item.user.id != userId
         );
+        this.data.memberCount -= 1;
       }
     );
   }
@@ -185,6 +187,7 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
     }
     if (values.title) payload.append('title', values.title);
 
+    // payload.append('description', values.description || '');
     this.chatsService.patchSpace(
       'group',
       this.data.id,
@@ -192,11 +195,10 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.data = {
           ...this.data,
-          ...data.data
-        }
+          ...data.data,
+        };
       }
     );
-    // payload.append('description', values.description || 'about me!');
   }
 
   changeTo(page: string) {

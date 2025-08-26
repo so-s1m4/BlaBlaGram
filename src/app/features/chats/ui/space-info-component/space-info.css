@@ -556,8 +556,10 @@
   padding: 0 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--primary-color);
+  display: flex;
+  gap: 1rem;
 
-  div {
+  .playBtn {
     position: relative;
     height: 100%;
     aspect-ratio: 1 / 1;
@@ -579,6 +581,13 @@
       object-fit: cover;
       object-position: center;
     }
+  }
+  .infoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
   }
   svg {
     height: 60%;
@@ -611,8 +620,10 @@
     width: 100%;
     display: flex;
     gap: 1rem;
+    align-items: center;
+
     .holderInputImg {
-      width: 8rem;
+      width: 6rem;
       aspect-ratio: 1 / 1;
 
       border-radius: 50%;
@@ -626,6 +637,11 @@
         width: 100%;
         height: 100%;
 
+        &.selected {
+          svg {
+            display: none;
+          }
+        }
         svg {
           height: 80%;
           aspect-ratio: 1 / 1 ;
@@ -637,7 +653,9 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-
+      input {
+        font-size: 1rem;
+      }
       textarea {
         height: 5rem;
         font-size: 0.6rem;

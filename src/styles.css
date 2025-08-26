@@ -85,8 +85,8 @@ h1 {
   cursor: not-allowed;
 }
 .btn-info {
-  color: cyan;
-  border-color: cyan;
+  color: var(--light-color);
+  border-color: var(--light-color);
   svg {
     color: inherit;
   }
@@ -231,7 +231,7 @@ input[type="checkbox"]:disabled {
 }
 
 .avatar {
-  border: 3px solid var(--gray-color);
+  border: 1px solid var(--gray-color);
   object-fit: cover;
 }
 @keyframes lgbt {
@@ -240,15 +240,12 @@ input[type="checkbox"]:disabled {
   }
   20% {
     color: color-mix(in srgb, orange 100%, transparent 30%);
-
   }
   40% {
     color: color-mix(in srgb, yellow 100%, transparent 30%);
-
   }
   60% {
     color: color-mix(in srgb, green 100%, transparent 30%);
-
   }
   80% {
     color: color-mix(in srgb, cyan 100%, transparent 30%);
@@ -261,7 +258,7 @@ input[type="checkbox"]:disabled {
   }
 }
 .avatar.online {
-  border: 3px solid;
+  border: 1px solid;
   animation: lgbt 5s ease-in-out;
   animation-iteration-count: infinite;
 }
