@@ -105,12 +105,12 @@
             authService.me.id == data.group.owner.id
             ){
             @if (showEditMemberModal.role != "admin" ) {
-            <div class="btn btn-danger" (click)="promoteMember(showEditMemberModal.user.id)"><svg
-                icon="upgrade"></svg>Promote user
+            <div class="btn btn-danger" (click)="promoteMember(showEditMemberModal.user.id)">
+              <svg icon="arrowBack" style="transform: rotate(90deg)"></svg>Promote user
             </div>
             } @else {
-            <div class="btn btn-danger" (click)="degradeMember(showEditMemberModal.user.id)"><svg
-                style="transform: rotate(180deg);" icon="upgrade"></svg>Degrade user
+            <div class="btn btn-danger" (click)="degradeMember(showEditMemberModal.user.id)">
+              <svg style="transform: rotate(-90deg)" icon="arrowBack"></svg>Degrade user
             </div>
             }
             }
@@ -153,7 +153,7 @@
     </app-modal>
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Files'">
-    <div class="content" style="gap: .5rem; padding-top: .5rem; flex-direction: column;" >
+    <div class="content" style="gap: .5rem; padding-top: .5rem; flex-direction: column;">
       @for (file of data.media; track file.id) {
       @if (!file.mime.startsWith("image/") && !file.mime.startsWith("video/") && file.type != 'audio' && file.type !=
       "video_message"){
@@ -184,7 +184,8 @@
         </div>
         <div class="infoContainer">
           <p style="font-size: 20px;">{{media.createdAt | date: 'short'}}</p>
-          <p style="color: var(--primary-color); text-transform: capitalize; font-size: 16px; font-weight: bolder;">{{media.owner.username}}</p>
+          <p style="color: var(--primary-color); text-transform: capitalize; font-size: 16px; font-weight: bolder;">
+            {{media.owner.username}}</p>
         </div>
       </div>
       }
