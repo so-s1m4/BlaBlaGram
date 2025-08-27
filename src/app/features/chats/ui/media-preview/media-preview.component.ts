@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -19,14 +20,14 @@ import { MediaPipe } from '@utils/media.pipe';
   templateUrl: './media-preview.component.html',
   styleUrl: './media-preview.component.css',
 })
-export class MediaPreviewComponent implements AfterViewInit, OnInit {
+export class MediaPreviewComponent implements AfterViewInit, OnInit, OnChanges {
   @ViewChild('holder') holder!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   API_URL = API_URL;
 
   @Input() imageMedia: any[] = [];
   @Output() openMedia = new EventEmitter<void>();
-  @Output() read = new EventEmitter<void>()
+  @Output() read = new EventEmitter<void>();
 
   imageToShow: any[] = [];
 
@@ -38,12 +39,11 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
   }
 
   setupGridTemplateAreas() {
-    let holder: ElementRef<HTMLDivElement> | HTMLElement = this.holder;
+    let holder: ElementRef<HTMLDivElement> | HTMLElement =
+      this.holder?.nativeElement;
     if (!holder) {
       return;
     }
-
-    holder = holder.nativeElement;
 
     if (this.imageMedia.length) {
       switch (this.imageMedia.length) {
@@ -116,14 +116,13 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit {
   ngOnChanges() {
     this.setupGridTemplateAreas();
   }
-
   playPause() {
     const el = this.video?.nativeElement;
     if (!el) return;
     if (el.paused) {
       const p = el.play();
       el.classList.add('playing');
-      this.read.emit()
+      this.read.emit();
 
       el.onended = () => {
         el.classList.remove('playing');
