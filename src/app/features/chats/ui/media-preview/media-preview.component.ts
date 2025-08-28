@@ -50,33 +50,43 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit, OnChanges {
         case 1:
           holder.style.gridTemplateAreas = `"a"`;
           holder.style.width = '100%';
+          holder.style.gridTemplateColumns = '100%';
+          holder.style.gridTemplateRows = '100%';
           holder.style.height = 'min(400px, 30vh)';
           break;
         case 2:
           holder.style.gridTemplateAreas = `"a b"`;
           holder.style.gridTemplateColumns = '60% 40%';
+          holder.style.gridAutoRows = 'calc(100%)';
           holder.style.width = 'min(420px, 70vw)';
           break;
         case 3:
           holder.style.gridTemplateAreas = `"a b" "a c"`;
           holder.style.gridTemplateColumns = '75% 25%';
+          holder.style.gridAutoRows = 'calc(100% / 2)';
           holder.style.width = 'min(416px, 70vw)';
           holder.style.height = '420px';
           break;
         case 4:
           holder.style.gridTemplateAreas = `"a b" "a c" "a d"`;
           holder.style.gridTemplateColumns = '70% 30%';
+          holder.style.gridTemplateRows = '';
+          holder.style.gridAutoRows = 'calc(100% / 3)';
           holder.style.width = 'min(352px, 70vw)';
           holder.style.height = '420px';
           break;
         case 5:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e"`;
           holder.style.gridTemplateRows = '60% 40%';
+          holder.style.gridAutoColumns = 'calc(100% / 6)';
           holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '466px';
           break;
         case 6:
           holder.style.gridTemplateAreas = `"a b c" "d e f"`;
+          holder.style.gridTemplateRows = '';
+          holder.style.gridAutoRows = 'calc(100% / 2)';
+          holder.style.gridAutoColumns = 'calc(100% / 3)';
           holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '373px';
           break;
@@ -89,17 +99,32 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit, OnChanges {
         case 8:
           holder.style.gridTemplateAreas = `"a a a b b b" "c c d d e e" "f f g g h h"`;
           holder.style.gridTemplateRows = '44% 28% 28%';
+          holder.style.gridAutoColumns = '1fr';
           holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '653px';
           break;
         case 9:
           holder.style.gridTemplateAreas = `"a b c" "d e f" "g h i"`;
           holder.style.width = 'min(420px, 70vw)';
+          holder.style.gridAutoColumns = '1fr';
+          holder.style.gridAutoRows = 'calc(100% / 3)';
           holder.style.height = '560px';
           break;
         case 10:
-          holder.style.gridTemplateAreas = `"a a a b b b" "c c c d d d" "e e f f g g" "h h i i j j"`;
-          holder.style.gridTemplateRows = '30% 30% 20% 20%';
+          holder.style.gridTemplateAreas = `
+          "a a a b b b"
+          "a a a b b b"
+          "a a a b b b"
+          "c c c d d d"
+          "c c c d d d"
+          "c c c d d d"
+          "e e f f g g"
+          "e e f f g g"
+          "h h i i j j"
+          "h h i i j j"
+          `;
+          holder.style.gridAutoRows = 'calc(100% / 10)';
+          holder.style.gridAutoColumns = 'calc(100% / 6)';
           holder.style.width = 'min(420px, 70vw)';
           holder.style.height = '933px';
           break;
@@ -114,6 +139,10 @@ export class MediaPreviewComponent implements AfterViewInit, OnInit, OnChanges {
     this.setupGridTemplateAreas();
   }
   ngOnChanges() {
+    this.imageToShow = this.imageMedia.map((media, index) => ({
+      ...media,
+      gridArea: String.fromCharCode(97 + index),
+    }));
     this.setupGridTemplateAreas();
   }
   playPause() {

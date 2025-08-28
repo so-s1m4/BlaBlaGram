@@ -156,7 +156,6 @@ export class ChatsService {
           console.error('Failed to delete media:', err);
           return;
         }
-
         callback?.();
       }
     );
