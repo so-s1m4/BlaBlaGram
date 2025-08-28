@@ -14,11 +14,17 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-friends',
-  imports: [UserCardComponent, SearchComponent, Modal, ProfileComponent, CommonModule],
+  imports: [
+    UserCardComponent,
+    SearchComponent,
+    Modal,
+    ProfileComponent,
+    CommonModule,
+  ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css',
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent {
   constructor() {}
 
   profileService = inject(ProfileService);
@@ -27,77 +33,12 @@ export class FriendsComponent implements OnInit {
   whatToShow = 'friends';
 
   authService = inject(AuthService);
-  private friendsList: {
-    list: ProfileData[];
-  } = {
-    list: [],
-  };
-  pendingRequests: {
-    list: any[];
-  } = {
-    list: [],
-  };
-
-  private incomingReq$: any[] = [];
-  private myReq$: any[] = [];
-  private searchResults$: any = [];
-
   friendsService = inject(FriendsService);
 
-  async ngOnInit(): Promise<void> {
-    this.friendsService.getFriendsList((data: any) => {
-      this.friendsList = data;
-    });
-    this.friendsService.getPendingRequests((data: any) => {
-      this.pendingRequests = data;
-      this.incomingReq$ = data.list.filter(
-        (item: any) => item.sender_id.id !== this.authService.me.id
-      );
-      this.myReq$ = data.list.filter(
-        (item: any) => item.receiver_id.id !== this.authService.me.id
-      );
-    });
-    this.webSocketService.on('friends:newRequest', (data: any) => {
-      if (data.sender_id.id === this.authService.me.id) {
-        this.myReq$.push(data);
-      } else {
-        this.incomingReq$.push(data);
-      }
-    });
-    this.webSocketService.on('friends:requestAccepted', (data: any) => {
-      if (data.sender_id.id === this.authService.me.id) {
-        this.myReq$ = this.myReq$.filter((item: any) => item.id != data.id);
-        this.friends.list.push(data.receiver_id);
-      } else {
-        this.friends.list.push(data.sender_id);
-        this.incomingReq$ = this.incomingReq$.filter(
-          (item: any) => item.id != data.id
-        );
-      }
-    });
-    this.webSocketService.on('friends:requestCanceled', (data: any) => {
-      if (data.sender_id.id === this.authService.me.id) {
-        this.myReq$ = this.myReq$.filter((item: any) => item.id != data.id);
-      } else {
-        this.incomingReq$ = this.incomingReq$.filter(
-          (item: any) => item.id != data.id
-        );
-      }
-    });
-  }
+  readonly data = this.friendsService.data;
+  private searchResults$: any = [];
+
   onChange($event: any) {
-    this.friendsService.getFriendsList((data: any) => {
-      this.friendsList = data;
-    });
-    this.friendsService.getPendingRequests((data: any) => {
-      this.pendingRequests = data;
-      this.incomingReq$ = data.list.filter(
-        (item: any) => item.sender_id.id !== this.authService.me.id
-      );
-      this.myReq$ = data.list.filter(
-        (item: any) => item.receiver_id.id !== this.authService.me.id
-      );
-    });
     this.whatToShow = $event?.currentTarget?.value;
   }
   searchFriends(data: string) {
@@ -110,19 +51,9 @@ export class FriendsComponent implements OnInit {
       this.searchResults$ = data;
     });
   }
-  get friends(): any {
-    return this.friendsList;
-  }
   get searchResults() {
     return this.searchResults$;
   }
-  get myReq() {
-    return this.myReq$;
-  }
-  get incomingReq() {
-    return this.incomingReq$;
-  }
-
   profileOf: string | undefined;
   closeInfo() {
     this.profileOf = undefined;

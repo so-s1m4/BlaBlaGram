@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@utils/svg.component';
 import { API_URL } from 'app/app.config';
 import { AuthService } from '@services/auth.service';
-import { WebSocketService } from '@services/web-socket.service';
 import { LayoutComponent } from '@features/layout/layout.component';
 import { MessageComponent } from '../message/message.component';
 import { HttpEventType } from '@angular/common/http';
@@ -58,7 +57,6 @@ export class ChatComponent
 
   layout = inject(LayoutComponent);
   chatService = inject(ChatsService);
-  webSocketService = inject(WebSocketService);
   friendsService = inject(FriendsService);
   authService = inject(AuthService);
   router: Router = inject(Router);
@@ -91,7 +89,7 @@ export class ChatComponent
   readMsgTimeout: any;
   maxSeq: any;
 
-  private chatData$: any;
+  private chatData$: any = this.chatService.currentChat;
   chatId: string = '';
 
   @ViewChild(VideoMessageComponent)
@@ -125,13 +123,12 @@ export class ChatComponent
     setTimeout(() => element.classList.remove('flash-highlight'), 1500);
     element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-
   onStopRecord(videoDataBLOB: Blob | 'error') {
     if (videoDataBLOB == 'error') {
       this.isRecordVM = false;
       return;
     }
-    this.chatService.sendVideoMessage(this.chatData$.chat.id, videoDataBLOB);
+    this.chatService.sendVideoMessage(this.chatData$.data.id, videoDataBLOB);
   }
   async toggleRecVideoMsg() {
     if (this.isRecordVM) {
@@ -421,10 +418,9 @@ export class ChatComponent
   OnReadMsg(seqNum: number) {
     if (seqNum < this.maxSeq) return;
     clearTimeout(this.readMsgTimeout);
-
     this.maxSeq = seqNum;
     this.readMsgTimeout = setTimeout(() => {
-      this.chatService.readMsg(this.chatData.chat.id, this.maxSeq);
+      this.chatService.readMsg(this.chatData$.data.id, this.maxSeq);
     }, 500);
   }
   // Media
@@ -452,37 +448,6 @@ export class ChatComponent
   goBack(): void {
     this.router.navigate(['chats']);
   }
-  // Chat data
-  setChatData(chatData: any): void {
-    this.me = this.authService.me;
-    this.chatData$ = chatData;
-    this.scrollToBottom();
-    if (chatData.chat.type == 'chat') {
-      this.friendsService.getFriendsList((friends: any) => {
-        if (
-          friends.list.find(
-            (item: any) => item.id == this.chatData$.chat.chat.friendId
-          )?.isOnline
-        ) {
-          this.isOnline = true;
-        } else {
-          this.isOnline = friends.list.find(
-            (item: any) => item.id == this.chatData$.chat.chat.friendId
-          )?.wasOnline;
-        }
-      });
-      this.webSocketService.on('friends:friendOnline', (data: any) => {
-        if (data.userId == this.chatData$.chat.chat.friendId) {
-          this.isOnline = true;
-        }
-      });
-      this.webSocketService.on('friends:friendOffline', (data: any) => {
-        if (data.userId == this.chatData$.chat.chat.friendId) {
-          this.isOnline = data.wasOnline;
-        }
-      });
-    }
-  }
   loadChat() {
     if (!this.chatId) {
       return;
@@ -497,32 +462,12 @@ export class ChatComponent
     if (this.inputComp) this.inputComp.repliedOn = '';
 
     this.chatService.selectChat(this.chatId!);
-    this.chatService.getChatById(this.chatId, (data: any) =>
-      this.setChatData(data)
-    );
   }
   deleteChat() {
     this.chatService.deleteChat(this.chatId!);
   }
   leaveChat() {
     this.chatService.leaveChat(this.chatId!);
-  }
-  // Event handlers
-  onNewMessage(data: any): boolean {
-    if (data.spaceId !== this.chatId) {
-      return false;
-    }
-    this.chatData$.messages.push(data);
-    const chat = this.chatService.chats$.find(
-      (item: any) => item.id == this.chatId
-    );
-    chat.lastMessage = {
-      text: data.text,
-      editedAt: data.editedAt,
-    };
-    if (data.sender.id == this.authService.me.id || true)
-      setTimeout(() => this.scrollToBottom(), 0.1);
-    return true;
   }
   // Lifecycle hooks
   ngOnInit(): void {
@@ -531,47 +476,9 @@ export class ChatComponent
       this.chatId = id as string;
       this.loadChat();
     });
-    this.webSocketService.on('communication:newMessage', (data: any) => {
-      this.onNewMessage(data);
-    });
-    this.webSocketService.on('communication:editMessage', (data: any) => {
-      if (data.spaceId === this.chatId) {
-        const message = this.chatData$.messages.find(
-          (msg: any) => msg.id === data.id
-        );
-        if (message) {
-          message.editedAt = data.editedAt;
-          message.text = data.text;
-        }
-      }
-    });
-    this.webSocketService.on('communication:deleteMedia', (data: any) => {
-      if (data.spaceId === this.chatId) {
-        const message = this.chatData$.messages.find(
-          (msg: any) => msg.id === data.communicationId
-        );
-        message.media = message.media.filter(
-          (media: any) => media.id !== data.id
-        );
-      }
-    });
-    this.webSocketService.on('communication:deleteMessage', (data: any) => {
-      if (data.spaceId === this.chatId) {
-        this.chatData$ = {
-          ...this.chatData$,
-          messages: this.chatData$.messages.filter(
-            (msg: any) => msg.id !== data.id
-          ),
-        };
-      }
-    });
-    this.webSocketService.on('space:removedFromSpace', (data: any) => {
-      if (data.id == this.chatId) this.router.navigate(['/chats']);
-    });
   }
   ngOnChanges(): void {
     if (this.inputComp) this.inputComp.filesList = [];
-    this.chatData$ = null;
     this.loadChat();
   }
   ngOnDestroy(): void {

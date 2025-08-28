@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
   inject,
   Input,
   OnInit,
@@ -44,7 +43,7 @@ export class UserCardComponent implements OnInit {
     if (!this.data) {
       console.error('UserCardComponent: data input is undefined');
     }
-    this.data.isFriend = !!this.friendsService.friends.list.find(
+    this.data.isFriend = !!this.friendsService.data.friends.list.find(
       (item: any) => item.id == this.data.id
     );
   }
@@ -62,7 +61,7 @@ export class UserCardComponent implements OnInit {
     this.isSent = true;
   }
   removeFriend() {
-    this.friendsService.delFriend(this.data.id, (data: any) => {});
+    this.friendsService.delFriend(this.data.id);
   }
   acceptRequest() {
     this.friendsService.acceptRequest(this.data.id);

@@ -35,6 +35,6 @@ export class SendGift implements OnInit {
   }
 
   ngOnInit(){
-    this.friendList = [ {...this.authService.me, username: "YOU"}, ...this.friendsService.friends.list];
+    this.friendList = [ {...this.authService.me, username: "YOU"}, ...this.friendsService.data.friends.list];
   }
 }

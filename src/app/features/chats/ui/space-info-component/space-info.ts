@@ -96,42 +96,42 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
       .map((it: any) => it.id);
     this.showAddMemberModal = false;
     this.chatsService.addMembersToSpace(
-      this.data.type,
-      this.data.id,
+      this.data.info.type,
+      this.data.info.id,
       members,
       (data: any) => {
-        this.data.group.members.push(
+        this.data.info.group.members.push(
           ...data.map((item: any) => ({ role: 'member', user: item }))
         );
-        this.data.memberCount += data.length;
+        this.data.info.memberCount += data.length;
       }
     );
   }
   removeMember(userId: any) {
     this.showEditMemberModal = {};
     this.chatsService.delMembersFromSpace(
-      this.data.type,
-      this.data.id,
+      this.data.info.type,
+      this.data.info.id,
       [userId],
       () => {
-        this.data.group.members = this.data.group.members.filter(
+        this.data.info.group.members = this.data.info.group.members.filter(
           (item: any) => item.user.id != userId
         );
-        this.data.memberCount -= 1;
+        this.data.info.memberCount -= 1;
       }
     );
   }
   promoteMember(userId: any) {
     this.showEditMemberModal = {};
-    this.chatsService.promoteMemberInSpace(this.data.id, userId, () => {
-      this.data.group.members.find((item: any) => item.user.id == userId).role =
+    this.chatsService.promoteMemberInSpace(this.data.info.id, userId, () => {
+      this.data.info.group.members.find((item: any) => item.user.id == userId).role =
         'admin';
     });
   }
   degradeMember(userId: any) {
     this.showEditMemberModal = {};
-    this.chatsService.degradeMemberInSpace(this.data.id, userId, () => {
-      this.data.group.members.find((item: any) => item.user.id == userId).role =
+    this.chatsService.degradeMemberInSpace(this.data.info.id, userId, () => {
+      this.data.info.group.members.find((item: any) => item.user.id == userId).role =
         'member';
     });
   }
@@ -190,7 +190,7 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
     // payload.append('description', values.description || '');
     this.chatsService.patchSpace(
       'group',
-      this.data.id,
+      this.data.info.id,
       payload,
       (data: any) => {
         this.data = {
@@ -216,26 +216,30 @@ export class SpaceInfoComponent implements OnInit, OnDestroy {
       {
         label: 'Settings',
         guard: () => {
-          return this.data.role == 'admin';
+          return this.data.info.role == 'admin';
         },
       },
     ];
   }
   ngOnInit(): void {
-    this.chatsService.getInfoAboutChat(this.id, (data: any) => {
-      this.data = data;
+    this.chatsService.getInfoAboutChat(this.id, () => {
+      this.data = this.chatsService.currentChat;
       this.settingsForm.patchValue({
-        title: data.title,
-        description: data.description || '',
+        title: this.data.title,
+        description: this.data.description || '',
       });
-      this.friends = this.friendsService.friends.list
+
+      console.log(this.data);
+      this.friends = this.friendsService.data.friends.list
         .filter(
           (item) =>
-            !this.data.group.members.find((it: any) => it.user.id == item.id)
+            !this.data.info.group.members.find(
+              (it: any) => it.user.id == item.id
+            )
         )
         .map((item) => ({ ...item, selected: false }));
+      this.buildNavPanel();
     });
-    this.buildNavPanel();
   }
   ngOnDestroy(): void {}
 }

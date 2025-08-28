@@ -5,6 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { API_URL, MEDIA_SERVER_URL } from '../../../app.config';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
+import { FriendsService } from '@features/friends/data/friends.service';
 
 function base64ToBlob(base64Data: string, contentType = 'image/png'): Blob {
   const byteCharacters = atob(base64Data.split(',')[1]);
@@ -28,15 +29,67 @@ function blobToFile(blob: any, fileName: string) {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatsService implements OnInit {
-  constructor(private imageCompress: NgxImageCompressService) {}
+export class ChatsService {
+  constructor(private imageCompress: NgxImageCompressService) {
+    this.getChats();
+    this.webSocketService.on('space:addedToNew', (data: any) => {
+      this.getChats();
+    });
+    this.webSocketService.on('space:removedFromSpace', (data: any) => {
+      this.chats$.list = this.chats$.list.filter(
+        (item: any) => item.id != data.id
+      );
+      if (this.currentChat$.id == data.id) this.router.navigate(['/chats']);
+    });
+    this.webSocketService.on('communication:newMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        this.currentChat$.messages.push(data);
+        this.currentChat$.lastMessage = {
+          text: data.text,
+          editedAt: data.editedAt,
+        };
+        // if (data.sender.id == this.authService.me.id)
+        //   setTimeout(() => this.scrollToBottom(), 0.1);
+      }
+    });
+    this.webSocketService.on('communication:editMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        const message = this.currentChat$.messages.find(
+          (msg: any) => msg.id === data.id
+        );
+        if (message) {
+          message.editedAt = data.editedAt;
+          message.text = data.text;
+        }
+      }
+    });
+    this.webSocketService.on('communication:deleteMedia', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        const message = this.currentChat$.messages.find(
+          (msg: any) => msg.id === data.communicationId
+        );
+        message.media = message.media.filter(
+          (media: any) => media.id !== data.id
+        );
+      }
+    });
+    this.webSocketService.on('communication:deleteMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        this.currentChat$.messages = this.currentChat$.messages.filter(
+          (msg: any) => msg.id !== data.id
+        );
+      }
+    });
+  }
 
-  chats$: any[] = [];
-  private currentChatId$: string | null = null;
+  private chats$: { list: any[] } = { list: [] };
+  private currentChat$: any = {};
 
   httpClient = inject(HttpClient);
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
+  friendsService = inject(FriendsService);
+
   router = inject(Router);
 
   toggleEmoji(communicationId: string, emojiId: string) {
@@ -54,7 +107,6 @@ export class ChatsService implements OnInit {
       }
     );
   }
-
   // Messages
   readMsg(spaceId: string, seqNum: number) {
     this.webSocketService.send(
@@ -277,20 +329,18 @@ export class ChatsService implements OnInit {
   }
 
   // Chat data
-  chats(callback?: (chats: any[]) => void): void | any[] {
-    this.updateChats(callback);
-  }
-  getChatById(chatId: string, callback: any): void {
+  getChatById(chatId: string, callback?: any): any {
     this.webSocketService.send(
       'communication:getList',
       { spaceId: chatId, limit: 9999999999 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
-          callback({
-            chat: this.chats$.find((chat: any) => chat.id == chatId),
+          callback?.({
+            chat: this.chats$.list.find((chat: any) => chat.id == chatId),
             messages: data,
           });
+          return data;
         } else {
           this.router.navigate(['chats']);
           console.error('Error receiving chats:', err);
@@ -304,6 +354,7 @@ export class ChatsService implements OnInit {
       { spaceId: chatId },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
+          this.currentChat$.info = res;
           callback(res);
         } else {
           this.router.navigate(['chats', chatId]);
@@ -313,12 +364,23 @@ export class ChatsService implements OnInit {
     );
   }
   selectChat(chatId: string): void {
-    this.currentChatId$ = chatId;
+    if (chatId === '') {
+      this.currentChat$ = {};
+      return;
+    }
+    this.currentChat$.id = chatId;
+    this.currentChat$.data = this.chats$.list.find(
+      (item: any) => item.id == chatId
+    );
+    this.getChatById(chatId, (data: any) => {
+      this.currentChat$.data = data.chat;
+      this.currentChat$.messages = data.messages;
+    });
+    this.currentChat$.info = {};
   }
   get currentChatId(): string | null {
-    return this.currentChatId$;
+    return this.currentChat$.id;
   }
-
   // Spaces
   createSpace(type: string, args: any) {
     if (type == 'group') {
@@ -355,16 +417,22 @@ export class ChatsService implements OnInit {
       (ok: any, err: any, data: any) => {}
     );
   }
-  updateChats(callback?: any) {
+  getChats() {
     this.webSocketService.send(
       'spaces:getList',
       (ok: boolean, err: string, res: any) => {
         if (ok) {
-          this.chats$ = res;
-          this.chats$.sort((a, b) => {
+          this.chats$.list = res;
+          this.chats$.list.sort((a, b) => {
             return -(a.updatedAt as string).localeCompare(b.updatedAt);
           });
-          callback?.(this.chats$);
+          this.chats$.list.forEach((item: any) => {
+            if (item.type === 'chat') {
+              item.chat.friend = this.friendsService.getFriend(
+                item.chat.friendId
+              );
+            }
+          });
         } else {
           console.error('Error receiving chats:', err);
         }
@@ -385,7 +453,7 @@ export class ChatsService implements OnInit {
       })
       .subscribe((res: any) => {
         window.location.reload();
-        callback?.(res)
+        callback?.(res);
       });
   }
   addMembersToSpace(
@@ -450,8 +518,11 @@ export class ChatsService implements OnInit {
       }
     );
   }
-  // Hooks
-  ngOnInit(): void {
-    this.chats();
+  // Getters
+  get chats() {
+    return this.chats$;
+  }
+  get currentChat(): any {
+    return this.currentChat$;
   }
 }

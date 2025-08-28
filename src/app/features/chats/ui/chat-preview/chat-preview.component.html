@@ -1,8 +1,8 @@
-<img class="avatar"
-  [ngClass]="{
-  'online': isOnline
-  }"
-  [src]="chat.img[chat.img.length-1] | img" alt="" />
+<div class="avatar-wrap" [ngClass]="{
+    'online': (chat.type === 'chat' && friendsService.getFriend(chat.chat.friendId).isOnline) ? true : false
+  }">
+  <img class="avatar" [src]="chat.img[chat.img.length-1] | img" alt="" />
+</div>
 
 <div class="chat-info">
   <div class="username">

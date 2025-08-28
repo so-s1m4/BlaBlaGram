@@ -93,11 +93,10 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatsService.chats();
     this.friendsService.getFriendsList();
 
     this.webSocketService.on('communication:newMessage', (data: any) => {
-      if (this.chatsService.currentChatId !== data.spaceId) {
+      if (this.chatsService.currentChat.id !== data.spaceId) {
         const popUpData = {
           type: 'newMessage',
           img: data.sender.img[data.sender.img.length - 1],
@@ -143,11 +142,5 @@ export class LayoutComponent implements OnInit {
       this.showPopUp(popUpData);
     });
 
-    this.webSocketService.on('friends:friendOnline', (data: any) => {
-      this.friendsService.setFriendOnline(data.userId);
-    });
-    this.webSocketService.on('friends:friendOffline', (data: any) => {
-      this.friendsService.setFriendOffline(data.userId);
-    });
   }
 }

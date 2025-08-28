@@ -17,7 +17,7 @@
   <app-search [placeholder]="'Search friends...'" (search)="searchFriends($event)"></app-search>
   <div class="friends-list">
     @if (whatToShow == "friends") {
-    @for (friend of this.friends.list; track friend) {
+    @for (friend of this.data.friends.list; track friend) {
     <app-user-card (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
     }
     } @else if (whatToShow == "search") {
@@ -25,11 +25,11 @@
     <app-user-card (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
     }
     } @else if ( whatToShow == "requestsGot") {
-    @for (friend of this.incomingReq; track friend) {
+    @for (friend of this.data.requests.incoming; track friend) {
     <app-user-card (onClick)="openProfileOf($event)" [data]="friend" type="inc_request"></app-user-card>
     }
     } @else if ( whatToShow == "requestsSent") {
-    @for (friend of this.myReq; track friend) {
+    @for (friend of this.data.requests.oncoming; track friend) {
     <app-user-card [data]="friend" type="my_request"></app-user-card>
     }
     }

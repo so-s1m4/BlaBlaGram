@@ -1,20 +1,22 @@
-@if (!this.chatData?.chat || !authService.me) {
+@if (!chatData.data) {
 <div class="loading">Loading...</div>
 } @else {
-
-
 <div class="header">
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
-  <img [ngClass]="{
-    'online': this.isOnline === true
-  }" [src]="chatData.chat.img[chatData.chat.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
+  <div class="avatar-wrap" [ngClass]="{
+    'online': (chatData.data.type === 'chat' && chatData.data.chat.friend.isOnline) ? true : false
+  }">
+    <img [src]="chatData.data.img[chatData.data.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
+  </div>
+
   <div class="header-info" (click)="toggleInfo()">
-    <h2 class="name">{{ chatData.chat.title }}</h2>
+    <h2 class="name">{{ chatData.data.title }}</h2>
     <p style="font-size: 12px; color: var(--light-color);">
-      @if (chatData.chat.type == "chat") {
-      {{ this.isOnline === true ? 'online' : ('was at ' + (this.isOnline | date: 'HH:mm dd/MM/yy')) }}
+      @if (chatData.data.type == "chat") {
+      {{ chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
+      (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}
       }
     </p>
   </div>
@@ -30,11 +32,11 @@
     </button>
   </div>
   <div class="chatsSettings" *ngIf="this.isChatsSettings">
-    @if (this.chatData.chat.type != "group") {
+    @if (chatData.data.type != "group") {
     <div class="setting-item delete" (click)="deleteChat()">
       <svg icon="trashcan"> </svg> Delete Chat
     </div>
-    } @else if (this.chatData.chat.group.owner.id == authService.me.id){
+    } @else if (chatData.data.group.owner.id == authService.me.id){
     <div class="setting-item delete" (click)="leaveChat()">
       <svg icon="reply"> </svg> Leave
     </div>
@@ -49,16 +51,16 @@
 
   </div>
 </div>
-@if (this.chatData.chat.type == 'chat') {
+@if (chatData.data.type == 'chat') {
 <app-modal *ngIf="showInfo" (click)="toggleInfo()">
   <div class="info-container" (click)="stopPropagation($event)">
-    <app-profile [username]="this.chatData.chat.chat.friendId"></app-profile>
+    <app-profile [username]="chatData.data.chat.friendId"></app-profile>
   </div>
 </app-modal>
-} @else if (this.chatData.chat.type == 'group') {
+} @else if (chatData.data.type == 'group') {
 <app-modal *ngIf="showInfo" (click)="toggleInfo()">
   <div class="info-container" (click)="stopPropagation($event)">
-    <app-space-info [id]="this.chatData.chat.id" (showInChat)="scrollToMsg($event)"></app-space-info>
+    <app-space-info [id]="chatData.data.id" (showInChat)="scrollToMsg($event)"></app-space-info>
   </div>
 </app-modal>
 }
@@ -69,9 +71,9 @@
     [style]="emojiSelectorStyle"></app-emoji-selector>
 
 
-  @for (message of this.chatData.messages; track message.id; let last = $last) {
-  <app-message [chatData]="this.chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
-    [showSender]="chatData.chat.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
+  @for (message of chatData.messages; track message.id; let last = $last) {
+  <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+    [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
     [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
     (scrollToMsg)="scrollToMsg($event)">
   </app-message>
@@ -79,7 +81,7 @@
 </div>
 <div class="input-holder">
   <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()" (toggleRecVideoMsg)="toggleRecVideoMsg()"
-    [chatData]="this.chatData"></app-input-field>
+    [chatData]="chatData"></app-input-field>
 </div>
 
 <app-media-gallery *ngIf="mediaToShow.length > 0" (close)="closeMedia()" (delete)="deleteMedia($event)"

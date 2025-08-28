@@ -1,7 +1,9 @@
 @if (this.type == "user"){
-<img class="avatar" [ngClass]="{
+<div class="avatar-wrap" [ngClass]="{
     'online': this.data.isOnline
-  }" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" (click)="clickEmit($event)" />
+  }">
+  <img class="avatar" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" (click)="clickEmit($event)" />
+</div>
 } @else if (this.type == "inc_request"){
 <img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.img.length-1] | img" alt=""
   (click)="clickEmit($event)" />

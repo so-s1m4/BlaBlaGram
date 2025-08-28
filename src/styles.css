@@ -233,6 +233,27 @@ input[type="checkbox"]:disabled {
 .avatar {
   border: 1px solid var(--gray-color);
   object-fit: cover;
+  position: relative;
+}
+.avatar-wrap {
+  position: relative;
+  display: inline-block;
+}
+.avatar-wrap > img.avatar {
+  display: block; /* remove inline gaps */
+  object-fit: cover;
+}
+.avatar-wrap.online::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+
+  height: 30%;
+  aspect-ratio: 1 / 1;
+  background: lightgreen;
+  border-radius: 50%;
+  border: 2px solid var(--secondary-color); /* ring for contrast on both themes */
 }
 @keyframes lgbt {
   0% {
@@ -256,11 +277,6 @@ input[type="checkbox"]:disabled {
   100% {
     color: color-mix(in srgb, red 100%, transparent 30%);
   }
-}
-.avatar.online {
-  border: 1px solid;
-  animation: lgbt 5s ease-in-out;
-  animation-iteration-count: infinite;
 }
 
 .flex {
