@@ -275,7 +275,6 @@ export class ChatComponent
     if (!message.trim() && this.inputComp.filesList.length === 0) {
       return;
     }
-
     this.chatService.createCommunication(
       this.chatId!,
       message,

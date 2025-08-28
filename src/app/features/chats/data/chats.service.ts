@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { inject, Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, NgZone, OnInit } from '@angular/core';
 import { WebSocketService } from '../../../core/services/web-socket.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { API_URL, MEDIA_SERVER_URL } from '../../../app.config';
@@ -30,6 +30,8 @@ function blobToFile(blob: any, fileName: string) {
   providedIn: 'root',
 })
 export class ChatsService {
+  zone = inject(NgZone);
+
   constructor(private imageCompress: NgxImageCompressService) {
     this.getChats();
     this.webSocketService.on('space:addedToNew', (data: any) => {
@@ -80,6 +82,38 @@ export class ChatsService {
         );
       }
     });
+    this.webSocketService.on('emojis:toggle', (data: any) => {
+      const chat = this.currentChat$;
+      if (chat.data.id !== data.emoji.spaceId) return;
+      const msg = chat.messages.find(
+        (msg: any) => msg.id == data.emoji.communicationId
+      );
+      if (msg) {
+        const emjUrl = data.emoji.emoji.emojiUrl;
+        if (data.action == 'removed') {
+          msg.emojis = msg.emojis.filter(
+            (item: any) =>
+              !(
+                item.emoji.emojiUrl == emjUrl &&
+                item.user.id == data.emoji.user.id
+              )
+          );
+        } else {
+          msg.emojis = [...msg.emojis, data.emoji];
+        }
+      }
+    });
+    // this.webSocketService.on('space:readMessages', (data: any) => {
+
+    //   const { lastReadSeq, spaceId, userId } = data;
+    //   if (
+    //     this.data.seq <= lastReadSeq &&
+    //     this.data.sender.id != userId &&
+    //     !this.data.wasRead
+    //   ) {
+    //     this.data.wasRead = true;
+    //   }
+    // });
   }
 
   private chats$: { list: any[] } = { list: [] };

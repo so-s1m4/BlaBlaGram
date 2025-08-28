@@ -87,6 +87,9 @@
 .actionBtns {
   display: flex;
   gap: 2rem;
+  .input-text {
+    flex-direction: column;
+  }
 }
 .actionBtns button {
   border: 0;
@@ -141,11 +144,14 @@
     font-size: 1rem;
   }
   .actionBtns {
-    flex-direction: column;
     align-items: space-around;
     margin-right: 1rem;
     button {
       transform: scale(0.8);
+    }
+
+    .input-text {
+      flex-direction: row;
     }
   }
 

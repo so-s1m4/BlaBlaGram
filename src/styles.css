@@ -250,7 +250,7 @@ input[type="checkbox"]:disabled {
   bottom: -3px;
 
   height: 30%;
-  aspect-ratio: 1 / 1;
+  width: 30%;
   background: lightgreen;
   border-radius: 50%;
   border: 2px solid var(--secondary-color); /* ring for contrast on both themes */

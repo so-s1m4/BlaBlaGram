@@ -154,4 +154,7 @@ export class InputFieldComponent {
     this.repliedOn$ = value;
     setTimeout(() => this.inputField.nativeElement.focus());
   }
+  public get repliedOn(){
+    return this.repliedOn$;
+  }
 }

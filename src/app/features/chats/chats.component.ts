@@ -1,9 +1,4 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ChatPreviewComponent } from './ui/chat-preview/chat-preview.component';
 import { ChatsService } from './data/chats.service';
@@ -37,7 +32,7 @@ export class ChatsComponent implements OnInit {
   router = inject(Router);
   aRoute = inject(ActivatedRoute);
 
-  private chats: {list:any[]} = {list:[]};
+  private chats: { list: any[] } = { list: [] };
   chatsService = inject(ChatsService);
   showCreateModal = false;
   hasChildRoute = false;
@@ -54,7 +49,7 @@ export class ChatsComponent implements OnInit {
   ngOnInit(): void {
     this.chats = this.chatsService.chats;
   }
-  get getChats(): {list:any[]} {
+  get getChats(): { list: any[] } {
     return this.chats;
   }
 }
