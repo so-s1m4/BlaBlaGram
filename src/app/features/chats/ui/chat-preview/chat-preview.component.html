@@ -17,12 +17,12 @@
     </div>
   </div>
 </div>
-@if (chat.unreadmessages > 0) {
-<div class="unread-messages">
-  @if (chat.unreadmessages > 99) {
-  99+
+@if (chat.unreadCount > 0) {
+<div class="counter" style="transform: translate(-20%);">
+  @if (chat.unreadCount > 999) {
+  1k+
   } @else {
-  {{ chat.unreadmessages }}
+  {{ chat.unreadCount }}
   }
 </div>
 }

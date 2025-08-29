@@ -52,6 +52,15 @@ export class ChatsService {
         };
         // if (data.sender.id == this.authService.me.id)
         //   setTimeout(() => this.scrollToBottom(), 0.1);
+      } else {
+        const chat = this.chats$.list.find(
+          (chat: any) => chat.id == data.spaceId
+        );
+        chat.unreadCount += 1;
+        chat.lastMessage = {
+          text: data.text,
+          editedAt: data.editedAt,
+        };
       }
     });
     this.webSocketService.on('communication:editMessage', (data: any) => {
@@ -456,6 +465,7 @@ export class ChatsService {
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           this.chats$.list = res;
+          console.log(res);
           this.chats$.list.sort((a, b) => {
             return -(a.updatedAt as string).localeCompare(b.updatedAt);
           });

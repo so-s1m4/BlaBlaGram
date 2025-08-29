@@ -292,6 +292,27 @@ input[type="checkbox"]:disabled {
 .primary-color {
   color: var(--primary-color);
 }
+
+.counter {
+  position: absolute;
+  font-size: 10px;
+  top: 0;
+  right: 0;
+
+  background: var(--primary-color);
+  color: var(--light-color);
+  border-radius: 50%;
+
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform: translate(60%);
+}
+
 @media (max-width: 800px) {
   .column-800px {
     display: flex;

@@ -50,12 +50,20 @@ export class LayoutComponent implements OnInit {
       icon: 'friends',
       title: 'Friends',
       isRoute: true,
+      counter: () => {
+        return this.friendsService.data.requests.incoming.length;
+      },
     },
     {
       name: 'chats',
       icon: 'chats',
       title: 'Messages',
       isRoute: true,
+      counter: () => {
+        return this.chatsService.chats.list
+          .map((item: any) => item.unreadCount)
+          .reduce((partialSum, a) => partialSum + a, 0);
+      },
     },
     {
       name: 'profile',
@@ -93,8 +101,6 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.friendsService.getFriendsList();
-
     this.webSocketService.on('communication:newMessage', (data: any) => {
       if (this.chatsService.currentChat.id !== data.spaceId) {
         const popUpData = {
@@ -141,6 +147,5 @@ export class LayoutComponent implements OnInit {
       };
       this.showPopUp(popUpData);
     });
-
   }
 }

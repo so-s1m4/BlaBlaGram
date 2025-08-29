@@ -61,7 +61,7 @@ app-search {
   border-radius: 1rem;
 }
 
-@media (max-width: 1000px) {
+/* @media (max-width: 1000px) {
   :host {
     flex-direction: column;
   }
@@ -81,4 +81,4 @@ app-search {
       max-height: 60px;
     }
   }
-}
+} */

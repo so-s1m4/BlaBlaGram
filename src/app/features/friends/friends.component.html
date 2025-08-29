@@ -2,17 +2,24 @@
   <div class="friends-header">
     <h1>Friends</h1>
 
-    <select class="select" (change)="onChange($event)" [value]="whatToShow">
-      <option value="friends">
-        Friends
-      </option>
-      <option value="requestsSent">
-        My requests
-      </option>
-      <option value="requestsGot">
-        Incoming requests
-      </option>
-    </select>
+    <div style="position: relative;">
+      <select class="select" (change)="onChange($event)" [value]="whatToShow">
+        <option value="friends">
+          Friends
+        </option>
+        <option value="requestsSent">
+          My requests
+        </option>
+        <option value="requestsGot">
+          Incoming requests
+          @if(friendsService.data.requests.incoming.length){({{friendsService.data.requests.incoming.length}})}
+        </option>
+      </select>
+      <div class="counter" style="transform: translate(0, -50%);" *ngIf="friendsService.data.requests.incoming.length ">
+        {{friendsService.data.requests.incoming.length }}
+      </div>
+    </div>
+
   </div>
   <app-search [placeholder]="'Search friends...'" (search)="searchFriends($event)"></app-search>
   <div class="friends-list">

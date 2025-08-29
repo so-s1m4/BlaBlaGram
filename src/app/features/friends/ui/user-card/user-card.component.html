@@ -5,11 +5,19 @@
   <img class="avatar" [src]="this.data!.img[this.data!.img.length-1] | img" alt="" (click)="clickEmit($event)" />
 </div>
 } @else if (this.type == "inc_request"){
-<img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.img.length-1] | img" alt=""
-  (click)="clickEmit($event)" />
+<div class="avatar-wrap" [ngClass]="{
+      'online': this.data.isOnline
+    }">
+  <img class="avatar" [src]="this.data!.sender_id.img[this.data!.sender_id.img.length-1] | img" alt=""
+    (click)="clickEmit($event)" />
+</div>
 } @else if (this.type == "my_request"){
-<img class="avatar" [src]="this.data!.receiver_id.img[this.data!.receiver_id.img.length-1] | img" alt=""
-  (click)="clickEmit($event)" />
+<div class="avatar-wrap" [ngClass]="{
+      'online': this.data.isOnline
+    }">
+  <img class="avatar" [src]="this.data!.receiver_id.img[this.data!.receiver_id.img.length-1] | img" alt=""
+    (click)="clickEmit($event)" />
+</div>
 }
 
 <div class="friend-info">
@@ -37,7 +45,7 @@
     <svg icon="trashcan"></svg>
   </button>
   } @else {
-  <div class="input-text" style="display: flex; gap: .5rem;">
+  <div style="display: flex; gap: .5rem;" class="actionBtns">
     @if (!isSent){
     <input id="message-req-input" placeholder="Some message?"
       style="border-bottom: 2px solid var(--primary-color); border-radius: 0;" maxlength="100" />
@@ -51,8 +59,11 @@
 
   }
   } @else if (this.type == "inc_request") {
-  <div style="display: flex; flex-direction: column; align-items: center; gap: .5rem;">
-    <p>{{ this.data.text }}</p>
+  <div style="display: flex; align-items: center; gap: .5rem;" class="actionBtns" >
+    <div
+      style="font-size: 12px; color: var(--light-color);text-align: center;">
+      {{ this.data.text }}
+    </div>
     <div style="display: flex; gap: 1rem;">
       <button class="btn btn-primary" (click)="acceptRequest()">
         <svg icon="plus"></svg>
