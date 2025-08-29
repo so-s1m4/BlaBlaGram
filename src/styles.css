@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
 
 :root {
   --dark-color: #0f0f0f;
@@ -18,7 +20,7 @@
   margin: 0;
   box-sizing: border-box;
 
-  font-family: "JetBrains Mono";
+  font-family: "Press Start 2P", system-ui;
   font-optical-sizing: auto;
   font-style: normal;
 
@@ -30,8 +32,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "JetBrains Mono";
-  font-weight: 500;
+  font-family: "Press Start 2P";
+  font-weight: 300;
   font-optical-sizing: auto;
   font-style: normal;
 
@@ -44,7 +46,8 @@ body {
   width: 100svw;
   height: 100svh;
   overflow: hidden;
-  font-size: 12px;
+
+  font-size: 10px;
 }
 
 h1 {
@@ -52,6 +55,24 @@ h1 {
   color: var(--primary-color);
   width: fit-content;
   text-align: center;
+}
+h2 {
+  font-size: 1.6rem;
+}
+h3 {
+  font-size: 1.4rem;
+}
+h4 {
+  font-size: 1.2rem;
+}
+h5 {
+  font-size: 1rem;
+}
+h6 {
+  font-size: .8rem;
+}
+span, p {
+  font-size: .5rem;
 }
 
 .btn {

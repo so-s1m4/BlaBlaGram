@@ -43,7 +43,11 @@
 
   position: relative;
 }
-
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
 .header-actions {
   display: flex;
   position: absolute;

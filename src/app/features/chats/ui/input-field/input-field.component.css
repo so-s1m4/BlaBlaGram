@@ -131,7 +131,6 @@
 }
 .input {
   width: calc(100% - 8rem);
-  font-size: 1rem;
   background: var(--dark-gray-color);
 }
 .input:focus {

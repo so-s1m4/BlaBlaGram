@@ -24,7 +24,7 @@
   justify-content: center;
   align-items: center;
 
-  width: min(350px, 50vw);
+  width: min(300px, 50vw);
 
   aspect-ratio: 1 / 1;
   border-radius: 50%;

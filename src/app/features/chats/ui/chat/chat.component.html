@@ -12,8 +12,8 @@
   </div>
 
   <div class="header-info" (click)="toggleInfo()">
-    <h2 class="name">{{ chatData.data.title }}</h2>
-    <p style="font-size: 12px; color: var(--light-color);">
+    <h6 class="name">{{ chatData.data.title }}</h6>
+    <p style="font-size: 7px; color: var(--light-color);">
       @if (chatData.data.type == "chat") {
       {{ chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
       (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}

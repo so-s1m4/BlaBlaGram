@@ -20,16 +20,16 @@
 </div>
 }
 
-<div class="friend-info">
+<div class="friend-info" style="display: flex; flex-direction: column; gap: .2rem;">
   @if (this.type == "user"){
-  <h2 class="username">{{ this.data!.username }}</h2>
-  <h3 class="name">{{ this.data!.name }}</h3>
+  <h5 class="username">{{ this.data!.username }}</h5>
+  <h6 class="name">{{ this.data!.name }}</h6>
   } @else if (this.type == "inc_request"){
-  <h2 class="username">{{ this.data!.sender_id.username }}</h2>
-  <h3 class="name">{{ this.data!.sender_id.name }}</h3>
+  <h5 class="username">{{ this.data!.sender_id.username }}</h5>
+  <h6 class="name">{{ this.data!.sender_id.name }}</h6>
   } @else if (this.type == "my_request"){
-  <h2 class="username">{{ this.data!.receiver_id.username }}</h2>
-  <h3 class="name">{{ this.data!.receiver_id.name }}</h3>
+  <h5 class="username">{{ this.data!.receiver_id.username }}</h5>
+  <h6 class="name">{{ this.data!.receiver_id.name }}</h6>
   }
 </div>
 
@@ -59,9 +59,8 @@
 
   }
   } @else if (this.type == "inc_request") {
-  <div style="display: flex; align-items: center; gap: .5rem;" class="actionBtns" >
-    <div
-      style="font-size: 12px; color: var(--light-color);text-align: center;">
+  <div style="display: flex; align-items: center; gap: .5rem;" class="actionBtns">
+    <div style="font-size: 12px; color: var(--light-color);text-align: center;">
       {{ this.data.text }}
     </div>
     <div style="display: flex; gap: 1rem;">

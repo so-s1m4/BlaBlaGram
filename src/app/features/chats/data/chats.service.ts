@@ -51,13 +51,12 @@ export class ChatsService {
           editedAt: data.editedAt,
           seq: data.seq,
         };
-        // if (data.sender.id == this.authService.me.id)
-        //   setTimeout(() => this.scrollToBottom(), 0.1);
+        if (data.sender.id == this.authService.me.id)
+          this.currentChat$.lastReadMessageSeq = data.seq
       } else {
         const chat = this.chats$.list.find(
           (chat: any) => chat.id == data.spaceId
         );
-        console.log(chat)
         chat.lastMessage = {
           text: data.text || `${data.media.length} Medias`,
           editedAt: data.editedAt,
