@@ -61,7 +61,7 @@ export class LayoutComponent implements OnInit {
       isRoute: true,
       counter: () => {
         return this.chatsService.chats.list
-          .map((item: any) => item.unreadCount)
+          .map((item: any) => item.lastMessage?.seq - item.lastReadMessageSeq)
           .reduce((partialSum, a) => partialSum + a, 0);
       },
     },

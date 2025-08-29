@@ -300,7 +300,7 @@ input[type="checkbox"]:disabled {
   right: 0;
 
   background: var(--primary-color);
-  color: var(--light-color);
+  color: var(--secondary-color);
   border-radius: 50%;
 
   width: 20px;

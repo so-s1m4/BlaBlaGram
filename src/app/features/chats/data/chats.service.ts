@@ -46,9 +46,10 @@ export class ChatsService {
     this.webSocketService.on('communication:newMessage', (data: any) => {
       if (data.spaceId === this.currentChat$.id) {
         this.currentChat$.messages.push(data);
-        this.currentChat$.lastMessage = {
+        this.currentChat$.data.lastMessage = {
           text: data.text,
           editedAt: data.editedAt,
+          seq: data.seq,
         };
         // if (data.sender.id == this.authService.me.id)
         //   setTimeout(() => this.scrollToBottom(), 0.1);
@@ -56,10 +57,11 @@ export class ChatsService {
         const chat = this.chats$.list.find(
           (chat: any) => chat.id == data.spaceId
         );
-        chat.unreadCount += 1;
+        console.log(chat)
         chat.lastMessage = {
-          text: data.text,
+          text: data.text || `${data.media.length} Medias`,
           editedAt: data.editedAt,
+          seq: data.seq,
         };
       }
     });
@@ -89,6 +91,15 @@ export class ChatsService {
         this.currentChat$.messages = this.currentChat$.messages.filter(
           (msg: any) => msg.id !== data.id
         );
+      } else {
+        const chat = this.chats$.list.find((chat: any)=>chat.id==data.spaceId)
+        if (chat.lastMessage.id == data.id){
+          chat.lastMessage = {
+            text: "Deleted",
+            date: "",
+            seq: chat.lastMessage.seq-1
+          }
+        }
       }
     });
     this.webSocketService.on('emojis:toggle', (data: any) => {
@@ -112,17 +123,22 @@ export class ChatsService {
         }
       }
     });
-    // this.webSocketService.on('space:readMessages', (data: any) => {
-
-    //   const { lastReadSeq, spaceId, userId } = data;
-    //   if (
-    //     this.data.seq <= lastReadSeq &&
-    //     this.data.sender.id != userId &&
-    //     !this.data.wasRead
-    //   ) {
-    //     this.data.wasRead = true;
-    //   }
-    // });
+    this.webSocketService.on('space:readMessages', (data: any) => {
+      const { lastReadSeq, spaceId, userId } = data;
+      if (this.currentChat$.data.id == spaceId) {
+        this.currentChat$.messages.forEach((element: any) => {
+          if (element.seq <= lastReadSeq && element.sender.id != userId) {
+            element.wasRead = true;
+          }
+        });
+        if (userId == this.authService.me.id) {
+          this.currentChat$.data.lastReadMessageSeq = Math.max(
+            lastReadSeq,
+            this.currentChat$.data.lastReadMessageSeq
+          );
+        }
+      }
+    });
   }
 
   private chats$: { list: any[] } = { list: [] };
@@ -156,6 +172,11 @@ export class ChatsService {
       'spaces:readMessages',
       { spaceId: spaceId, messageSeq: seqNum },
       (ok: any, error: any, result: any) => {
+        if (ok) {
+          this.chats$.list.find(
+            (item: any) => item.id == spaceId
+          ).lastReadMessageSeq = seqNum;
+        }
         if (!ok) console.error('Помилка:', error);
       }
     );

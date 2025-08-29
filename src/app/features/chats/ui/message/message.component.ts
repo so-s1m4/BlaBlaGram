@@ -184,7 +184,7 @@ export class MessageComponent implements AfterViewInit, OnInit, OnChanges {
     this.chatService.toggleEmoji(this.data.id, emjId);
   }
   markAsRead() {
-    if (this.data.wasRead || !this.data.seq) return;
+    if (!this.data.seq) return;
     this.onRead.emit(this.data.seq);
   }
   onMediaGallery() {

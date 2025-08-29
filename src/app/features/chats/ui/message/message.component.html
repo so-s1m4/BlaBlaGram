@@ -163,16 +163,16 @@
       <div class="emoji-wrapper" [ngClass]="{ my: emj.isMe }" (click)="toggleEmoji(emj.id)"
         *ngFor="let emj of this.emojis; trackBy: trackByEmoji">
         <img class="emoji" [src]="emj.url" alt="">
-          <div class="users-holder">
-            <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
-              [src]="user.img | img" alt="" [ngStyle]="{ transform: index!==0 ? 'translate(-50%)' : '',
+        <div class="users-holder">
+          <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
+            [src]="user.img | img" alt="" [ngStyle]="{ transform: index!==0 ? 'translate(-50%)' : '',
                                                  'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : '' }">
-          </div>
         </div>
       </div>
     </div>
-
-    <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
-        (change)="selectMessage($event)" name="" id="" /></div>
   </div>
-  }
+
+  <div class="message-select-box" *ngIf="selectMode"><input type="checkbox" [checked]="data.isSelected"
+      (change)="selectMessage($event)" name="" id="" /></div>
+</div>
+}

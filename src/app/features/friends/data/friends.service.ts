@@ -88,7 +88,6 @@ export class FriendsService {
       },
       (ok: any, err: any, data: any) => {
         if (ok) {
-          console.log(data);
           this.data$.requests = {
             incoming: data.filter(
               (item: any) => item.sender_id.id !== this.authService.me.id
