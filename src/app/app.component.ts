@@ -21,7 +21,5 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const color = localStorage.getItem('mainColor');
     document.documentElement.style.setProperty('--primary-color', color);
-
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true });
   }
 }

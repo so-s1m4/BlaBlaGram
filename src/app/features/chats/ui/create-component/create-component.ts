@@ -27,13 +27,13 @@ export class CreateComponent implements OnInit {
   private readonly chatsService = inject(ChatsService);
   private readonly renderer = inject(Renderer2);
 
-  friends$ = this.friendsService.friends;
+  friends$ = this.friendsService.data.friends;
 
   type: string = '';
 
   AVAILABLE_TYPES = ['group', 'channel'];
 
-  selected: { id: string; username: string; img: any }[] = [];
+  selected: any[] = [];
   searchValue: string = '';
 
   values = new FormGroup({
@@ -54,6 +54,8 @@ export class CreateComponent implements OnInit {
         id: friend.id,
         img: friend.img[friend.img.length - 1],
         username: friend.username,
+        isOnline: friend.isOnline,
+        wasOnline: friend.wasOnline
       });
     }
   }
@@ -64,7 +66,6 @@ export class CreateComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] || null;
 
-    console.log(file);
     if (!file) {
       if (this.label?.nativeElement) {
         this.renderer.setStyle(

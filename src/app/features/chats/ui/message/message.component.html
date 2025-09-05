@@ -1,7 +1,7 @@
 @if (type == "kruzhok"){
 <div [ngClass]="{
         message: true,
-        'message-sender': isSender,
+        'message-sender': isSender
       }" [attr.data-id]="data.id" (click)="onClick()" [id]="data.id">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
@@ -160,17 +160,13 @@
       </div>
     </div>
     <div class="footer">
-      <div class="emoji-wrapper" [ngClass]="{
-        my: emj.isMe
-      }" (click)="toggleEmoji(emj.id)" *ngFor="let emj of this.emojis; trackBy: trackByEmoji;">
+      <div class="emoji-wrapper" [ngClass]="{ my: emj.isMe }" (click)="toggleEmoji(emj.id)"
+        *ngFor="let emj of this.emojis; trackBy: trackByEmoji">
         <img class="emoji" [src]="emj.url" alt="">
-
         <div class="users-holder">
           <img class="userAvatar" *ngFor="let user of emj.members; let index = index; trackBy: trackByUser"
-            [src]="user.img | img" alt="" [ngStyle]="{
-              transform: index!==0 ? 'translate(-50%)': '',
-              'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : ''
-            }">
+            [src]="user.img | img" alt="" [ngStyle]="{ transform: index!==0 ? 'translate(-50%)' : '',
+                                                 'box-shadow': index!==0 ? '-3px 0 3px rgba(0,0,0,.3)' : '' }">
         </div>
       </div>
     </div>

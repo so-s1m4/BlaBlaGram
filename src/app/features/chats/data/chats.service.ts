@@ -1,10 +1,11 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { inject, Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, NgZone, OnInit } from '@angular/core';
 import { WebSocketService } from '../../../core/services/web-socket.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { API_URL, MEDIA_SERVER_URL } from '../../../app.config';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Router } from '@angular/router';
+import { FriendsService } from '@features/friends/data/friends.service';
 
 function base64ToBlob(base64Data: string, contentType = 'image/png'): Blob {
   const byteCharacters = atob(base64Data.split(',')[1]);
@@ -28,15 +29,126 @@ function blobToFile(blob: any, fileName: string) {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatsService implements OnInit {
-  constructor(private imageCompress: NgxImageCompressService) {}
+export class ChatsService {
+  zone = inject(NgZone);
 
-  chats$: any[] = [];
-  private currentChatId$: string | null = null;
+  constructor(private imageCompress: NgxImageCompressService) {
+    this.getChats();
+    this.webSocketService.on('space:addedToNew', (data: any) => {
+      this.getChats();
+    });
+    this.webSocketService.on('space:removedFromSpace', (data: any) => {
+      this.chats$.list = this.chats$.list.filter(
+        (item: any) => item.id != data.id
+      );
+      if (this.currentChat$.id == data.id) this.router.navigate(['/chats']);
+    });
+    this.webSocketService.on('communication:newMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        this.currentChat$.messages.push(data);
+        this.currentChat$.data.lastMessage = {
+          text: data.text,
+          editedAt: data.editedAt,
+          seq: data.seq,
+        };
+        // if (data.sender.id == this.authService.me.id)
+        //   setTimeout(() => this.scrollToBottom(), 0.1);
+      } else {
+        const chat = this.chats$.list.find(
+          (chat: any) => chat.id == data.spaceId
+        );
+        console.log(chat)
+        chat.lastMessage = {
+          text: data.text || `${data.media.length} Medias`,
+          editedAt: data.editedAt,
+          seq: data.seq,
+        };
+      }
+    });
+    this.webSocketService.on('communication:editMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        const message = this.currentChat$.messages.find(
+          (msg: any) => msg.id === data.id
+        );
+        if (message) {
+          message.editedAt = data.editedAt;
+          message.text = data.text;
+        }
+      }
+    });
+    this.webSocketService.on('communication:deleteMedia', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        const message = this.currentChat$.messages.find(
+          (msg: any) => msg.id === data.communicationId
+        );
+        message.media = message.media.filter(
+          (media: any) => media.id !== data.id
+        );
+      }
+    });
+    this.webSocketService.on('communication:deleteMessage', (data: any) => {
+      if (data.spaceId === this.currentChat$.id) {
+        this.currentChat$.messages = this.currentChat$.messages.filter(
+          (msg: any) => msg.id !== data.id
+        );
+      } else {
+        const chat = this.chats$.list.find((chat: any)=>chat.id==data.spaceId)
+        if (chat.lastMessage.id == data.id){
+          chat.lastMessage = {
+            text: "Deleted",
+            date: "",
+            seq: chat.lastMessage.seq-1
+          }
+        }
+      }
+    });
+    this.webSocketService.on('emojis:toggle', (data: any) => {
+      const chat = this.currentChat$;
+      if (chat.data.id !== data.emoji.spaceId) return;
+      const msg = chat.messages.find(
+        (msg: any) => msg.id == data.emoji.communicationId
+      );
+      if (msg) {
+        const emjUrl = data.emoji.emoji.emojiUrl;
+        if (data.action == 'removed') {
+          msg.emojis = msg.emojis.filter(
+            (item: any) =>
+              !(
+                item.emoji.emojiUrl == emjUrl &&
+                item.user.id == data.emoji.user.id
+              )
+          );
+        } else {
+          msg.emojis = [...msg.emojis, data.emoji];
+        }
+      }
+    });
+    this.webSocketService.on('space:readMessages', (data: any) => {
+      const { lastReadSeq, spaceId, userId } = data;
+      if (this.currentChat$.data.id == spaceId) {
+        this.currentChat$.messages.forEach((element: any) => {
+          if (element.seq <= lastReadSeq && element.sender.id != userId) {
+            element.wasRead = true;
+          }
+        });
+        if (userId == this.authService.me.id) {
+          this.currentChat$.data.lastReadMessageSeq = Math.max(
+            lastReadSeq,
+            this.currentChat$.data.lastReadMessageSeq
+          );
+        }
+      }
+    });
+  }
+
+  private chats$: { list: any[] } = { list: [] };
+  private currentChat$: any = {};
 
   httpClient = inject(HttpClient);
   webSocketService = inject(WebSocketService);
   authService = inject(AuthService);
+  friendsService = inject(FriendsService);
+
   router = inject(Router);
 
   toggleEmoji(communicationId: string, emojiId: string) {
@@ -54,13 +166,17 @@ export class ChatsService implements OnInit {
       }
     );
   }
-
   // Messages
   readMsg(spaceId: string, seqNum: number) {
     this.webSocketService.send(
       'spaces:readMessages',
       { spaceId: spaceId, messageSeq: seqNum },
       (ok: any, error: any, result: any) => {
+        if (ok) {
+          this.chats$.list.find(
+            (item: any) => item.id == spaceId
+          ).lastReadMessageSeq = seqNum;
+        }
         if (!ok) console.error('Помилка:', error);
       }
     );
@@ -104,7 +220,6 @@ export class ChatsService implements OnInit {
           console.error('Failed to delete media:', err);
           return;
         }
-
         callback?.();
       }
     );
@@ -277,20 +392,18 @@ export class ChatsService implements OnInit {
   }
 
   // Chat data
-  chats(callback?: (chats: any[]) => void): void | any[] {
-    this.updateChats(callback);
-  }
-  getChatById(chatId: string, callback: any): void {
+  getChatById(chatId: string, callback?: any): any {
     this.webSocketService.send(
       'communication:getList',
       { spaceId: chatId, limit: 9999999999 },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
           let data = res.reverse();
-          callback({
-            chat: this.chats$.find((chat: any) => chat.id == chatId),
+          callback?.({
+            chat: this.chats$.list.find((chat: any) => chat.id == chatId),
             messages: data,
           });
+          return data;
         } else {
           this.router.navigate(['chats']);
           console.error('Error receiving chats:', err);
@@ -304,6 +417,7 @@ export class ChatsService implements OnInit {
       { spaceId: chatId },
       (ok: boolean, err: string, res: any) => {
         if (ok) {
+          this.currentChat$.info = res;
           callback(res);
         } else {
           this.router.navigate(['chats', chatId]);
@@ -313,12 +427,23 @@ export class ChatsService implements OnInit {
     );
   }
   selectChat(chatId: string): void {
-    this.currentChatId$ = chatId;
+    if (chatId === '') {
+      this.currentChat$ = {};
+      return;
+    }
+    this.currentChat$.id = chatId;
+    this.currentChat$.data = this.chats$.list.find(
+      (item: any) => item.id == chatId
+    );
+    this.getChatById(chatId, (data: any) => {
+      this.currentChat$.data = data.chat;
+      this.currentChat$.messages = data.messages;
+    });
+    this.currentChat$.info = {};
   }
   get currentChatId(): string | null {
-    return this.currentChatId$;
+    return this.currentChat$.id;
   }
-
   // Spaces
   createSpace(type: string, args: any) {
     if (type == 'group') {
@@ -355,16 +480,23 @@ export class ChatsService implements OnInit {
       (ok: any, err: any, data: any) => {}
     );
   }
-  updateChats(callback?: any) {
+  getChats() {
     this.webSocketService.send(
       'spaces:getList',
       (ok: boolean, err: string, res: any) => {
         if (ok) {
-          this.chats$ = res;
-          this.chats$.sort((a, b) => {
+          this.chats$.list = res;
+          console.log(res);
+          this.chats$.list.sort((a, b) => {
             return -(a.updatedAt as string).localeCompare(b.updatedAt);
           });
-          callback?.(this.chats$);
+          this.chats$.list.forEach((item: any) => {
+            if (item.type === 'chat') {
+              item.chat.friend = this.friendsService.getFriend(
+                item.chat.friendId
+              );
+            }
+          });
         } else {
           console.error('Error receiving chats:', err);
         }
@@ -385,7 +517,7 @@ export class ChatsService implements OnInit {
       })
       .subscribe((res: any) => {
         window.location.reload();
-        callback?.(res)
+        callback?.(res);
       });
   }
   addMembersToSpace(
@@ -450,8 +582,11 @@ export class ChatsService implements OnInit {
       }
     );
   }
-  // Hooks
-  ngOnInit(): void {
-    this.chats();
+  // Getters
+  get chats() {
+    return this.chats$;
+  }
+  get currentChat(): any {
+    return this.currentChat$;
   }
 }

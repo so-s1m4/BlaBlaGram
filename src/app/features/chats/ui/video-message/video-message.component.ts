@@ -5,8 +5,8 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  OnInit,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 
 @Component({
@@ -15,7 +15,7 @@ import {
   styleUrls: ['./video-message.component.css'],
   imports: [CommonModule],
 })
-export class VideoMessageComponent implements AfterViewInit {
+export class VideoMessageComponent implements AfterViewInit, OnDestroy {
   @ViewChild('videoElement') videoElement!: ElementRef;
 
   @Output() onstop = new EventEmitter<Blob | 'error'>();
@@ -25,6 +25,9 @@ export class VideoMessageComponent implements AfterViewInit {
   stream!: MediaStream;
   recording: boolean = false;
   videoUrl: string | null = null;
+
+  private stopTimeoutId: any;
+  private objectUrlToRevoke: string | null = null;
 
   async startCamera() {
     try {
@@ -52,7 +55,7 @@ export class VideoMessageComponent implements AfterViewInit {
     await this.startCamera();
     setTimeout(this.startRecording.bind(this), 500);
 
-    setTimeout(this.stop.bind(this), 60000);
+    this.stopTimeoutId = setTimeout(this.stop.bind(this), 60000);
   }
 
   startRecording() {
@@ -69,6 +72,7 @@ export class VideoMessageComponent implements AfterViewInit {
       try {
         const blob = new Blob(this.chunks, { type: 'video/webm; codecs=opus' });
         this.videoUrl = URL.createObjectURL(blob);
+        this.objectUrlToRevoke = this.videoUrl;
         this.onstop.emit(blob);
       } catch {
         this.onstop.emit('error');
@@ -80,7 +84,43 @@ export class VideoMessageComponent implements AfterViewInit {
   }
 
   public stop(): void {
+    // prevent repeated calls
+    if (this.stopTimeoutId) {
+      clearTimeout(this.stopTimeoutId);
+      this.stopTimeoutId = null;
+    }
+
     this.recording = false;
-    this.mediaRecorder.stop();
+
+    // Stop MediaRecorder if active
+    try {
+      if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+        this.mediaRecorder.stop();
+      }
+    } catch {}
+
+    // Stop all media tracks (video + audio)
+    try { this.stream?.getTracks().forEach(t => t.stop()); } catch {}
+
+    // Detach video element to release device on Safari/iOS
+    try {
+      const el: HTMLVideoElement = this.videoElement?.nativeElement;
+      if (el) {
+        el.pause();
+        (el as any).srcObject = null;
+        el.removeAttribute('src');
+        el.load();
+      }
+    } catch {}
+
+    // Revoke object URL if any
+    try { if (this.objectUrlToRevoke) { URL.revokeObjectURL(this.objectUrlToRevoke); } } catch {}
+
+    // Null out references
+    this.stream = undefined as any;
+  }
+
+  ngOnDestroy(): void {
+    this.stop();
   }
 }

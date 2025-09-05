@@ -1,8 +1,8 @@
-<img class="avatar"
-  [ngClass]="{
-  'online': isOnline
-  }"
-  [src]="chat.img[chat.img.length-1] | img" alt="" />
+<div class="avatar-wrap" [ngClass]="{
+    'online': (chat.type === 'chat' && friendsService.getFriend(chat.chat.friendId).isOnline) ? true : false
+  }">
+  <img class="avatar" [src]="chat.img[chat.img.length-1] | img" alt="" />
+</div>
 
 <div class="chat-info">
   <div class="username">
@@ -17,12 +17,12 @@
     </div>
   </div>
 </div>
-@if (chat.unreadmessages > 0) {
-<div class="unread-messages">
-  @if (chat.unreadmessages > 99) {
-  99+
+@if (chat.lastMessage?.seq - chat.lastReadMessageSeq > 0) {
+<div class="counter" style="transform: translate(-20%);">
+  @if (chat.lastMessage?.seq - chat.lastReadMessageSeq > 999) {
+  1k+
   } @else {
-  {{ chat.unreadmessages }}
+  {{ chat.lastMessage?.seq - chat.lastReadMessageSeq }}
   }
 </div>
 }

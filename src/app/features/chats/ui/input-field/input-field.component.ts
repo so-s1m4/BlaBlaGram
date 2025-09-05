@@ -122,7 +122,7 @@ export class InputFieldComponent {
     }
   }
   handleAudio(blob: Blob) {
-    this.chatsService.sendAudioMessage(this.chatData.chat.id, blob);
+    this.chatsService.sendAudioMessage(this.chatData.data.id, blob);
   }
   switchVideo2Voice() {
     this.isVoice = !this.isVoice;
@@ -151,8 +151,10 @@ export class InputFieldComponent {
     if (this.inputField) this.inputField.nativeElement!.value = '';
   }
   public set repliedOn(value: any) {
-    console.log(value)
     this.repliedOn$ = value;
     setTimeout(() => this.inputField.nativeElement.focus());
+  }
+  public get repliedOn(){
+    return this.repliedOn$;
   }
 }

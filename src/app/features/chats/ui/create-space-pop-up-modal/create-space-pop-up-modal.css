@@ -42,7 +42,7 @@
     color: var(--primary-color);
   }
 }
-.avatar {
+.avatar-wrap, .avatar {
   height: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;

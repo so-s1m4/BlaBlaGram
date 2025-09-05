@@ -18,11 +18,20 @@
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
 }
-.avatar {
-  width: 40%;
+.avatar-wrap {
+  height: 40%;
+
+  min-height: 60px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background-color: var(--secondary-color);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 }
 .username {
   color: var(--light-color);
@@ -32,7 +41,7 @@
   color: var(--lightgray-color);
   text-align: center;
 
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 .actionBtns {
   display: flex;
@@ -78,6 +87,7 @@
 .actionBtns {
   display: flex;
   gap: 2rem;
+  flex-direction: column;
 }
 .actionBtns button {
   border: 0;
@@ -101,8 +111,7 @@
     background: var(--secondary-color);
   }
 }
-
-@media (max-width: 1000px) {
+/* @media (max-width: 1000px) {
   :host {
     width: 100%;
     height: 100%;
@@ -116,7 +125,6 @@
     border-radius: 1rem;
 
     background: var(--darker-gray-color);
-
   }
 
   .avatar {
@@ -132,8 +140,9 @@
     font-size: 1rem;
   }
   .actionBtns {
-    flex-direction: column;
     align-items: space-around;
+    flex-direction: row;
+    margin-right: 1rem;
     button {
       transform: scale(0.8);
     }
@@ -158,4 +167,4 @@
       color: red;
     }
   }
-}
+} */

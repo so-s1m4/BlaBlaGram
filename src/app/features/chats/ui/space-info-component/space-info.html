@@ -1,4 +1,4 @@
-@if (!data) {
+@if (!data.info) {
 <p>Loading...</p>
 } @else {
 
@@ -6,13 +6,11 @@
   <div class="header">
     <div class="background"></div>
     <div class="avatar">
-      <img [src]="(data.img[data.img.length-1] || null) | img" alt="User avatar" [ngClass]="{
-        'online': data.isOnline
-      }" />
+      <img [src]="(data.info.img[data.info.img.length-1] || null) | img" alt="User avatar" />
     </div>
     <div class="info">
-      <h5>{{ data.title }}</h5>
-      <p>{{ data.memberCount }} members</p>
+      <h5>{{ data.info.title }}</h5>
+      <p>{{ data.info.memberCount }} members</p>
     </div>
   </div>
 
@@ -28,7 +26,7 @@
   </div>
   <ng-container *ngIf="selectedNav == 'Media'">
     <div class="content media">
-      @for (media of data.media; track media.id) {
+      @for (media of data.info.media; track media.id) {
       @if (media.mime.startsWith("image/")){
       <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, media, 'media')" alt="" class="media item"
         (click)="showInChat.emit(media.communicationId)">
@@ -102,7 +100,7 @@
             <div class="btn btn-info" (click)="showProfile=showEditMemberModal.user.id"><svg icon="person"></svg>Show
               Profile</div>
             @if (
-            authService.me.id == data.group.owner.id
+            authService.me.id == data.info.group.owner.id
             ){
             @if (showEditMemberModal.role != "admin" ) {
             <div class="btn btn-danger" (click)="promoteMember(showEditMemberModal.user.id)">
@@ -135,8 +133,8 @@
         </div>
       </div>
       <div class="user item"
-        (click)="authService.me.id == user.user.id ? null : ((user.user.id != data.group.owner.id && data.role == 'admin') ? showEditMemberModal = user : showProfile = user.user.id)"
-        *ngFor="let user of data.group.members">
+        (click)="authService.me.id == user.user.id ? null : ((user.user.id != data.info.group.owner.id && data.info.role == 'admin') ? showEditMemberModal = user : showProfile = user.user.id)"
+        *ngFor="let user of data.info.group.members">
         <img appOnVisibleOnce (visibleOnce)="loadSRCforMedia($event, user.user.img[user.user.img.length-1], 'img')"
           alt="" class="avatar-mini">
         <div class="row">
@@ -154,7 +152,7 @@
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Files'">
     <div class="content" style="gap: .5rem; padding-top: .5rem; flex-direction: column;">
-      @for (file of data.media; track file.id) {
+      @for (file of data.info.media; track file.id) {
       @if (!file.mime.startsWith("image/") && !file.mime.startsWith("video/") && file.type != 'audio' && file.type !=
       "video_message"){
       <div class="file item" (click)="showInChat.emit(file.communicationId)">
@@ -175,7 +173,7 @@
   </ng-container>
   <ng-container *ngIf="selectedNav == 'Voice'">
     <div class="voice content" style="gap: .5rem; padding-top: .5rem;">
-      @for (media of data.media; track media.id) {
+      @for (media of data.info.media; track media.id) {
       @if (media.type == 'video_message' || media.type == 'audio') {
       <div class="voice item" (click)="showInChat.emit(media.communicationId)">
         <div class="playBtn">

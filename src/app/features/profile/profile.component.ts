@@ -62,7 +62,7 @@ interface ProfileData {
 export class ProfileComponent implements OnInit, OnDestroy {
   @Input() username: string | undefined = undefined;
 
-  data!: ProfileData;
+  data!: ProfileData | null;
   isMyProfile = false;
 
   selectedNav: 'Gifts' | 'Photos' | 'Posts' | 'Settings' = 'Photos';
@@ -204,17 +204,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (values.name) payload.append('name', values.name);
     payload.append('description', values.bio || 'about me!');
     if (values.password) payload.append('password', values.password);
-    // Optionals left commented intentionally until backend supports them consistently
     // if (values.phone) payload.append('phone', values.phone);
     // if (values.email) payload.append('email', values.email);
     this.appComponent.changeMainColor(values.primaryColor!);
+
+    this.data = null;
 
     this.profileService
       .editProfile(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.data.img = res.data.img.reverse()
+          window.location.reload()
         },
         error: (err) => {
           console.error('Save failed', err);

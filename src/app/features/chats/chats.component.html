@@ -12,7 +12,7 @@
     </app-modal>
   </div>
   <div class="chats-list">
-    @for (chat of getChats; track chat.id) {
+    @for (chat of getChats.list; track chat.id) {
     <app-chat-preview [chat]="chat" (click)="selectChat(chat)"></app-chat-preview>
     }
   </div>

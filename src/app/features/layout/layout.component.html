@@ -10,6 +10,8 @@
       <button class="button page-link" [name]="link.name" (click)="link.onclick! ? link.onclick() : null"
         [routerLink]="link.isRoute ? link.name : null">
         <svg [icon]="link.icon"></svg><span>{{ link.title }}</span>
+
+        <div class="counter" *ngIf="link.counter && link.counter() > 0">{{link.counter()}}</div>
       </button>
       }
     </div>

@@ -29,9 +29,11 @@
 </div>
 <div class="content">
   <div class="user-select item" *ngFor="let friend of friends">
-    <img class="avatar" [src]="friend.img[friend.img.length-1] | img" [ngClass]="{
+    <div class="avatar-wrap" [ngClass]="{
       'online': (friend.isOnline === true)
     }">
+      <img class="avatar" [src]="friend.img[friend.img.length-1] | img">
+    </div>
     <div class="holder">
       <div class="info">
         <div class="nickname">
@@ -42,8 +44,7 @@
         </div>
       </div>
       <div class="selectBtn" (click)="toggleSelect(friend)">
-        <input type="checkbox"
-          [checked]="isChecked(friend)">
+        <input type="checkbox" [checked]="isChecked(friend)">
       </div>
       <div class="line"></div>
     </div>
@@ -68,8 +69,8 @@
     <div class="selectImg">
       <label #label for="inputImg" class="upload" [ngClass]="{ selected: values.get('img')?.value }">
         <svg icon="camera"></svg>
-      </label> <input [disabled]="true" (change)="onFileSelected($event)" type="file" id="inputImg" accept="image/*" formControlName="img"
-        hidden>
+      </label> <input [disabled]="true" (change)="onFileSelected($event)" type="file" id="inputImg" accept="image/*"
+        formControlName="img" hidden>
     </div>
     <div><input type="text" [placeholder]="type + ' Name'" style="text-transform: capitalize; font-size: 1.5rem;"
         formControlName="title"></div>
@@ -81,24 +82,30 @@
       <svg icon="addMember"></svg> Edit members
     </div>
     <div class="user-select item" *ngFor="let user of selected">
-      <img class="avatar" [src]="user.img | img">
+      <div class="avatar-wrap" [ngClass]="{
+        online: user.isOnline
+      }">
+        <img class="avatar" [src]="user.img | img">
+
+      </div>
+
       <div class="holder">
         <div class="info">
           <div class="nickname">
             {{ user.username }}
           </div>
           <div class="wasRecently">
-            {{ 'was recently' }}
+            {{ user.isOnline ? "online" : "was at " + user.wasOnline | date:"short" }}
           </div>
         </div>
       </div>
     </div>
   </div>
   } @else {
-    <div class="content item" style="flex-direction: row;">
-      <div><input type="text" placeholder="Description" style="text-transform: capitalize; font-size: 1rem;"
-          formControlName="title"></div>
-    </div>
+  <div class="content item" style="flex-direction: row;">
+    <div><input type="text" placeholder="Description" style="text-transform: capitalize; font-size: 1rem;"
+        formControlName="title"></div>
+  </div>
   }
 </form>
 }

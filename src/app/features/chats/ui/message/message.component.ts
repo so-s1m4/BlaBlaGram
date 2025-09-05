@@ -10,6 +10,7 @@ import {
   ViewChild,
   ViewChildren,
   OnInit,
+  OnChanges,
 } from '@angular/core';
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
@@ -19,8 +20,8 @@ import { MediaPreviewComponent } from '../media-preview/media-preview.component'
 import { ImgPipe } from '@utils/img.pipe';
 import { AuthService } from '@services/auth.service';
 import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
-import {OnVisibleOnceDirective} from "@shared/utils/visibleOnce"
-import { MediaPipe } from "../../../../shared/utils/media.pipe";
+import { OnVisibleOnceDirective } from '@shared/utils/visibleOnce';
+import { MediaPipe } from '../../../../shared/utils/media.pipe';
 
 @Component({
   selector: 'app-message',
@@ -31,12 +32,12 @@ import { MediaPipe } from "../../../../shared/utils/media.pipe";
     ImgPipe,
     AudioMessagePlayerComponent,
     OnVisibleOnceDirective,
-    MediaPipe
-],
+    MediaPipe,
+  ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
-export class MessageComponent implements AfterViewInit, OnInit {
+export class MessageComponent implements AfterViewInit, OnInit, OnChanges {
   @ViewChild('wrapper') wrapper: any;
   @ViewChildren('mediaItem') mediaItems: any;
   API_URL = API_URL;
@@ -123,8 +124,41 @@ export class MessageComponent implements AfterViewInit, OnInit {
   repliedOn: any;
   showEmoji = false;
   emojis: any[] = [];
-  // isVM = false;
   type: string = 'message';
+
+  private rebuildReactions() {
+    const map = new Map<
+      string,
+      {
+        id: string;
+        url: string;
+        members: { id: string; img?: string }[];
+        isMe?: boolean;
+      }
+    >();
+    const list = this.data?.emojis ?? [];
+
+    for (const r of list) {
+      const id = r?.emoji?.emojiUniqueId;
+      const url = r?.emoji?.emojiUrl;
+      const uid = r?.user?.id;
+      const uimg = r?.user?.img?.[0];
+      if (!id || !url || !uid) continue;
+
+      if (!map.has(id)) {
+        map.set(id, { id, url, members: [] });
+      }
+      const group = map.get(id)!;
+      if (!group.members.some((m) => m.id === uid)) {
+        group.members.push({ id: uid, img: uimg });
+      }
+    }
+
+    this.emojis = Array.from(map.values()).map((g) => ({
+      ...g,
+      isMe: g.members.some((m) => m.id === this.authService.me.id),
+    }));
+  }
 
   selectMessage($event: Event): void {
     this.data.isSelected = !this.data.isSelected;
@@ -143,14 +177,14 @@ export class MessageComponent implements AfterViewInit, OnInit {
     this.showEmoji = true;
     this.openContextMenu.emit(event);
   }
-  onScrollToMsg(){
+  onScrollToMsg() {
     this.scrollToMsg.emit(this.repliedOn.id as string);
   }
   toggleEmoji(emjId: string) {
     this.chatService.toggleEmoji(this.data.id, emjId);
   }
   markAsRead() {
-    if (this.data.wasRead || !this.data.seq) return;
+    if (!this.data.seq) return;
     this.onRead.emit(this.data.seq);
   }
   onMediaGallery() {
@@ -170,65 +204,6 @@ export class MessageComponent implements AfterViewInit, OnInit {
     $event.stopPropagation();
   }
   ngOnInit() {
-    this.webSocketService.on('emojis:toggle', (data: any) => {
-      if (data.emoji.communicationId == this.data.id) {
-        const emjUrl = data.emoji.emoji.emojiUrl;
-        if (data.action == 'removed') {
-          const emj = this.emojis.find((item: any) => {
-            return item.url == emjUrl;
-          });
-          if (!emj) return;
-
-          emj.members.splice(
-            emj.members.indexOf({
-              id: data.emoji.user.id,
-              img: data.emoji.user.img[data.emoji.user.img.length - 1],
-            }),
-            1
-          );
-          if (emj.members.length == 0) {
-            this.emojis.splice(this.emojis.indexOf(emj), 1);
-          }
-        } else {
-          let found = this.emojis.find((item) => item.url == emjUrl);
-          if (found) {
-            found.members.push({
-              id: data.emoji.user.id,
-              img: data.emoji.user.img[data.emoji.user.img.length - 1],
-            });
-          } else {
-            this.emojis.push({
-              id: data.emoji.emoji.emojiUniqueId,
-              url: emjUrl,
-              members: [
-                {
-                  id: data.emoji.user.id,
-                  img: data.emoji.user.img[data.emoji.user.img.length - 1],
-                },
-              ],
-            });
-          }
-        }
-
-        this.emojis.map((item) => {
-          item.isMe = !!item.members.find(
-            (item: any) => item.id == this.authService.me.id
-          );
-        });
-      }
-    });
-    this.webSocketService.on('space:readMessages', (data: any) => {
-      const { lastReadSeq, spaceId, userId } = data;
-      if (
-        this.data.seq <= lastReadSeq &&
-        this.data.sender.id != userId &&
-        !this.data.wasRead
-      ) {
-        this.data.wasRead = true;
-      }
-    });
-
-    // this.isVM = this.data.media.find((item: any)=>item.type=="video_message" || item.type == "audio")
     if (this.data.media.find((item: any) => item.type == 'video_message')) {
       this.type = 'kruzhok';
     } else if (this.data.media.find((item: any) => item.type == 'audio')) {
@@ -236,32 +211,10 @@ export class MessageComponent implements AfterViewInit, OnInit {
     } else {
       this.type = 'message';
     }
-
-    this.data.emojis?.forEach((item: any) => {
-      let emj = item;
-      let found = this.emojis.find((item) => item.url == emj.emojiUrl);
-      if (found) {
-        found.members.push({
-          id: item.user.id,
-          img: item.user.img[0],
-        });
-        return;
-      }
-      this.emojis.push({
-        id: emj.emoji.emojiUniqueId,
-        url: emj.emoji.emojiUrl,
-        members: [
-          {
-            id: item.user.id,
-            img: item.user.img[0],
-          },
-        ],
-      });
-    });
-    this.emojis.map((item) => {
-      item.isMe = !!item.members.find(
-        (item: any) => item.id == this.authService.me.id
-      );
+    this.rebuildReactions();
+    this.webSocketService.on('emojis:toggle', (data: any) => {
+      if (data.emoji.communicationId !== this.data.id) return;
+      this.rebuildReactions();
     });
 
     if (!this.data.repliedOn) {
@@ -273,6 +226,7 @@ export class MessageComponent implements AfterViewInit, OnInit {
     );
   }
   ngOnChanges() {
+    this.rebuildReactions();
     if (!this.data.repliedOn) {
       this.repliedOn = null;
       return;

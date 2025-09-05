@@ -32,7 +32,7 @@ export class CreateModalPopUp {
   private readonly profileService = inject(ProfileService);
   router = inject(Router);
 
-  friends = this.friendsService.friends;
+  friends = this.friendsService.data.friends;
 
   @Output() onClick = new EventEmitter();
 

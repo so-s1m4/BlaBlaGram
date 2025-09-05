@@ -49,19 +49,27 @@
   display: isRecording && isVoice ? 'flex' : 'none'
 }"></app-audio-message>
 
-@if (isVoice){
-<button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
-  (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
-  *ngIf="!this.value.length && !this.filesList.length">
-  <svg icon="microphone"></svg>
-</button>
+@if (isRecording){
+  <button id="send-btn" class="btn record" (click)="onPressEnd( isVoice ? 'audio' : 'video')" style="z-index: 101;"
+    *ngIf="!this.value.length && !this.filesList.length">
+    <svg icon="repost"></svg>
+  </button>
 } @else {
-<button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
-  (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
-  *ngIf="!this.value.length && !this.filesList.length">
-  <svg icon="camera"></svg>
-</button>
+  @if (isVoice){
+  <button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
+    (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
+    *ngIf="!this.value.length && !this.filesList.length">
+    <svg icon="microphone"></svg>
+  </button>
+  } @else {
+  <button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
+    (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
+    *ngIf="!this.value.length && !this.filesList.length">
+    <svg icon="camera"></svg>
+  </button>
+  }
 }
+
 } @else {
 <textarea #input id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)"
   placeholder="Type a message..."></textarea>
