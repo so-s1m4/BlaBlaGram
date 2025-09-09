@@ -70,14 +70,20 @@
   <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
     [style]="emojiSelectorStyle"></app-emoji-selector>
 
+  <div *ngFor="let g of (chatData.messages | groupByDay)" style="display: flex; flex-direction: column; gap: 1rem;">
+    <div class="day-separator">
+      <span>{{ g.labelDate | dayLabel }}</span>
+    </div>
+    @for (message of g.items; track message.id; let last = $last) {
+    <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+      [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
+      [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
+      (scrollToMsg)="scrollToMsg($event)">
+    </app-message>
+    }
+  </div>
 
-  @for (message of chatData.messages; track message.id; let last = $last) {
-  <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
-    [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
-    [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
-    (scrollToMsg)="scrollToMsg($event)">
-  </app-message>
-  }
+
 </div>
 <div class="input-holder">
   <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()" (toggleRecVideoMsg)="toggleRecVideoMsg()"

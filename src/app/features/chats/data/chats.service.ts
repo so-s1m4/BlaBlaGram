@@ -57,7 +57,9 @@ export class ChatsService {
         const chat = this.chats$.list.find(
           (chat: any) => chat.id == data.spaceId
         );
-        console.log(chat)
+        if (data.sender.id == this.authService.me.id) {
+          chat.lastReadMessageSeq = data.seq;
+        }
         chat.lastMessage = {
           text: data.text || `${data.media.length} Medias`,
           editedAt: data.editedAt,
@@ -92,13 +94,15 @@ export class ChatsService {
           (msg: any) => msg.id !== data.id
         );
       } else {
-        const chat = this.chats$.list.find((chat: any)=>chat.id==data.spaceId)
-        if (chat.lastMessage.id == data.id){
+        const chat = this.chats$.list.find(
+          (chat: any) => chat.id == data.spaceId
+        );
+        if (chat.lastMessage.id == data.id) {
           chat.lastMessage = {
-            text: "Deleted",
-            date: "",
-            seq: chat.lastMessage.seq-1
-          }
+            text: 'Deleted',
+            date: '',
+            seq: chat.lastMessage.seq - 1,
+          };
         }
       }
     });
@@ -385,6 +389,12 @@ export class ChatsService {
       (ok: any, err: any, data: any) => {
         if (!ok) {
           console.error('Error closing communication:', err);
+        }
+        if (ok) {
+          const chat = this.chats$.list.find(
+            (item: any) => item.id == data.spaceId
+          );
+          chat.lastReadMessageSeq += 1;
         }
         callback?.(ok, err, data);
       }

@@ -314,6 +314,25 @@ input[type="checkbox"]:disabled {
   transform: translate(60%);
 }
 
+.day-separator {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+
+  span {
+    padding: 0.2rem;
+
+    background: var(--dark-gray-color);
+    border-radius: 8px;
+  }
+}
+
 @media (max-width: 800px) {
   .column-800px {
     display: flex;
