@@ -5,7 +5,7 @@
 <div class="wrapper">
   <div class="header">
     <button class="logoutBtn" (click)="logout()" *ngIf="this.isMyProfile"><svg icon="logout"></svg></button>
-    <div class="background"></div>
+    <div class="background glass"></div>
     <div class="avatar">
       <img [src]="data.img[0] | img" alt="User avatar" [ngClass]="{
         'online': data.isOnline
@@ -26,7 +26,8 @@
   <ng-container *ngIf="selectedNav === 'Gifts'">
     <div class="content" style="gap: .5rem; padding-top: .5rem; position: relative;">
       <app-gift *ngFor="let gift of (data.gifts || [])" [data]="gift"></app-gift>
-      <p *ngIf="!data.gifts" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">No gifts yet</p>
+      <p *ngIf="!data.gifts" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">No gifts
+        yet</p>
     </div>
   </ng-container>
   <ng-container *ngIf="selectedNav === 'Photos'">

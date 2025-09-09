@@ -1,7 +1,7 @@
 @if (type == "kruzhok"){
 <div [ngClass]="{
         message: true,
-        'message-sender': isSender
+        'message-sender': isSender,
       }" [attr.data-id]="data.id" (click)="onClick()" [id]="data.id">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
   <div #wrapper class="wrapper" [ngClass]="{
@@ -107,10 +107,8 @@
     }" [id]="data.id" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
 
-  <div #wrapper class="wrapper" [ngClass]="{
+  <div #wrapper class="wrapper glass" [ngClass]="{
       'sender': isSender,
-    }" [ngStyle]="{
-      'background': 'var(--secondary-color)'
     }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 

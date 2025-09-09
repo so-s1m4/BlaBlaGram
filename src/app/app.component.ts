@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatrixBackgroundComponent } from "@shared/matrix-background/matrix-background";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MatrixBackgroundComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

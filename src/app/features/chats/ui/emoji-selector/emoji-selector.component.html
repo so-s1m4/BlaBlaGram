@@ -1,5 +1,5 @@
 <div class="wrapper" [ngStyle]="style">
-    <div class="wrapper-emojis">
+    <div class="wrapper-emojis glass">
         <div *ngFor="let em of firstLine" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
                 [src]="em.emojiUrl">
         </div>
@@ -9,7 +9,7 @@
             @else {<svg icon="minus" />}
         </button>
     </div>
-    <div class="wrapper-emojis" *ngIf="showOther">
+    <div class="wrapper-emojis glass" *ngIf="showOther">
         <div *ngFor="let em of otherEmojis" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
                 [src]="em.emojiUrl">
         </div>

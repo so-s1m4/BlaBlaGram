@@ -177,9 +177,10 @@ export class ChatsService {
       { spaceId: spaceId, messageSeq: seqNum },
       (ok: any, error: any, result: any) => {
         if (ok) {
-          this.chats$.list.find(
-            (item: any) => item.id == spaceId
-          ).lastReadMessageSeq = seqNum;
+          const chat = this.chats$.list.find((item: any) => item.id == spaceId);
+          if (chat.lastReadMessageSeq < seqNum) {
+            chat.lastReadMessageSeq = seqNum
+          }
         }
         if (!ok) console.error('Помилка:', error);
       }

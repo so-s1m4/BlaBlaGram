@@ -1,0 +1,36 @@
+.matrix {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: #000;
+}
+
+.col {
+  position: absolute;
+  top: -120vh;
+  height: 220vh;
+  width: var(--w);
+  left: calc(var(--i) * var(--w));
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 0 6px red);
+  will-change: transform;
+  animation: drop var(--speed) linear var(--delay) infinite;
+  opacity: var(--o);
+}
+
+.col::before {
+  content: attr(data-stream);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: pre;
+  color: red;
+  font-size: 14px;
+  line-height: 1.1;
+  text-shadow: 0 0 5px red, 0 0 12px red;
+}
+
+@keyframes drop {
+  from { transform: translateY(0); }
+  to   { transform: translateY(120vh); }
+}

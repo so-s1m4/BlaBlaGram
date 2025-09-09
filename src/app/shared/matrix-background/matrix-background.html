@@ -1,0 +1,6 @@
+<div class="matrix">
+  <!-- 40 колонок -->
+  <div *ngFor="let col of columns; let i = index" class="col" [style.--i]="i" [style.--w.%]="100 / columns.length"
+    [style.--speed]="col.speed" [style.--delay]="col.delay" [style.--o]="col.opacity" [attr.data-stream]="col.stream">
+  </div>
+</div>

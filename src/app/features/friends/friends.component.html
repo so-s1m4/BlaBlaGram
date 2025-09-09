@@ -25,7 +25,7 @@
   <div class="friends-list">
     @if (whatToShow == "friends") {
     @for (friend of this.data.friends.list; track friend) {
-    <app-user-card (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
+    <app-user-card class="glass" (onClick)="openProfileOf($event)" [data]="friend"></app-user-card>
     }
     } @else if (whatToShow == "search") {
     @for (friend of this.searchResults; track friend) {

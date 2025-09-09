@@ -63,6 +63,7 @@ export class ChatComponent
   friendsService = inject(FriendsService);
   authService = inject(AuthService);
   router: Router = inject(Router);
+  window = window;
 
   contextMenuItems: { label: string; action: Function; svg?: string }[] = [];
   contextMenuStyle: {

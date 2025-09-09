@@ -1,55 +1,56 @@
 @if (!chatData.data) {
 <div class="loading">Loading...</div>
 } @else {
-<div class="header">
-  <button class="btn back" (click)="goBack()">
+<div class="header glass">
+  @if (window.innerWidth < 1200){ <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
-  </button>
-  <div class="avatar-wrap" [ngClass]="{
+    </button>
+    }
+    <div class="avatar-wrap" [ngClass]="{
     'online': (chatData.data.type === 'chat' && chatData.data.chat.friend.isOnline) ? true : false
   }">
-    <img [src]="chatData.data.img[chatData.data.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
-  </div>
+      <img [src]="chatData.data.img[chatData.data.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
+    </div>
 
-  <div class="header-info" (click)="toggleInfo()">
-    <h2 class="name">{{ chatData.data.title }}</h2>
-    <p style="font-size: 12px; color: var(--light-color);">
-      @if (chatData.data.type == "chat") {
-      {{ chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
-      (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}
+    <div class="header-info" (click)="toggleInfo()">
+      <h2 class="name">{{ chatData.data.title }}</h2>
+      <p style="font-size: 12px; color: var(--light-color);">
+        @if (chatData.data.type == "chat") {
+        {{ true && chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
+        (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}
+        }
+      </p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
+        <svg icon="trashcan"></svg>
+      </button>
+      <button class="btn" (click)="toggleSelectMode()">
+        <svg icon="select"></svg>
+      </button>
+      <button class="btn" (click)="toggleChatsSettigns()">
+        <svg icon="threedots"></svg>
+      </button>
+    </div>
+    <div class="chatsSettings glass" *ngIf="this.isChatsSettings">
+      @if (chatData.data.type != "group") {
+      <div class="setting-item delete" (click)="deleteChat()">
+        <svg icon="trashcan"> </svg> Delete Chat
+      </div>
+      } @else if (chatData.data.group.owner.id == authService.me.id){
+      <div class="setting-item delete" (click)="leaveChat()">
+        <svg icon="reply"> </svg> Leave
+      </div>
+      <div class="setting-item delete" (click)="deleteChat()">
+        <svg icon="trashcan"> </svg> Delete Group
+      </div>
+      } @else {
+      <div class="setting-item delete" (click)="leaveChat()">
+        <svg icon="reply"> </svg> Leave
+      </div>
       }
-    </p>
-  </div>
-  <div class="header-actions">
-    <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
-      <svg icon="trashcan"></svg>
-    </button>
-    <button class="btn" (click)="toggleSelectMode()">
-      <svg icon="select"></svg>
-    </button>
-    <button class="btn" (click)="toggleChatsSettigns()">
-      <svg icon="threedots"></svg>
-    </button>
-  </div>
-  <div class="chatsSettings" *ngIf="this.isChatsSettings">
-    @if (chatData.data.type != "group") {
-    <div class="setting-item delete" (click)="deleteChat()">
-      <svg icon="trashcan"> </svg> Delete Chat
-    </div>
-    } @else if (chatData.data.group.owner.id == authService.me.id){
-    <div class="setting-item delete" (click)="leaveChat()">
-      <svg icon="reply"> </svg> Leave
-    </div>
-    <div class="setting-item delete" (click)="deleteChat()">
-      <svg icon="trashcan"> </svg> Delete Group
-    </div>
-    } @else {
-    <div class="setting-item delete" (click)="leaveChat()">
-      <svg icon="reply"> </svg> Leave
-    </div>
-    }
 
-  </div>
+    </div>
 </div>
 @if (chatData.data.type == 'chat') {
 <app-modal *ngIf="showInfo" (click)="toggleInfo()">
@@ -70,7 +71,7 @@
   <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
     [style]="emojiSelectorStyle"></app-emoji-selector>
 
-  <div *ngFor="let g of (chatData.messages | groupByDay)" style="display: flex; flex-direction: column; gap: 1rem;">
+  <!-- <div *ngFor="let g of (chatData.messages | groupByDay); track (g.labelDate | dayLabel)" style="display: flex; flex-direction: column; gap: 1rem;">
     <div class="day-separator">
       <span>{{ g.labelDate | dayLabel }}</span>
     </div>
@@ -81,7 +82,14 @@
       (scrollToMsg)="scrollToMsg($event)">
     </app-message>
     }
-  </div>
+  </div> -->
+  @for (message of chatData.messages; track message.id; let last = $last) {
+  <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+    [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
+    [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
+    (scrollToMsg)="scrollToMsg($event)">
+  </app-message>
+  }
 
 
 </div>

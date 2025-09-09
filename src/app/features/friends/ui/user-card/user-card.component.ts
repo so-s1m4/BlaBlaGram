@@ -32,6 +32,7 @@ export class UserCardComponent implements OnInit {
   @Input() data: any | undefined;
   @Input() type: string = 'user';
 
+
   router = inject(Router);
   profileService = inject(ProfileService);
   friendsService = inject(FriendsService);

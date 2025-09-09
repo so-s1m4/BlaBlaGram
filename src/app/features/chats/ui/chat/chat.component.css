@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--dark-color);
 
   align-items: center;
   position: relative;
@@ -38,8 +37,8 @@
   padding-bottom: 0.2rem;
   padding-top: 0.2rem;
 
-  background: var(--secondary-color);
   color: var(--primary-color);
+  border: 0;
 
   position: relative;
 }
@@ -88,8 +87,6 @@
   top: 100%;
   transform: translateY(20%);
 
-  background: var(--dark-gray-color);
-
   border-radius: 8px;
 
   z-index: 99;
@@ -114,9 +111,6 @@
 }
 .setting-item.delete:hover {
   color: rgb(255, 65, 65);
-}
-.setting-item:hover {
-  background: var(--gray-color);
 }
 .avatar {
   width: 50px;
@@ -221,4 +215,9 @@
   .input-holder .line {
     display: none;
   }
+}
+@media (max-width: 1200px){
+  :host {
+    background: var(--dark-color)
+  };
 }
