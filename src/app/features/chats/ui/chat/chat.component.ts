@@ -24,11 +24,10 @@ import { FriendsService } from '@features/friends/data/friends.service';
 import { EmojiSelectorComponent } from '../emoji-selector/emoji-selector.component';
 import { VideoMessageComponent } from '../video-message/video-message.component';
 import { InputFieldComponent } from '../input-field/input-field.component';
+import { max, reduce } from 'rxjs';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { SpaceInfoComponent } from '../space-info-component/space-info';
-import { GroupByDayPipe } from '@utils/group-by-day-pipe';
-import { DayLabelPipe } from '@utils/day-label-pipe';
 
 @Component({
   selector: 'app-chat',
@@ -45,8 +44,6 @@ import { DayLabelPipe } from '@utils/day-label-pipe';
     Modal,
     ProfileComponent,
     SpaceInfoComponent,
-    GroupByDayPipe,
-    DayLabelPipe,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',

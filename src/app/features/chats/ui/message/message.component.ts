@@ -11,8 +11,6 @@ import {
   ViewChildren,
   OnInit,
   OnChanges,
-  OnDestroy,
-  NgZone,
 } from '@angular/core';
 import { API_URL } from 'app/app.config';
 import { SvgIconComponent } from '@utils/svg.component';
@@ -39,7 +37,7 @@ import { MediaPipe } from '../../../../shared/utils/media.pipe';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })
-export class MessageComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
+export class MessageComponent implements AfterViewInit, OnInit, OnChanges {
   @ViewChild('wrapper') wrapper: any;
   @ViewChildren('mediaItem') mediaItems: any;
   API_URL = API_URL;
@@ -49,60 +47,43 @@ export class MessageComponent implements AfterViewInit, OnInit, OnChanges, OnDes
   chatService = inject(ChatsService);
   authService = inject(AuthService);
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone) {}
-
-  private teardownFns: Array<() => void> = [];
-
-  private addPassive(el: HTMLElement, type: string, handler: EventListener) {
-    el.addEventListener(type, handler, { passive: true } as AddEventListenerOptions);
-    this.teardownFns.push(() => el.removeEventListener(type, handler));
-  }
-
+  constructor(private renderer: Renderer2) {}
   ngAfterViewInit(): void {
-    // mouse events via Renderer2 (cleanup stored)
-    this.teardownFns.push(
-      this.renderer.listen(this.wrapper.nativeElement, 'mousedown', (event) =>
-        this.onLongPressStart(event, 500)
-      )
+    this.renderer.listen(this.wrapper.nativeElement, 'mousedown', (event) =>
+      this.onLongPressStart(event, 500)
     );
-    this.teardownFns.push(
+    this.renderer.listen(this.wrapper.nativeElement, 'touchstart', (event) =>
+      this.onLongPressStart(event, 500)
+    );
+    this.renderer.listen(
+      this.wrapper.nativeElement,
+      'mouseup',
+      this.onLongPressEnd.bind(this)
+    );
+    this.renderer.listen(
+      this.wrapper.nativeElement,
+      'touchend',
+      this.onLongPressEnd.bind(this)
+    );
+    this.mediaItems.forEach((item: any) => {
+      this.renderer.listen(item.nativeElement, 'mousedown', (event) => {
+        event.stopPropagation();
+        this.onLongPressStart(event, 500);
+      });
+      this.renderer.listen(item.nativeElement, 'touchstart', (event) => {
+        event.stopPropagation();
+        this.onLongPressStart(event, 500);
+      });
       this.renderer.listen(
-        this.wrapper.nativeElement,
+        item.nativeElement,
         'mouseup',
         this.onLongPressEnd.bind(this)
-      )
-    );
-
-    // touch events as passive listeners to avoid scroll-blocking warnings
-    const wrapperTouchStart = (event: Event) => this.onLongPressStart(event as any, 500);
-    const wrapperTouchEnd = (event: Event) => this.onLongPressEnd(event as any);
-    this.addPassive(this.wrapper.nativeElement, 'touchstart', wrapperTouchStart);
-    this.addPassive(this.wrapper.nativeElement, 'touchend', wrapperTouchEnd);
-
-    this.mediaItems.forEach((item: any) => {
-      // mouse events via Renderer2 (cleanup stored)
-      this.teardownFns.push(
-        this.renderer.listen(item.nativeElement, 'mousedown', (event) => {
-          event.stopPropagation();
-          this.onLongPressStart(event, 500);
-        })
       );
-      this.teardownFns.push(
-        this.renderer.listen(
-          item.nativeElement,
-          'mouseup',
-          this.onLongPressEnd.bind(this)
-        )
+      this.renderer.listen(
+        item.nativeElement,
+        'touchend',
+        this.onLongPressEnd.bind(this)
       );
-
-      // touch events as passive listeners
-      const itemTouchStart = (ev: Event) => {
-        ev.stopPropagation();
-        this.onLongPressStart(ev as any, 500);
-      };
-      const itemTouchEnd = (ev: Event) => this.onLongPressEnd(ev as any);
-      this.addPassive(item.nativeElement, 'touchstart', itemTouchStart);
-      this.addPassive(item.nativeElement, 'touchend', itemTouchEnd);
     });
   }
   longPressTimeout: any;
@@ -253,14 +234,6 @@ export class MessageComponent implements AfterViewInit, OnInit, OnChanges, OnDes
     this.repliedOn = this.chatData.messages.find(
       (item: any) => item.id == this.data.repliedOn
     );
-  }
-
-  ngOnDestroy(): void {
-    try { clearTimeout(this.longPressTimeout); } catch {}
-    for (const off of this.teardownFns) {
-      try { off(); } catch {}
-    }
-    this.teardownFns = [];
   }
 
   trackByEmoji(index: number, item: any): any {
