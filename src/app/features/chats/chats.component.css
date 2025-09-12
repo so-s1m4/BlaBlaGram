@@ -12,6 +12,7 @@
   padding: 0 15px;
   justify-content: space-between;
   align-items: center;
+  height: 5rem;
 }
 
 .btn.create {
@@ -39,8 +40,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
-  background: var(--secondary-color);
 }
 
 .chats-list {

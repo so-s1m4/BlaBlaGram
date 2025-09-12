@@ -41,13 +41,13 @@
   }
 }
 .reaction-item:hover {
-  background: var(--gray-color);
+  background: rgba(255, 255, 255, .2);
 }
 .reactions-open-more {
   width: 3rem;
   height: 3rem;
 
-  background: var(--gray-color);
+  background: rgba(0, 255, 255, .2);
   border-radius: 50%;
   border: 0;
 

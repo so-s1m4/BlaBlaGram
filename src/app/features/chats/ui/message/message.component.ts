@@ -22,6 +22,7 @@ import { AuthService } from '@services/auth.service';
 import { AudioMessagePlayerComponent } from '../audio-message-player/audio-message-player.component';
 import { OnVisibleOnceDirective } from '@shared/utils/visibleOnce';
 import { MediaPipe } from '../../../../shared/utils/media.pipe';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-message',
@@ -33,7 +34,8 @@ import { MediaPipe } from '../../../../shared/utils/media.pipe';
     AudioMessagePlayerComponent,
     OnVisibleOnceDirective,
     MediaPipe,
-  ],
+    GlassEffectDirective
+],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
 })

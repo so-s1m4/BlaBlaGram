@@ -63,7 +63,7 @@
         }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-audio-message-player (read)="markAsRead()" [src]="this.data.media[0] | media"></app-audio-message-player>
+    <app-audio-message-player GlassEffect (read)="markAsRead()" [src]="this.data.media[0] | media"></app-audio-message-player>
     <div class="text">
       <div
         style="display:flex; position: relative; top: .375rem; bottom: auto !important; float: right; height: calc(var(--message-meta-height, 1rem)); margin-right: -0.375rem; margin-left: .4375rem; line-height: 1.35;">
@@ -107,7 +107,7 @@
     }" [id]="data.id" [attr.data-id]="data.id" (click)="onClick()" appOnVisibleOnce (visibleOnce)="markAsRead()">
   <img *ngIf="this.showSender" [src]="data.sender.img[0] | img" class="avatar" alt="" />
 
-  <div #wrapper class="wrapper" [ngClass]="{
+  <div GlassEffect #wrapper class="wrapper" [ngClass]="{
       'sender': isSender,
     }" [ngStyle]="{
       'background': 'var(--secondary-color)'

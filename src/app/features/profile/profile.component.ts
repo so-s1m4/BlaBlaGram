@@ -25,6 +25,7 @@ import { GiftComponent } from './ui/gift/gift.component';
 import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.component';
 import { Subject, takeUntil } from 'rxjs';
 import { AppComponent } from 'app/app.component';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 interface Gift {
   url: string;
@@ -55,7 +56,8 @@ interface ProfileData {
     SvgIconComponent,
     GiftComponent,
     PhotoGalleryComponent,
-  ],
+    GlassEffectDirective
+],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
