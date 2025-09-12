@@ -16,10 +16,11 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SvgIconComponent } from '@utils/svg.component';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-audio-message-player',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, GlassEffectDirective],
   templateUrl: './audio-message-player.component.html',
   styleUrl: './audio-message-player.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^20.1.6",
     "@angular/platform-browser-dynamic": "^20.1.6",
     "@angular/router": "^20.1.6",
+    "@developer-hub/liquid-glass": "^1.2.3",
     "ngx-image-compress": "^18.1.5",
     "ngx-socket-io": "^4.9.3",
     "rxjs": "~7.8.0",

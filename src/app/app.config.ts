@@ -10,7 +10,6 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IMAGE_CONFIG } from '@angular/common';
 
-
 export const WEB_SOCKET_URL = 'https://blablagram.m0sk1tu4.codes';
 export const API_URL = 'https://blablagram.m0sk1tu4.codes/api';
 export const API_PUBLIC_URL = 'https://blablagram.m0sk1tu4.codes/public';

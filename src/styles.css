@@ -400,33 +400,6 @@ input[type="checkbox"]:disabled {
   top: calc(100svh - (40svh + 6svh + 48svh));
 }
 
-/* ===== iOS glass preset ===== */
-.glass {
-  position: relative;
-  border-radius: var(--glass-radius);
-  background: linear-gradient(
-    to bottom right,
-    var(--glass-tint-1),
-    var(--glass-tint-2)
-  );
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  overflow: hidden;
-  /* magic */
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-}
-
-/* inner hairline (Apple-style bevel) */
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 1px 0 var(--glass-inner);
-  pointer-events: none;
-}
-
 @media (max-width: 1200px) {
   .info-container {
     width: 80vw;

@@ -11,6 +11,7 @@ import { WebSocketService } from '../../core/services/web-socket.service';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { CommonModule } from '@angular/common';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-friends',
@@ -20,7 +21,8 @@ import { CommonModule } from '@angular/common';
     Modal,
     ProfileComponent,
     CommonModule,
-  ],
+    GlassEffectDirective
+],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css',
 })

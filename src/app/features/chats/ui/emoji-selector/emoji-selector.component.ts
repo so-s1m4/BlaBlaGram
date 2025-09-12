@@ -11,10 +11,11 @@ import {
 import { SvgIconComponent } from '@utils/svg.component';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '@core/services/web-socket.service';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-emoji-selector',
-  imports: [SvgIconComponent, CommonModule],
+  imports: [SvgIconComponent, CommonModule, GlassEffectDirective],
   templateUrl: './emoji-selector.component.html',
   styleUrl: './emoji-selector.component.css',
 })
