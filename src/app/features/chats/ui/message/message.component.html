@@ -63,7 +63,8 @@
         }" [attr.msg-id]="data.id" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
     [attr.data]="JSON.stringify({type: 'message', id: data.id, my: !isSender})">
 
-    <app-audio-message-player GlassEffect (read)="markAsRead()" [src]="this.data.media[0] | media"></app-audio-message-player>
+    <app-audio-message-player GlassEffect (read)="markAsRead()"
+      [src]="this.data.media[0] | media"></app-audio-message-player>
     <div class="text">
       <div
         style="display:flex; position: relative; top: .375rem; bottom: auto !important; float: right; height: calc(var(--message-meta-height, 1rem)); margin-right: -0.375rem; margin-left: .4375rem; line-height: 1.35;">
@@ -135,7 +136,7 @@
       *ngIf="data.media && data.media.length > 0">
       @for (media of data.media; track media.id) {
       @if (!media.mime.startsWith('image/') && !media.mime.startsWith('video/') && !media.type.startsWith("audio")) {
-      <div #mediaItem class="media-item" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
+      <div #mediaItem GlassEffect class="media-item" (contextmenu)="onContextMenu($event)" data-long-press-delay="1000"
         [attr.data]="JSON.stringify({type: 'media', id: media.id, path: media.path})">
         <svg icon="file"></svg>
         <p>{{ media.path }}</p>
@@ -153,9 +154,9 @@
         <p>{{ data.editedAt | date: 'shortTime' }}</p>
         @if (!isSender) {
         @if (data.wasRead) {
-        <svg icon="doublecheck"></svg>
+        <svg icon="doublecheck" style="color: var(--light-color)"></svg>
         } @else {
-        <svg icon="check"></svg>
+        <svg icon="check" style="color: var(--light-color)"></svg>
         }}
       </div>
     </div>

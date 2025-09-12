@@ -1,9 +1,9 @@
 @if (!editMode){
-<div id="upload-bars-holder" class="upload-bars-holder">
+<div id="upload-bars-holder" GlassEffect class="upload-bars-holder">
 </div>
 <div [ngClass]="{
         'withReply': this.repliedOn$
-      }" class="filesPopUp" *ngIf="filesList.length">
+      }" class="filesPopUp" *ngIf="filesList.length" GlassEffect>
   @for (file of filesList; track file.name) {
   <div class="fileItem">
     @if (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) {
@@ -17,7 +17,7 @@
   }
 </div>
 @if (this.repliedOn$) {
-<div class="reply-on">
+<div class="reply-on" GlassEffect>
   <svg icon="reply"></svg>
   <div class="reply-content-holder">
     <div class="reply-to-person">
@@ -32,16 +32,17 @@
       style="transform: rotate(45deg);"></svg></button>
 </div>
 }
-<div class="attachFileBtn btn">
+<div class="attachFileBtn btn" GlassEffect>
   <label for="files-input" class="btn attachFile">
     <svg icon="attach"></svg>
   </label>
   <input (change)="onFileSelected($event)" id="files-input" type="file" class="attachFile" multiple hidden />
 </div>
 @if (!isRecording || !isVoice) {
-<textarea #input class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"
+<textarea GlassEffect #input class="input" placeholder="Type a message..." (keypress)="onKeyPress($event)"
   (keyup)="onKeyPress($event)"></textarea>
-<button id="send-btn" class="btn" (click)="this.sendMessage.emit()" *ngIf="this.value.length || this.filesList.length">
+<button GlassEffect id="send-btn" class="btn" (click)="this.sendMessage.emit()"
+  *ngIf="this.value.length || this.filesList.length">
   <svg icon="repost"></svg>
 </button>
 }
@@ -50,28 +51,28 @@
 }"></app-audio-message>
 
 @if (isRecording){
-  <button id="send-btn" class="btn record" (click)="onPressEnd( isVoice ? 'audio' : 'video')" style="z-index: 101;"
-    *ngIf="!this.value.length && !this.filesList.length">
-    <svg icon="repost"></svg>
-  </button>
+<button GlassEffect GlassEffect id="send-btn" class="btn record" (click)="onPressEnd( isVoice ? 'audio' : 'video')"
+  style="z-index: 101;" *ngIf="!this.value.length && !this.filesList.length">
+  <svg icon="repost"></svg>
+</button>
 } @else {
-  @if (isVoice){
-  <button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'audio')" (mouseup)="onPressEnd('audio')"
-    (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')" style="z-index: 101;"
-    *ngIf="!this.value.length && !this.filesList.length">
-    <svg icon="microphone"></svg>
-  </button>
-  } @else {
-  <button id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'video')" (mouseup)="onPressEnd('video')"
-    (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')" style="z-index: 101;"
-    *ngIf="!this.value.length && !this.filesList.length">
-    <svg icon="camera"></svg>
-  </button>
-  }
+@if (isVoice){
+<button GlassEffect id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'audio')"
+  (mouseup)="onPressEnd('audio')" (touchstart)="onPressStart($event, 'audio')" (touchend)="onPressEnd('audio')"
+  style="z-index: 101;" *ngIf="!this.value.length && !this.filesList.length">
+  <svg icon="microphone"></svg>
+</button>
+} @else {
+<button GlassEffect id="send-btn" class="btn record" (mousedown)="onPressStart($event, 'video')"
+  (mouseup)="onPressEnd('video')" (touchstart)="onPressStart($event, 'video')" (touchend)="onPressEnd('video')"
+  style="z-index: 101;" *ngIf="!this.value.length && !this.filesList.length">
+  <svg icon="camera"></svg>
+</button>
+}
 }
 
 } @else {
-<textarea #input id="message-input" class="input" [value]="messageTextForEdit" (keypress)="onKeyPress($event)"
-  placeholder="Type a message..."></textarea>
-<button id="send-btn" class="btn" (click)="editMessage()">Save</button>
+<textarea GlassEffect #input id="message-input" class="input" [value]="messageTextForEdit"
+  (keypress)="onKeyPress($event)" placeholder="Type a message..."></textarea>
+<button GlassEffect id="send-btn" class="btn" (click)="editMessage()">Save</button>
 }
