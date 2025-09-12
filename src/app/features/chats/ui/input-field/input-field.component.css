@@ -14,13 +14,15 @@
 
   max-height: 15vh;
   height: fit-content;
-  background: var(--secondary-color);
   overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
   z-index: 10;
   transform: translateY(-100%);
+}
+.upload-bars-holder:not(:has()){
+  display: none;
 }
 .filesPopUp {
   position: absolute;
@@ -29,7 +31,6 @@
   width: fit-content;
   max-width: calc(100% - 8rem);
   height: 15vh;
-  background: var(--secondary-color);
 
   transform: translateY(-105%);
   border-radius: 1rem;
@@ -132,7 +133,12 @@
 .input {
   width: calc(100% - 8rem);
   font-size: 1rem;
-  background: var(--dark-gray-color);
+
+  color: var(--light-color);
+
+  &::placeholder {
+    color: var(--light-color);
+  }
 }
 .input:focus {
   outline: none;
@@ -143,7 +149,6 @@
   height: 3rem;
   color: var(--light-gray-color);
 
-  background: var(--dark-gray-color);
   border-radius: 50%;
 
   padding: 10px;
@@ -168,9 +173,8 @@
   height: 4rem;
   width: 100%;
   top: 0%;
-  transform: translateY(-85%);
+  transform: translateY(-100%);
   z-index: 5;
-  background: var(--dark-gray-color);
 
   border-radius: 0.5rem;
 
