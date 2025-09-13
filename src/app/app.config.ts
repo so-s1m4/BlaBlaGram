@@ -17,7 +17,7 @@ export const MEDIA_SERVER_URL = 'https://blablagram.m0sk1tu4.codes/mediaserver';
 export const MEDIA_SERVER_PUBLIC_URL =
   'https://blablagram.m0sk1tu4.codes/mediaserver/public';
 export const DEFAULT_AVATAR_URL =
-  'https://www.htlstp.ac.at/lehrer/maus/@@images/1916921a-4a77-48d8-b37e-66094a3be83b.jpeg';
+  'https://www.htlstp.ac.at/wp-content/uploads/2024/08/maus.jpeg';
 
 export const appConfig: ApplicationConfig = {
   providers: [
