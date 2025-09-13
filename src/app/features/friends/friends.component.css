@@ -55,7 +55,6 @@ app-search {
 }
 
 .select {
-  background: var(--dark-color);
   color: var(--primary-color);
   padding: 0.5rem;
   border-radius: 1rem;
