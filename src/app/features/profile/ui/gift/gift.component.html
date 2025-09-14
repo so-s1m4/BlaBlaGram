@@ -1,18 +1,18 @@
-<img [src]="this.data.url" alt="" (click)="open()">
+<img [src]="this.data.gift.url" alt="" (click)="open()">
 <app-modal (click)="close()" *ngIf="this.showed">
   <div class="modal" (click)="stopPropagation($event)">
     <div class="btn close" (click)="close()">
       <svg icon="plus"></svg>
     </div>
-    <img [src]="this.data.url" alt="">
-    <h3>Gift</h3>
+    <img [src]="this.data.gift.url" alt="">
+    <h3>{{ this.data.gift.name }}</h3>
     <div class="info">
       <div class="grid-item">From</div>
-      <div class="grid-item">{{ this.data.from.username }}</div>
+      <div class="grid-item">{{ this.data.user.username }}</div>
       <div class="grid-item">Date</div>
-      <div class="grid-item">{{ this.data.date | date }}</div>
+      <div class="grid-item">{{ this.data.createdAt | date }}</div>
       <div class="grid-item">Value</div>
-      <div class="grid-item">{{ this.data.value }}</div>
+      <div class="grid-item">{{ this.data.gift.value }} 💾</div>
     </div>
     <p style="width: 80%; color: var(--light-gray-color); text-align: center;">{{ this.data.text }}</p>
     <button class="btn done" (click)="close()">Done</button>

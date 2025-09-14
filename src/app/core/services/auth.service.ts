@@ -117,7 +117,6 @@ export class AuthService {
       this.isAuthed = false;
     }
   }
-
   getIsAuthed() {
     return this.isAuthed;
   }

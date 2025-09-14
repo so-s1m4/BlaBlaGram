@@ -10,6 +10,7 @@ import { FriendsService } from '@features/friends/data/friends.service';
 import { SendGift } from './ui/send-gift/send-gift';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
+import { Gifts } from './data/gifts';
 
 @Component({
   selector: 'app-layout',
@@ -147,6 +148,9 @@ export class LayoutComponent implements OnInit {
         message: '',
       };
       this.showPopUp(popUpData);
+    });
+    this.webSocketService.on('gifts:receive', (data: any) => {
+      console.log(data);
     });
   }
 }

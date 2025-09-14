@@ -237,10 +237,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const me = this.authService.me as ProfileData;
       this.data = { ...me };
 
-      if (this.data.username === 's1m4') {
-        this.data.gifts = this.getMockGifts();
-      }
-
       this.patchFormFromData(this.data);
       this.buildNavPanel();
       return;
@@ -253,9 +249,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
         this.data = { ...profile };
-        if (this.data.username === 's1m4') {
-          this.data.gifts = this.getMockGifts();
-        }
         if (this.data.img) {
           this.data.img = [...this.data.img].reverse();
         }
@@ -277,24 +270,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       { label: 'Photos', guard: true },
       // { label: 'Posts', guard: true },
       { label: 'Settings', guard: this.isMyProfile },
-    ];
-  }
-  private getMockGifts(): Gift[] {
-    return [
-      {
-        url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/15/21d26574dd8bc17df5035e5aa63a04.webp',
-        from: { username: 'GOD', id: '777' },
-        date: new Date('01-01-0001'),
-        value: 777,
-        text: 'Awarded for dying while coding this website that will never be popular',
-      },
-      {
-        url: 'https://46f32a42-e4ff-489b-8e03-b52e4d70fd18.selcdn.net/i/webp/5f/bdf882f6f33ec3983cb2afb8b3aae2.webp',
-        from: { username: 'His girlfriend', id: '------' },
-        date: new Date('09-16-2022'),
-        value: 'unlimited',
-        text: 'For the unlimited love that he has given her',
-      },
     ];
   }
 }
