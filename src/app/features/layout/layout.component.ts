@@ -103,7 +103,6 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.webSocketService.on('communication:newMessage', (data: any) => {
-      if (data.sender_id.id === this.authService.me.id) return;
       if (this.chatsService.currentChat.id !== data.spaceId) {
         const popUpData = {
           type: 'newMessage',

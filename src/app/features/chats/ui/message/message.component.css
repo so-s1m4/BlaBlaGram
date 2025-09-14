@@ -118,8 +118,6 @@
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 
-  font-size: 1rem;
-
   p {
     display: static;
     font-size: 15px;
