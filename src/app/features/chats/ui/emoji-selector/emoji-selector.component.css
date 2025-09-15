@@ -20,7 +20,6 @@
   flex-direction: row;
 
   border-radius: 2rem;
-  background: var(--dark-gray-color);
   overflow: auto;
 }
 
@@ -47,7 +46,6 @@
   width: 3rem;
   height: 3rem;
 
-  background: rgba(0, 255, 255, .2);
   border-radius: 50%;
   border: 0;
 

@@ -8,11 +8,16 @@
     <h3>{{ this.data.gift.name }}</h3>
     <div class="info">
       <div class="grid-item">From</div>
-      <div class="grid-item">{{ this.data.user.username }}</div>
+      <div class="grid-item">{{ this.data.sender.username }}</div>
       <div class="grid-item">Date</div>
       <div class="grid-item">{{ this.data.createdAt | date }}</div>
       <div class="grid-item">Value</div>
-      <div class="grid-item">{{ this.data.gift.value }} 💾</div>
+      <div class="grid-item" style="display: flex; flex-direction: column;">
+        <span>{{ this.data.gift.value }} 💾</span>
+        @if (this.data.user.id == authService.me.id) {
+        <button class="btn sell" (click)="sell(this.data.tid)">Sell for {{ this.data.gift.value * 0.75 }} 💾</button>
+        }
+      </div>
     </div>
     <p style="width: 80%; color: var(--light-gray-color); text-align: center;">{{ this.data.text }}</p>
     <button class="btn done" (click)="close()">Done</button>

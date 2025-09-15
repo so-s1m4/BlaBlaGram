@@ -4,8 +4,6 @@
   height: 100%;
 
   display: flex;
-
-  background: var(--dark-color);
 }
 .chats-header {
   display: flex;

@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--dark-color);
 
   align-items: center;
   position: relative;
@@ -37,8 +36,6 @@
   padding: 1rem;
   padding-bottom: 0.2rem;
   padding-top: 0.2rem;
-
-  background: var(--secondary-color);
   color: var(--primary-color);
 
   position: relative;
@@ -88,7 +85,6 @@
   top: 100%;
   transform: translateY(20%);
 
-  background: var(--dark-gray-color);
 
   border-radius: 8px;
 

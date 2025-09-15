@@ -107,6 +107,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         []
       ),
     }) as unknown as ProfileComponent['settingsFormGroup'];
+
+
+
+    
   }
 
   ngOnInit(): void {
@@ -238,7 +242,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.isMyProfile = true;
       const me = this.authService.me as ProfileData;
       this.data = { ...me };
-
+      this.data.gifts = me.gifts;
       this.patchFormFromData(this.data);
       this.buildNavPanel();
       return;

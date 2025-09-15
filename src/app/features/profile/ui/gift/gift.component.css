@@ -1,5 +1,5 @@
 :host {
-  width: 25%;
+  width: 24.25%;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
@@ -63,6 +63,19 @@ img {
     color: white;
   }
 }
+.btn.sell {
+  padding: 0;
+  font-size: .8rem;
+  font-weight: 300;
+  border: 0;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+  }
+}
+
 .btn.close {
   padding: 0;
   position: absolute;

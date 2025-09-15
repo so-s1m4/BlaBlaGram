@@ -1,4 +1,5 @@
 import { inject, Injectable, OnInit } from '@angular/core';
+import { AuthService } from '@core/services/auth.service';
 import { WebSocketService } from '@core/services/web-socket.service';
 
 @Injectable({
@@ -7,6 +8,8 @@ import { WebSocketService } from '@core/services/web-socket.service';
 export class Gifts {
   websocketService = inject(WebSocketService);
   gifts: { list: any[] } = { list: [] };
+  authService = inject(AuthService);
+
   constructor() {
     console.log('Gifts service initialized');
     this.websocketService.send(
@@ -32,6 +35,19 @@ export class Gifts {
           console.log('Gift sent', data);
         } else {
           console.error('Error sending gift', err);
+        }
+      }
+    );
+  }
+  sell(transactionId: string) {
+    this.websocketService.send(
+      'gifts:sell',
+      { transactionId },
+      (ok: any, err: any, data: any) => {
+        if (ok) {
+          console.log('Gift sold', data);
+        } else {
+          console.error('Error selling gift', err);
         }
       }
     );
