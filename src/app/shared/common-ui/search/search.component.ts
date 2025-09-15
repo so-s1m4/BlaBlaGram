@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SvgIconComponent } from '@utils/svg.component';
+import { GlassEffectDirective } from "../glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-search',
-  imports: [SvgIconComponent],
+  imports: [SvgIconComponent, GlassEffectDirective],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })

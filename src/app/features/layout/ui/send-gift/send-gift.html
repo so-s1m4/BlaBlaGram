@@ -1,17 +1,18 @@
 <app-modal (click)="close()">
-  <div class="wrapper" (click)="stopPropagation($event)">
+  <div class="wrapper" (click)="stopPropagation($event)" GlassEffect>
     <div class="header">
       <div class="btn close" (click)="close()">
         <svg icon="plus"></svg>
       </div>
       <div class="flex ai-center primary-color">
-        <h4 class="bold">0</h4> 💾
+        <h4 class="bold">{{authService.me.currency}}</h4> 💾
       </div>
     </div>
 
     <div class="content">
       <div class="friends holder">
-        <div class="friend item" *ngFor="let friend of this.friendList" (click)="selectUser(friend.id)">
+        <div class="friend item" *ngFor="let friend of this.friendList" (click)="selectUser(friend.id)" GlassEffect
+          [ngClass]="{'selected': selectedUser === friend.id}">
           <img [src]="friend.img[friend.img.length-1] | img" alt="" class="avatar" [ngClass]="{
             'online': friend.isOnline
           }">
@@ -20,18 +21,21 @@
         </div>
       </div>
       @if (selectedUser) {
-      @if (!this.giftList.length) {
+      @if (!this.giftList.list.length) {
 
-      <p style="transform: translateY(-3rem);">At the moment, there aren't any gifts available</p>
+      <p>At the moment, there aren't any gifts available</p>
       } @else {
 
       <div class="gifts holder">
-        <div class="gift item" *ngFor="let gift of this.giftList"></div>
+        <div class="gift item" *ngFor="let gift of this.giftList.list" GlassEffect (click)="sendGift(gift.uid)">
+          <img [src]="gift.url" alt="">
+          <div class="info">
+            <h2>{{ gift.name }}</h2>
+            <h3>{{ gift.value }} 💾</h3>
+          </div>
+        </div>
       </div>
       }
-
-      } @else {
-      @if (window.isDesktop()) {<p style="transform: translateY(-3rem);">Select the user!</p>}
       }
     </div>
   </div>

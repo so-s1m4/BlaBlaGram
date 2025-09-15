@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@shared/utils/svg.component';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { CreateModalPopUp } from './ui/create-space-pop-up-modal/create-space-pop-up-modal';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-chats',
@@ -16,7 +17,8 @@ import { CreateModalPopUp } from './ui/create-space-pop-up-modal/create-space-po
     Modal,
     CreateModalPopUp,
     RouterOutlet,
-  ],
+    GlassEffectDirective
+],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css',
 })

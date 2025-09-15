@@ -1,5 +1,5 @@
-<div class="chats-container">
-  <div class="chats-header">
+<div class="chats-container" style="border: 0;">
+  <div class="chats-header" GlassEffect>
     <h1>Chats</h1>
     <div class="btn create" (click)="toggleCreateModal()">
       <svg icon="plus"></svg>
@@ -13,7 +13,7 @@
   </div>
   <div class="chats-list">
     @for (chat of getChats.list; track chat.id) {
-    <app-chat-preview [chat]="chat" (click)="selectChat(chat)"></app-chat-preview>
+    <app-chat-preview GlassEffect [chat]="chat" (click)="selectChat(chat)"></app-chat-preview>
     }
   </div>
 </div>

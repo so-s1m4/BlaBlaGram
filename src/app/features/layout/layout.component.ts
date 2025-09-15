@@ -10,6 +10,7 @@ import { FriendsService } from '@features/friends/data/friends.service';
 import { SendGift } from './ui/send-gift/send-gift';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
+import { Gifts } from './data/gifts';
 
 @Component({
   selector: 'app-layout',
@@ -146,6 +147,20 @@ export class LayoutComponent implements OnInit {
         message: '',
       };
       this.showPopUp(popUpData);
+    });
+    this.webSocketService.on('gifts:sold', (data: any) => {
+      const giftIndex = this.authService.me.gifts.findIndex(
+        (gift: any) => gift.tid === data.tid
+      );
+      if (giftIndex !== -1) {
+        this.authService.me.currency +=
+          this.authService.me.gifts[giftIndex].gift.value * 0.75;
+        this.authService.me.gifts.splice(giftIndex, 1);
+      }
+    });
+    this.webSocketService.on('gifts:receive', (data: any) => {
+      console.log(data);
+      this.authService.me.gifts.push(data);
     });
   }
 }

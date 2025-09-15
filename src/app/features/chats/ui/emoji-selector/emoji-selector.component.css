@@ -20,7 +20,6 @@
   flex-direction: row;
 
   border-radius: 2rem;
-  background: var(--dark-gray-color);
   overflow: auto;
 }
 
@@ -41,13 +40,12 @@
   }
 }
 .reaction-item:hover {
-  background: var(--gray-color);
+  background: rgba(255, 255, 255, .2);
 }
 .reactions-open-more {
   width: 3rem;
   height: 3rem;
 
-  background: var(--gray-color);
   border-radius: 50%;
   border: 0;
 

@@ -1,15 +1,15 @@
 <div class="wrapper" [ngStyle]="style">
-    <div class="wrapper-emojis">
+    <div class="wrapper-emojis" GlassEffect>
         <div *ngFor="let em of firstLine" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
                 [src]="em.emojiUrl">
         </div>
 
-        <button class="reactions-open-more" (click)="toggle($event)">
+        <button class="reactions-open-more" (click)="toggle($event)" GlassEffect>
             @if (!showOther) {<svg icon="plus" />}
             @else {<svg icon="minus" />}
         </button>
     </div>
-    <div class="wrapper-emojis" *ngIf="showOther">
+    <div class="wrapper-emojis" *ngIf="showOther" GlassEffect>
         <div *ngFor="let em of otherEmojis" class="reaction-item" (click)="onSelect(em.emojiUniqueId)"><img
                 [src]="em.emojiUrl">
         </div>

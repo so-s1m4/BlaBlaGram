@@ -4,8 +4,6 @@
   height: 100%;
 
   display: flex;
-
-  background: var(--dark-color);
 }
 
 .friends-container {
@@ -17,8 +15,6 @@
   padding: 10px;
   padding-top: 20px;
   padding-bottom: 2px;
-
-  background: var(--dark-color);
 
   gap: 0.7rem;
 }
@@ -55,7 +51,6 @@ app-search {
 }
 
 .select {
-  background: var(--dark-color);
   color: var(--primary-color);
   padding: 0.5rem;
   border-radius: 1rem;

@@ -44,10 +44,11 @@ body {
   width: 100svw;
   height: 100svh;
   overflow: hidden;
+  font-size: 12px;
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   color: var(--primary-color);
   width: fit-content;
   text-align: center;

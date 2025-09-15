@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--secondary-color);
   border-radius: 10px;
   color: var(--light-color);
 }
@@ -37,7 +36,6 @@
 .progress-container {
   flex: 1;
   height: 6px;
-  background: var(--gray-color);
   border-radius: 4px;
   position: relative;
   cursor: pointer;

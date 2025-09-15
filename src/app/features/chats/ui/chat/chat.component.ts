@@ -28,6 +28,7 @@ import { max, reduce } from 'rxjs';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { SpaceInfoComponent } from '../space-info-component/space-info';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-chat',
@@ -44,7 +45,8 @@ import { SpaceInfoComponent } from '../space-info-component/space-info';
     Modal,
     ProfileComponent,
     SpaceInfoComponent,
-  ],
+    GlassEffectDirective
+],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })

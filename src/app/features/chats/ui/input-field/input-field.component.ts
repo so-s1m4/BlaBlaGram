@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '@utils/svg.component';
 import { ChatsService } from '@features/chats/data/chats.service';
 import { AudioMessageComponent } from '../audio-message/audio-message.component';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-input-field',
-  imports: [CommonModule, SvgIconComponent, AudioMessageComponent],
+  imports: [CommonModule, SvgIconComponent, AudioMessageComponent, GlassEffectDirective],
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.css',
 })

@@ -1,7 +1,7 @@
 @if (!chatData.data) {
 <div class="loading">Loading...</div>
 } @else {
-<div class="header">
+<div class="header" GlassEffect>
   <button class="btn back" (click)="goBack()">
     <svg icon="arrowBack"></svg>
   </button>
@@ -31,7 +31,7 @@
       <svg icon="threedots"></svg>
     </button>
   </div>
-  <div class="chatsSettings" *ngIf="this.isChatsSettings">
+  <div class="chatsSettings" *ngIf="this.isChatsSettings" GlassEffect>
     @if (chatData.data.type != "group") {
     <div class="setting-item delete" (click)="deleteChat()">
       <svg icon="trashcan"> </svg> Delete Chat
@@ -69,7 +69,6 @@
   <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
   <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
     [style]="emojiSelectorStyle"></app-emoji-selector>
-
 
   @for (message of chatData.messages; track message.id; let last = $last) {
   <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
