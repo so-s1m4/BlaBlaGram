@@ -12,10 +12,8 @@
   position: absolute;
   inset: 0;
 
-  /* Faint doodle-like pattern
-  background-color: color-mix(in srgb, var(--primary-color) 6%, transparent);
-
-  mask-image: url("/assets/svg/smile.svg"), url("/assets/svg/smile.svg");
+  /* /* Faint doodle-like pattern */
+  /* mask-image: url("/assets/svg/smile.svg"), url("/assets/svg/smile.svg");
   mask-repeat: repeat;
   mask-size: 210px 70px, 70px 110px;
   mask-position: 0 0; */
@@ -84,7 +82,6 @@
   right: 2%;
   top: 100%;
   transform: translateY(20%);
-
 
   border-radius: 8px;
 
@@ -190,6 +187,13 @@
 .btn.back:hover {
   color: var(--primary-color);
 }
+
+@media (max-width: 1200px) {
+  :host {
+    background: url("http://static.vecteezy.com/system/resources/previews/032/972/667/large_2x/snow-peaks-and-glaciers-on-the-dark-sky-landscape-illustration-ai-generative-free-photo.jpg");
+  }
+}
+
 @media (max-width: 800px) {
   .header {
     gap: 1rem;
