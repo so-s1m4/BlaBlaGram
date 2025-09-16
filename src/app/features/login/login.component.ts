@@ -7,10 +7,11 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, GlassEffectDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
