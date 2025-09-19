@@ -2,6 +2,7 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   inject,
+  InjectionToken,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -9,6 +10,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IMAGE_CONFIG } from '@angular/common';
+import tokenInterceptor from '@utils/tokenInterceptor';
 
 export const WEB_SOCKET_URL = 'https://blablagram.m0sk1tu4.codes';
 export const API_URL = 'https://blablagram.m0sk1tu4.codes/api';
@@ -32,7 +34,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([tokenInterceptor])),
+    importProvidersFrom(),
     {
       provide: IMAGE_CONFIG,
       useValue: {

@@ -50,12 +50,6 @@ app-search {
   overflow: hidden;
 }
 
-.select {
-  color: var(--primary-color);
-  padding: 0.5rem;
-  border-radius: 1rem;
-}
-
 /* @media (max-width: 1000px) {
   :host {
     flex-direction: column;

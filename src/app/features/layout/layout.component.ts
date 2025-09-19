@@ -73,6 +73,13 @@ export class LayoutComponent implements OnInit {
       isRoute: false,
       onclick: this.toggleShowProfile.bind(this),
     },
+    {
+      name: 'admin',
+      icon: 'hex',
+      title: 'Admin',
+      isRoute: true,
+      guard: () => this.authService.me.role === 'admin',
+    },
   ];
   isCollapsed: boolean = true;
   showNotifications: boolean = false;

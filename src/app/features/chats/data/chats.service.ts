@@ -57,7 +57,7 @@ export class ChatsService {
         const chat = this.chats$.list.find(
           (chat: any) => chat.id == data.spaceId
         );
-        console.log(chat)
+        console.log(chat);
         chat.lastMessage = {
           text: data.text || `${data.media.length} Medias`,
           editedAt: data.editedAt,
@@ -92,13 +92,15 @@ export class ChatsService {
           (msg: any) => msg.id !== data.id
         );
       } else {
-        const chat = this.chats$.list.find((chat: any)=>chat.id==data.spaceId)
-        if (chat.lastMessage.id == data.id){
+        const chat = this.chats$.list.find(
+          (chat: any) => chat.id == data.spaceId
+        );
+        if (chat.lastMessage.id == data.id) {
           chat.lastMessage = {
-            text: "Deleted",
-            date: "",
-            seq: chat.lastMessage.seq-1
-          }
+            text: 'Deleted',
+            date: '',
+            seq: chat.lastMessage.seq - 1,
+          };
         }
       }
     });
@@ -238,9 +240,6 @@ export class ChatsService {
 
         this.httpClient
           .post(`${MEDIA_SERVER_URL}/media`, payl, {
-            headers: {
-              Authorization: 'Bearer ' + this.authService.token,
-            },
             reportProgress: true,
             observe: 'events',
           })
@@ -273,9 +272,6 @@ export class ChatsService {
 
         this.httpClient
           .post(`${MEDIA_SERVER_URL}/media`, payl, {
-            headers: {
-              Authorization: 'Bearer ' + this.authService.token,
-            },
             reportProgress: true,
             observe: 'events',
           })
@@ -327,9 +323,6 @@ export class ChatsService {
 
       this.httpClient
         .post(`${MEDIA_SERVER_URL}/media`, payl, {
-          headers: {
-            Authorization: 'Bearer ' + this.authService.token,
-          },
           reportProgress: true,
           observe: 'events',
         })
@@ -358,9 +351,6 @@ export class ChatsService {
 
         this.httpClient
           .post(MEDIA_SERVER_URL + '/media', payl, {
-            headers: {
-              Authorization: 'Bearer ' + this.authService.token,
-            },
             reportProgress: true,
             observe: 'events',
           })
@@ -510,11 +500,7 @@ export class ChatsService {
     callback?: (res: any) => void
   ) {
     await this.httpClient
-      .patch(API_URL + `/spaces/${id}`, payload, {
-        headers: {
-          Authorization: 'Bearer ' + this.authService.token,
-        },
-      })
+      .patch(API_URL + `/spaces/${id}`, payload, {})
       .subscribe((res: any) => {
         window.location.reload();
         callback?.(res);

@@ -32,7 +32,7 @@ export class Gifts {
       { uid: giftId, userId, text, anonymous },
       (ok: any, err: any, data: any) => {
         if (ok) {
-          console.log('Gift sent', data);
+          this.authService.me.currency -= data.gift.value;
         } else {
           console.error('Error sending gift', err);
         }
@@ -45,7 +45,16 @@ export class Gifts {
       { transactionId },
       (ok: any, err: any, data: any) => {
         if (ok) {
-          console.log('Gift sold', data);
+          const gift = this.authService.me.gifts.find(
+            (g: any) => g.tid === transactionId
+          );
+          if (gift) {
+            console.log(gift)
+            this.authService.me.currency += gift.gift.value * 0.75;
+          }
+          this.authService.me.gifts = this.authService.me.gifts.filter(
+            (g: any) => g.tid !== transactionId
+          );
         } else {
           console.error('Error selling gift', err);
         }

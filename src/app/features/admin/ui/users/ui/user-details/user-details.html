@@ -1,0 +1,137 @@
+@if (!user) {
+Loading...
+} @else{
+<div class="holder" GlassEffect (click)="preventDefault($event)">
+  <!--
+_id
+img
+username
+password
+name
+friendsCount
+storage
+currency
+wasOnline
+role
+
+createdAt
+updatedAt
+__v
+description
+-->
+  <form [formGroup]="userForm">
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <div style="color: var(--primary-color);">ID: {{ user._id }}</div>
+      <button class="close btn" (click)="close.emit()"><svg icon="cross"></svg></button>
+    </div>
+    <div class="group">
+      <div class="title">
+        Image
+      </div>
+      <div class="row" style="align-items: center;">
+        <div class="img-holder">
+          <img
+            [src]="userForm.value.img.length >= 0 && typeof userForm.value.img !== 'string' ? (userForm.value.img[userForm.value.img.length - 1] | img) : URL.createObjectURL(userForm.value.img)"
+            alt="User Image" class="avatar" />
+        </div>
+        <div class="input-holder">
+          <input (change)="uploadImg($event)" class="select input" type="file" GlassEffect />
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="title">
+        Info
+      </div>
+      <div class="row">
+        <label for="username">Username:</label>
+        <input class="input" id="username" formControlName="username" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="name">Name:</label>
+        <input class="input" id="name" formControlName="name" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="password">Password:</label>
+        <input class="input" id="password" formControlName="password" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="description">Description:</label>
+        <textarea class="input" id="description" formControlName="description" GlassEffect></textarea>
+      </div>
+    </div>
+    <div class="group">
+      <div class="title">
+        System
+      </div>
+      <div class="row">
+        <label for="role">Role:</label>
+        <select class="input" id="role" formControlName="role" GlassEffect>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="currency">Currency:</label>
+        <input class="input" id="currency" formControlName="currency" type="number" GlassEffect />
+      </div>
+      <div class="row" style="align-items: center;">
+        <label for="storage">Storage:</label>
+        <h2>{{ user.storage / 1048576 | number: '1.0-2' }} MB</h2>
+      </div>
+      <div class="row" style="align-items: center;">
+        <label for="createdAt">Created At:</label>
+        <h2>{{ user.createdAt | date: 'short' }}</h2>
+      </div>
+      <div class="row" style="align-items: center;">
+        <label for="updatedAt">Updated At:</label>
+        <h2>{{ user.updatedAt | date: 'short' }}</h2>
+      </div>
+    </div>
+    <div class="row" style="justify-content: flex-end; margin-top: 10px; gap: 1rem;">
+      <button class="btn save btn-danger" GlassEffect (click)="delete()">Delete</button>
+      <button class="btn save" GlassEffect (click)="save()">Save</button>
+    </div>
+  </form>
+  <!-- <div class="name">
+  ID: {{ user._id }}
+</div>
+<div class="row">
+  Username: {{ user.username }}
+</div>
+<div class="row">
+  Password: {{ user.password }}
+</div>
+<div class="row">
+  Name: {{ user.name }}
+</div>
+<div class="row">
+  Friends Count: {{ user.friendsCount }}
+</div>
+<div class="name">
+  Storage: {{ user.storage }}
+</div>
+<div class="name">
+  Currency: {{ user.currency }}
+</div>
+<div class="name">
+  Was Online: {{ user.wasOnline }}
+</div>
+<div class="name">
+  Role: {{ user.role }}
+</div>
+<div class="name">
+  Created At: {{ user.createdAt }}
+</div>
+<div class="name">
+  Updated At: {{ user.updatedAt }}
+</div>
+<div class="name">
+  V: {{ user.__v }}
+</div>
+<div class="name">
+  Description: {{ user.description }}
+</div> -->
+</div>
+}

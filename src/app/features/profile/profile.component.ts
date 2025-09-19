@@ -240,10 +240,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private loadProfile(username: string) {
     if (username === 'me') {
       this.isMyProfile = true;
-      const me = this.authService.me as ProfileData;
-      this.data = { ...me };
-      this.data.gifts = me.gifts;
-      this.patchFormFromData(this.data);
+      this.data = this.authService.me;
+      this.patchFormFromData(this.data!);
       this.buildNavPanel();
       return;
     }
@@ -255,9 +253,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
         this.data = { ...profile };
-        if (this.data.img) {
-          this.data.img = [...this.data.img].reverse();
-        }
         this.buildNavPanel();
       });
   }

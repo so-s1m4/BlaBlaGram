@@ -85,14 +85,14 @@ h1 {
   display: none;
   cursor: not-allowed;
 }
-.btn-info {
+.btn.btn-info {
   color: var(--light-color);
   border-color: var(--light-color);
   svg {
     color: inherit;
   }
 }
-.btn-danger {
+.btn.btn-danger {
   color: red;
   border-color: red;
 
@@ -100,7 +100,7 @@ h1 {
     color: inherit;
   }
 }
-.btn-danger:hover {
+.btn.btn-danger:hover {
   background-color: red;
   color: var(--light-color);
 }
@@ -229,6 +229,12 @@ input[type="checkbox"]:disabled {
 
   color: var(--form-control-disabled);
   cursor: not-allowed;
+}
+
+select {
+  color: var(--primary-color);
+  padding: 0.5rem;
+  border-radius: 1rem;
 }
 
 .avatar {

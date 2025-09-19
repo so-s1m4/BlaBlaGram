@@ -34,21 +34,11 @@ export class ProfileService {
     return this.httpClient.patch<{ data: any }>(
       API_URL + `/users/me`,
       payload,
-      {
-        headers: {
-          Authorization: 'Bearer ' + this.authService.token,
-        },
-      }
     );
   }
   deletePhoto(path: string) {
     return this.httpClient.delete<{ data: any }>(
       API_URL + `/users/me/photos/` + path,
-      {
-        headers: {
-          Authorization: 'Bearer ' + this.authService.token,
-        },
-      }
     );
   }
   getUsersStartsWith(data: string, callback?: Function) {

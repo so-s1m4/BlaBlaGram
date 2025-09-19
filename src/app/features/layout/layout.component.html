@@ -7,7 +7,7 @@
     <h1 class="title">Bla Bla Gram</h1>
     <div class="buttons">
       @for (link of this.pages; track link.name) {
-      <button class="button page-link" [name]="link.name" (click)="link.onclick! ? link.onclick() : null"
+      <button *ngIf = 'link.guard ? link.guard() : true' class="button page-link" [name]="link.name" (click)="link.onclick! ? link.onclick() : null"
         [routerLink]="link.isRoute ? link.name : null">
         <svg [icon]="link.icon"></svg><span>{{ link.title }}</span>
 

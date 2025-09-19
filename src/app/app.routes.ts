@@ -7,6 +7,7 @@ import { FriendsComponent } from '@features/friends/friends.component';
 import { RegisterPage } from '@features/register/register.component';
 import { ChatComponent } from '@features/chats/ui/chat/chat.component';
 import { CreateComponent } from '@features/chats/ui/create-component/create-component';
+import { AdminComponent } from '@features/admin/admin.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'friends',
         component: FriendsComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
       },
     ],
   },
