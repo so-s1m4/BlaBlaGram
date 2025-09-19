@@ -40,7 +40,7 @@ export class AdminService {
   }
 
   updateGift(giftId: string, body: any) {
-    return this.httpClient.put(`/admin/gifts/${giftId}`, body);
+    return this.httpClient.patch(`/admin/gifts/${giftId}`, body);
   }
   deleteGift(giftId: string) {
     return this.httpClient.delete(`/admin/gifts/${giftId}`);
@@ -50,17 +50,17 @@ export class AdminService {
   }
 
   updateEmoji(emojiId: string, body: any) {
-    return this.httpClient.put(`/admin/emojis/${emojiId}`, body);
+    return this.httpClient.patch(`/admin/emojis/${emojiId}`, body);
   }
   deleteEmoji(emojiId: string) {
     return this.httpClient.delete(`/admin/emojis/${emojiId}`);
   }
   createEmoji(body: any) {
-    return this.httpClient.post(`/admin/emojis`, { body });
+    return this.httpClient.post(`/admin/emojis`, body);
   }
 
   updateMessage(messageId: string, body: any) {
-    return this.httpClient.put(`/admin/messages/${messageId}`, { body });
+    return this.httpClient.patch(`/admin/messages/${messageId}`, body);
   }
   deleteMessage(messageId: string) {
     return this.httpClient.delete(`/admin/messages/${messageId}`);

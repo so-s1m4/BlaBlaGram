@@ -1,0 +1,37 @@
+@if (!emoji) {
+Loading...
+} @else{
+<div class="holder" GlassEffect (click)="preventDefault($event)">
+  <form [formGroup]="emojiForm">
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <div style="color: var(--primary-color);">ID: {{ emoji._id }}</div>
+      <button class="close btn" (click)="close.emit()"><svg icon="cross"></svg></button>
+    </div>
+    <div class="group">
+      <div class="title">
+        Image
+      </div>
+      <div class="row" style="align-items: center;">
+        <div class="img-holder">
+          <img style="width: 150px;" [src]="emojiForm.value.url" alt="Gift Image" />
+        </div>
+        <input class="input" formControlName="url" type="text" GlassEffect />
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="title">
+        Info
+      </div>
+      <div class="row">
+        <label for="name">Name:</label>
+        <input class="input" id="name" formControlName="name" type="text" GlassEffect />
+      </div>
+    </div>
+    <div class="row" style="justify-content: flex-end; margin-top: 10px; gap: 1rem;">
+      <button class="btn save btn-danger" GlassEffect (click)="delete()">Delete</button>
+      <button class="btn save" GlassEffect (click)="save()">Save</button>
+    </div>
+  </form>
+</div>
+}

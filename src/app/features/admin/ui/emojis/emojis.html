@@ -1,1 +1,19 @@
-<p>emojis works!</p>
+<div class="emojis holder">
+  <div class="emoji item" GlassEffect (click)="click('create')">
+    <svg icon="plus"></svg>
+  </div>
+  <div class="emoji item" *ngFor="let emoji of emojisData.list" GlassEffect (click)="click(emoji._id)">
+    <div class="id">#{{ emoji._id.slice(-5) }}</div>
+    <img [src]="emoji.url" alt="">
+    <div class="info">
+      <h2 style="text-align: center;">{{ emoji.name }}</h2>
+    </div>
+  </div>
+</div>
+
+<app-modal *ngIf="emojiIdForEdit !== null && emojiIdForEdit !== 'create'" (click)="click(null)">
+  <app-emoji-details [emojiId]="emojiIdForEdit!" (close)="click(null)"></app-emoji-details>
+</app-modal>
+<app-modal *ngIf="emojiIdForEdit === 'create'" (click)="click(null)">
+  <app-emoji-create (close)="click(null)"></app-emoji-create>
+</app-modal>

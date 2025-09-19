@@ -28,6 +28,9 @@
 
       <div class="gifts holder">
         <div class="gift item" *ngFor="let gift of this.giftList.list" GlassEffect (click)="sendGift(gift.uid)">
+          <div class="amount">
+            {{ gift.amount }}
+          </div>
           <img [src]="gift.url" alt="">
           <div class="info">
             <h2>{{ gift.name }}</h2>

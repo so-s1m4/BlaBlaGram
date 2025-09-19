@@ -1,0 +1,101 @@
+@if (!gift) {
+Loading...
+} @else{
+<div class="holder" GlassEffect (click)="preventDefault($event)">
+  <!--
+_id
+img
+username
+password
+name
+friendsCount
+storage
+currency
+wasOnline
+role
+
+createdAt
+updatedAt
+__v
+description
+-->
+  <form [formGroup]="giftForm">
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <div style="color: var(--primary-color);">ID: {{ gift._id }}</div>
+      <button class="close btn" (click)="close.emit()"><svg icon="cross"></svg></button>
+    </div>
+    <div class="group">
+      <div class="title">
+        Image
+      </div>
+      <div class="row" style="align-items: center;">
+        <div class="img-holder">
+          <img style="width: 150px;" [src]="giftForm.value.url" alt="Gift Image" />
+        </div>
+        <input class="input" formControlName="url" type="text" GlassEffect />
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="title">
+        Info
+      </div>
+      <div class="row">
+        <label for="name">Name:</label>
+        <input class="input" id="name" formControlName="name" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="value">Value:</label>
+        <input class="input" id="value" formControlName="value" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="amount">Amount:</label>
+        <input class="input" id="amount" formControlName="amount" type="text" GlassEffect />
+      </div>
+    </div>
+    <div class="row" style="justify-content: flex-end; margin-top: 10px; gap: 1rem;">
+      <button class="btn save btn-danger" GlassEffect (click)="delete()">Delete</button>
+      <button class="btn save" GlassEffect (click)="save()">Save</button>
+    </div>
+  </form>
+  <!-- <div class="name">
+  ID: {{ gift._id }}
+</div>
+<div class="row">
+  Username: {{ gift.giftname }}
+</div>
+<div class="row">
+  Password: {{ gift.password }}
+</div>
+<div class="row">
+  Name: {{ gift.name }}
+</div>
+<div class="row">
+  Friends Count: {{ gift.friendsCount }}
+</div>
+<div class="name">
+  Storage: {{ gift.storage }}
+</div>
+<div class="name">
+  Currency: {{ gift.currency }}
+</div>
+<div class="name">
+  Was Online: {{ gift.wasOnline }}
+</div>
+<div class="name">
+  Role: {{ gift.role }}
+</div>
+<div class="name">
+  Created At: {{ gift.createdAt }}
+</div>
+<div class="name">
+  Updated At: {{ gift.updatedAt }}
+</div>
+<div class="name">
+  V: {{ gift.__v }}
+</div>
+<div class="name">
+  Description: {{ gift.description }}
+</div> -->
+</div>
+}

@@ -16,8 +16,8 @@ import {
 } from '@angular/forms';
 import { AdminService } from '@features/admin/data/admin-service';
 import { GlassEffectDirective } from '@shared/common-ui/glass-wrapper-component/glass-wrapper-component';
-import { ImgPipe } from '@shared/utils/img.pipe';
-import { SvgIconComponent } from '@shared/utils/svg.component';
+import { ImgPipe } from '@utils/img.pipe';
+import { SvgIconComponent } from '@utils/svg.component';
 
 @Component({
   selector: 'app-user-details',

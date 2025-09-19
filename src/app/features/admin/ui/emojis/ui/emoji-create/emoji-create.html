@@ -1,0 +1,34 @@
+<div class="holder" GlassEffect (click)="preventDefault($event)">
+  <form [formGroup]="emojiForm">
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <div style="color: var(--primary-color);">ID: Creating</div>
+      <button class="close btn" (click)="close.emit()"><svg icon="cross"></svg></button>
+    </div>
+    <div class="group">
+      <div class="title">
+        Image
+      </div>
+      <div class="row" style="align-items: center;">
+        <div class="img-holder">
+          <img [src]="emojiForm.value.url" alt="User Image" class="avatar" />
+        </div>
+        <input class="input" type="url" formControlName="url" GlassEffect />
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="title">
+        Info
+      </div>
+      <div class="row">
+        <label for="name">Name:</label>
+        <input class="input" id="name" formControlName="name" type="text" GlassEffect />
+      </div>
+    </div>
+
+    <div class="row" style="justify-content: flex-end; margin-top: 10px; gap: 1rem;">
+      <button class="btn save" GlassEffect (click)="save()">Create</button>
+    </div>
+  </form>
+
+</div>

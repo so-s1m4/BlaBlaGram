@@ -1,1 +1,23 @@
-<p>gifts works!</p>
+<div class="gifts holder">
+  <div class="gift item" GlassEffect (click)="click('create')">
+    <svg icon="plus"></svg>
+  </div>
+  <div class="gift item" *ngFor="let gift of giftsData.list" GlassEffect (click)="click(gift._id)">
+    <div class="id">#{{ gift._id.slice(-5) }}</div>
+    <div class="amount">
+      {{ gift.amount }}
+    </div>
+    <img [src]="gift.url" alt="">
+    <div class="info">
+      <h2>{{ gift.name }}</h2>
+      <h3>{{ gift.value }} 💾</h3>
+    </div>
+  </div>
+</div>
+
+<app-modal *ngIf="giftIdForEdit !== null && giftIdForEdit !== 'create'" (click)="click(null)">
+  <app-gift-details [giftId]="giftIdForEdit!" (close)="click(null)"></app-gift-details>
+</app-modal>
+<app-modal *ngIf="giftIdForEdit === 'create'" (click)="click(null)">
+  <app-gift-create (close)="click(null)"></app-gift-create>
+</app-modal>

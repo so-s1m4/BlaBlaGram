@@ -2,7 +2,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ImgPipe } from '../../../../../../shared/utils/img.pipe';
+import { ImgPipe } from '@utils/img.pipe';
 import { GlassEffectDirective } from '@shared/common-ui/glass-wrapper-component/glass-wrapper-component';
 import { SvgIconComponent } from '@shared/utils/svg.component';
 import { AdminService } from '@features/admin/data/admin-service';
@@ -10,8 +10,6 @@ import { AdminService } from '@features/admin/data/admin-service';
 @Component({
   selector: 'app-user-create',
   imports: [
-    DatePipe,
-    DecimalPipe,
     ReactiveFormsModule,
     ImgPipe,
     GlassEffectDirective,
