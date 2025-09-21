@@ -78,7 +78,7 @@ export class LayoutComponent implements OnInit {
       icon: 'hex',
       title: 'Admin',
       isRoute: true,
-      guard: () => this.authService.me.role === 'admin',
+      guard: () => this.authService.me && this.authService.me.role === 'admin',
     },
   ];
   isCollapsed: boolean = true;
