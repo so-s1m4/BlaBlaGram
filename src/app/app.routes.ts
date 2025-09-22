@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginPage } from '@features/login/login.component';
-import { AuthGuard } from '@core/guards/auth-guard.module';
+import { AuthGuard } from '@core/guards/auth.guard';
 import { LayoutComponent } from '@features/layout/layout.component';
 import { ChatsComponent } from '@features/chats/chats.component';
 import { FriendsComponent } from '@features/friends/friends.component';

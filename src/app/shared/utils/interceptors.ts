@@ -2,9 +2,9 @@ import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { API_URL } from 'app/app.config';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
-export default function loggingInterceptor(
+export function loggingInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
@@ -20,4 +20,19 @@ export default function loggingInterceptor(
     },
   });
   return next(req);
+}
+
+export function errorCatcher(
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> {
+  return next(req).pipe(
+    catchError((err) => {
+      if (err.status === 401) {
+        const authService = inject(AuthService);
+        authService.logout();
+      }
+      throw err;
+    })
+  );
 }

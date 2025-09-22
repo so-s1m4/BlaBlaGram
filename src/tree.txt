@@ -1,0 +1,238 @@
+.
+├── app
+│   ├── app.component.css
+│   ├── app.component.html
+│   ├── app.component.ts
+│   ├── app.config.ts
+│   ├── app.routes.ts
+│   ├── core
+│   │   ├── guards
+│   │   │   ├── auth-guard.module.ts
+│   │   │   └── mobile-guard.module.ts
+│   │   └── services
+│   │       ├── auth.service.ts
+│   │       └── web-socket.service.ts
+│   ├── features
+│   │   ├── admin
+│   │   │   ├── admin.component.css
+│   │   │   ├── admin.component.html
+│   │   │   ├── admin.component.ts
+│   │   │   ├── data
+│   │   │   │   └── admin-service.ts
+│   │   │   └── ui
+│   │   │       ├── emojis
+│   │   │       │   ├── emojis.css
+│   │   │       │   ├── emojis.html
+│   │   │       │   ├── emojis.ts
+│   │   │       │   └── ui
+│   │   │       │       ├── emoji-create
+│   │   │       │       │   ├── emoji-create.css
+│   │   │       │       │   ├── emoji-create.html
+│   │   │       │       │   └── emoji-create.ts
+│   │   │       │       └── emoji-details
+│   │   │       │           ├── emoji-details.css
+│   │   │       │           ├── emoji-details.html
+│   │   │       │           └── emoji-details.ts
+│   │   │       ├── gifts
+│   │   │       │   ├── gifts.css
+│   │   │       │   ├── gifts.html
+│   │   │       │   ├── gifts.ts
+│   │   │       │   └── ui
+│   │   │       │       ├── gift-create
+│   │   │       │       │   ├── gift-create.css
+│   │   │       │       │   ├── gift-create.html
+│   │   │       │       │   └── gift-create.ts
+│   │   │       │       └── gift-details
+│   │   │       │           ├── gift-details.css
+│   │   │       │           ├── gift-details.html
+│   │   │       │           └── gift-details.ts
+│   │   │       ├── logs
+│   │   │       │   ├── logs.css
+│   │   │       │   ├── logs.html
+│   │   │       │   ├── logs.spec.ts
+│   │   │       │   └── logs.ts
+│   │   │       ├── messages
+│   │   │       │   ├── messages.css
+│   │   │       │   ├── messages.html
+│   │   │       │   ├── messages.spec.ts
+│   │   │       │   └── messages.ts
+│   │   │       ├── posts
+│   │   │       │   ├── posts.css
+│   │   │       │   ├── posts.html
+│   │   │       │   ├── posts.spec.ts
+│   │   │       │   └── posts.ts
+│   │   │       └── users
+│   │   │           ├── ui
+│   │   │           │   ├── user-create
+│   │   │           │   │   ├── user-create.css
+│   │   │           │   │   ├── user-create.html
+│   │   │           │   │   └── user-create.ts
+│   │   │           │   └── user-details
+│   │   │           │       ├── user-details.css
+│   │   │           │       ├── user-details.html
+│   │   │           │       └── user-details.ts
+│   │   │           ├── users.css
+│   │   │           ├── users.html
+│   │   │           └── users.ts
+│   │   ├── chats
+│   │   │   ├── chats.component.css
+│   │   │   ├── chats.component.html
+│   │   │   ├── chats.component.ts
+│   │   │   ├── data
+│   │   │   │   └── chats.service.ts
+│   │   │   └── ui
+│   │   │       ├── audio-message
+│   │   │       │   ├── audio-message.component.css
+│   │   │       │   ├── audio-message.component.html
+│   │   │       │   └── audio-message.component.ts
+│   │   │       ├── audio-message-player
+│   │   │       │   ├── audio-message-player.component.css
+│   │   │       │   ├── audio-message-player.component.html
+│   │   │       │   └── audio-message-player.component.ts
+│   │   │       ├── chat
+│   │   │       │   ├── chat.component.css
+│   │   │       │   ├── chat.component.html
+│   │   │       │   └── chat.component.ts
+│   │   │       ├── chat-preview
+│   │   │       │   ├── chat-preview.component.css
+│   │   │       │   ├── chat-preview.component.html
+│   │   │       │   └── chat-preview.component.ts
+│   │   │       ├── context-menu
+│   │   │       │   ├── context-menu.component.css
+│   │   │       │   ├── context-menu.component.html
+│   │   │       │   └── context-menu.component.ts
+│   │   │       ├── create-component
+│   │   │       │   ├── create-component.css
+│   │   │       │   ├── create-component.html
+│   │   │       │   └── create-component.ts
+│   │   │       ├── create-space-pop-up-modal
+│   │   │       │   ├── create-space-pop-up-modal.css
+│   │   │       │   ├── create-space-pop-up-modal.html
+│   │   │       │   └── create-space-pop-up-modal.ts
+│   │   │       ├── emoji-selector
+│   │   │       │   ├── emoji-selector.component.css
+│   │   │       │   ├── emoji-selector.component.html
+│   │   │       │   └── emoji-selector.component.ts
+│   │   │       ├── input-field
+│   │   │       │   ├── input-field.component.css
+│   │   │       │   ├── input-field.component.html
+│   │   │       │   └── input-field.component.ts
+│   │   │       ├── media-gallery
+│   │   │       │   ├── media-gallery.component.css
+│   │   │       │   ├── media-gallery.component.html
+│   │   │       │   └── media-gallery.component.ts
+│   │   │       ├── media-preview
+│   │   │       │   ├── media-preview.component.css
+│   │   │       │   ├── media-preview.component.html
+│   │   │       │   └── media-preview.component.ts
+│   │   │       ├── message
+│   │   │       │   ├── message.component.css
+│   │   │       │   ├── message.component.html
+│   │   │       │   └── message.component.ts
+│   │   │       ├── space-info-component
+│   │   │       │   ├── space-info.css
+│   │   │       │   ├── space-info.html
+│   │   │       │   ├── space-info.ts
+│   │   │       │   └── ui
+│   │   │       │       └── photo-gallery
+│   │   │       │           ├── photo-gallery.component.css
+│   │   │       │           ├── photo-gallery.component.html
+│   │   │       │           └── photo-gallery.component.ts
+│   │   │       └── video-message
+│   │   │           ├── video-message.component.css
+│   │   │           ├── video-message.component.html
+│   │   │           └── video-message.component.ts
+│   │   ├── friends
+│   │   │   ├── data
+│   │   │   │   └── friends.service.ts
+│   │   │   ├── friends.component.css
+│   │   │   ├── friends.component.html
+│   │   │   ├── friends.component.ts
+│   │   │   └── ui
+│   │   │       └── user-card
+│   │   │           ├── user-card.component.css
+│   │   │           ├── user-card.component.html
+│   │   │           └── user-card.component.ts
+│   │   ├── home
+│   │   │   ├── home.component.css
+│   │   │   ├── home.component.html
+│   │   │   └── home.component.ts
+│   │   ├── layout
+│   │   │   ├── data
+│   │   │   │   └── gifts.ts
+│   │   │   ├── layout.component.css
+│   │   │   ├── layout.component.html
+│   │   │   ├── layout.component.ts
+│   │   │   └── ui
+│   │   │       └── send-gift
+│   │   │           ├── send-gift.css
+│   │   │           ├── send-gift.html
+│   │   │           └── send-gift.ts
+│   │   ├── login
+│   │   │   ├── login.component.css
+│   │   │   ├── login.component.html
+│   │   │   └── login.component.ts
+│   │   ├── profile
+│   │   │   ├── data
+│   │   │   │   └── profile.service.ts
+│   │   │   ├── profile.component.css
+│   │   │   ├── profile.component.html
+│   │   │   ├── profile.component.ts
+│   │   │   └── ui
+│   │   │       ├── gift
+│   │   │       │   ├── gift.component.css
+│   │   │       │   ├── gift.component.html
+│   │   │       │   └── gift.component.ts
+│   │   │       └── photo-gallery
+│   │   │           ├── photo-gallery.component.css
+│   │   │           ├── photo-gallery.component.html
+│   │   │           └── photo-gallery.component.ts
+│   │   └── register
+│   │       ├── register.component.css
+│   │       ├── register.component.html
+│   │       └── register.component.ts
+│   └── shared
+│       ├── common-ui
+│       │   ├── comment
+│       │   │   ├── comment.component.css
+│       │   │   ├── comment.component.html
+│       │   │   └── comment.component.ts
+│       │   ├── glass-wrapper-component
+│       │   │   └── glass-wrapper-component.ts
+│       │   ├── modal
+│       │   │   ├── modal.css
+│       │   │   ├── modal.html
+│       │   │   └── modal.ts
+│       │   ├── notify
+│       │   │   ├── notify.component.css
+│       │   │   ├── notify.component.html
+│       │   │   └── notify.component.ts
+│       │   ├── popup
+│       │   │   ├── popup.component.css
+│       │   │   ├── popup.component.html
+│       │   │   └── popup.component.ts
+│       │   ├── search
+│       │   │   ├── search.component.css
+│       │   │   ├── search.component.html
+│       │   │   └── search.component.ts
+│       │   └── titlebar
+│       │       ├── titlebar.component.css
+│       │       ├── titlebar.component.html
+│       │       └── titlebar.component.ts
+│       └── utils
+│           ├── autoplayMuted.ts
+│           ├── bg.pipe.ts
+│           ├── border.pipe.ts
+│           ├── day-label-pipe.ts
+│           ├── group-by-day-pipe.ts
+│           ├── img.pipe.ts
+│           ├── interceptors.ts
+│           ├── media.pipe.ts
+│           ├── svg.component.ts
+│           └── visibleOnce.ts
+├── index.html
+├── main.ts
+├── styles.css
+└── tree.txt
+
+69 directories, 167 files
