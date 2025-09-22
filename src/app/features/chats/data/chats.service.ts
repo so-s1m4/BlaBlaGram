@@ -474,6 +474,8 @@ export class ChatsService {
     this.webSocketService.send(
       'spaces:getList',
       (ok: boolean, err: string, res: any) => {
+        console.log(res, ok, err);
+
         if (ok) {
           this.chats$.list = res;
           console.log(res);

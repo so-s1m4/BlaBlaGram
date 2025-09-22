@@ -396,6 +396,14 @@ select {
     transform: translateY(0);
   }
 }
+@keyframes showingLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 
 .info-container {
   position: absolute;

@@ -11,6 +11,7 @@ import { SendGift } from './ui/send-gift/send-gift';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { Gifts } from './data/gifts';
+import { ImgPipe } from "../../shared/utils/img.pipe";
 
 @Component({
   selector: 'app-layout',
@@ -23,7 +24,8 @@ import { Gifts } from './data/gifts';
     SendGift,
     Modal,
     ProfileComponent,
-  ],
+    ImgPipe
+],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
@@ -82,6 +84,10 @@ export class LayoutComponent implements OnInit {
     },
   ];
   isCollapsed: boolean = true;
+  showSwitchAccounts: boolean = false;
+  toggleShowSwitchAccounts() {
+    this.showSwitchAccounts = !this.showSwitchAccounts;
+  }
   showNotifications: boolean = false;
 
   popUps: any[] = [];

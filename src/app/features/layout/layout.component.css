@@ -4,7 +4,13 @@
   width: 100dvw;
   position: relative;
 }
-
+.avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+}
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -127,6 +133,7 @@
     padding-top: 4rem;
   }
   .sidebar.collapsed .buttons {
+    height: 100%;
     padding: 0;
   }
   .sidebar.collapsed .buttons button {
@@ -142,6 +149,50 @@
     display: none;
   }
 }
+
+.profile-img {
+  position: absolute;
+  bottom: 40px;
+
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+
+  padding: 0;
+}
+
+.switch-accounts {
+  width: 200px;
+  max-height: 150px;
+  position: absolute;
+  bottom: 40px;
+  left: 100px;
+  cursor: pointer;
+
+  z-index: 1000;
+
+  padding: 5px;
+  border-radius: 8px;
+
+  background: var(--dark-color);
+
+  overflow: auto;
+}
+.switch-accounts .account {
+  height: 50px;
+
+  display: flex;
+  color: var(--primary-color);
+  align-items: center;
+  gap: 1rem;
+  border-radius: 8px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
 @media (max-width: 800px) {
   .app {
     flex-direction: column-reverse;
@@ -187,5 +238,26 @@
   .info-container {
     width: 100vw;
     top: calc(100svh - (25svh + 6svh + 48svh));
+  }
+
+  .profile-img {
+    position: relative;
+    bottom: initial;
+    left: initial;
+  }
+  .switch-accounts {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+
+    cursor: pointer;
+    z-index: 1000;
+    padding: 5px;
+    border-radius: 8px;
+    background: var(--dark-color);
+    overflow: auto;
+    width: 100%;
+
+    animation: showingUp 0.3s ease-in-out;
   }
 }

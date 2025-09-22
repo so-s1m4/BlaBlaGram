@@ -6,6 +6,8 @@
 
   align-items: center;
   position: relative;
+
+  animation: showingLeft 0.2s ease-in-out;
 }
 :host::before {
   content: "";
