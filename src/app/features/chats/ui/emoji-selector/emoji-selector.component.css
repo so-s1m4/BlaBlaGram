@@ -9,7 +9,7 @@
   transform: translateY(-25px);
 }
 .wrapper-emojis {
-  width: calc(27rem + 8px);
+  width: calc(27rem + 2px);
   min-height: 3rem;
 
   max-height: 20vh;
@@ -59,14 +59,14 @@
   }
 }
 
-@media (max-width: 500px) {
-  .wrapper, .wrapper-emojis {
-    width: 80vw;
+@media (max-width: 800px) {
+  .wrapper {
+    width: calc(27rem + 2px)
   }
   .reaction-item,
   .reactions-open-more {
-    width: calc(80vw / 9);
-    height: calc(80vw / 9);
+    width: 3rem;
+    height: 3rem;
 
     display: flex;
     justify-content: center;
