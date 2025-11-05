@@ -39,6 +39,8 @@
   color: var(--primary-color);
 
   position: relative;
+
+  z-index: 2;
 }
 
 .header-actions {
@@ -87,7 +89,7 @@
 
   border-radius: 8px;
 
-  z-index: 99;
+  z-index: 100;
 }
 .setting-item {
   width: 100%;

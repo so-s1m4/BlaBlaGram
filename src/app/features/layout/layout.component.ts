@@ -41,13 +41,13 @@ export class LayoutComponent implements OnInit {
   friendsService = inject(FriendsService);
 
   pages = [
-    {
-      name: 'gifts',
-      icon: 'gift',
-      title: 'Send gift',
-      isRoute: false,
-      onclick: this.toggleSendGift.bind(this),
-    },
+    // {
+    //   name: 'gifts',
+    //   icon: 'gift',
+    //   title: 'Send gift',
+    //   isRoute: false,
+    //   onclick: this.toggleSendGift.bind(this),
+    // },
     {
       name: 'friends',
       icon: 'friends',

@@ -110,7 +110,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
 
-    
+
   }
 
   ngOnInit(): void {
@@ -267,7 +267,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   private buildNavPanel() {
     this.navPanel = [
-      { label: 'Gifts', guard: true },
+      // { label: 'Gifts', guard: true },
       { label: 'Photos', guard: true },
       // { label: 'Posts', guard: true },
       { label: 'Settings', guard: this.isMyProfile },
