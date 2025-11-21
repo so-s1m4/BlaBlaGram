@@ -6,6 +6,9 @@
 
   background: var(--dark-color);
   overflow: hidden;
+
+  position: relative;
+  z-index: 100;
 }
 .header {
   width: 100%;
