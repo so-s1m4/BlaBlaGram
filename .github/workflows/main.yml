@@ -18,7 +18,6 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Клоним Sites и кладём билд в нужную папку
       - name: Checkout Sites repo
         uses: actions/checkout@v4
         with:
@@ -28,15 +27,16 @@ jobs:
 
       - name: Copy build to Sites
         run: |
-          rm -rf sites/blablagram/frontend/*
-          mkdir -p sites/blablagram/frontend
-          cp -r dist/bla-bla-gram/browser/* sites/blablagram/frontend/
+          rm -rf Sites/blablagram/frontend/*
+          mkdir -p Sites/blablagram/frontend
+          cp -r dist/bla-bla-gram/browser/* Sites/blablagram/frontend/
 
       - name: Commit & push to Sites
         run: |
           cd Sites
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sites/blablagram/frontend/
-          git commit -m "Update blablagram frontend from $GITHUB_REPOSITORY@$GITHUB_SHA" || exit 0
+          git add blablagram/frontend/
+          git diff --cached --quiet && exit 0
+          git commit -m "Update blablagram frontend from $GITHUB_REPOSITORY@$GITHUB_SHA"
           git push
