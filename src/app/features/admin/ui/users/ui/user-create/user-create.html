@@ -1,0 +1,65 @@
+<div class="holder" GlassEffect (click)="preventDefault($event)">
+  <form [formGroup]="userForm">
+    <div class="row" style="justify-content: space-between; align-items: center;">
+      <div style="color: var(--primary-color);">ID: Creating</div>
+      <button class="close btn" (click)="close.emit()"><svg icon="cross"></svg></button>
+    </div>
+    <div class="group">
+      <div class="title">
+        Image
+      </div>
+      <div class="row" style="align-items: center;">
+        <div class="img-holder">
+          <img
+            [src]="userForm.value.img ? URL.createObjectURL(userForm.value.img) : undefined | img"
+            alt="User Image" class="avatar" />
+        </div>
+        <div class="input-holder">
+          <input (change)="uploadImg($event)" class="select input" type="file" GlassEffect />
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="title">
+        Info
+      </div>
+      <div class="row">
+        <label for="username">Username:</label>
+        <input class="input" id="username" formControlName="username" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="name">Name:</label>
+        <input class="input" id="name" formControlName="name" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="password">Password:</label>
+        <input class="input" id="password" formControlName="password" type="text" GlassEffect />
+      </div>
+      <div class="row">
+        <label for="description">Description:</label>
+        <textarea class="input" id="description" formControlName="description" GlassEffect></textarea>
+      </div>
+    </div>
+    <div class="group">
+      <div class="title">
+        System
+      </div>
+      <div class="row">
+        <label for="role">Role:</label>
+        <select class="input" id="role" formControlName="role" GlassEffect>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="currency">Currency:</label>
+        <input class="input" id="currency" formControlName="currency" type="number" GlassEffect />
+      </div>
+    </div>
+    <div class="row" style="justify-content: flex-end; margin-top: 10px; gap: 1rem;">
+      <button class="btn save" GlassEffect (click)="save()">Create</button>
+    </div>
+  </form>
+
+</div>

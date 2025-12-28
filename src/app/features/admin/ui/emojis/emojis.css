@@ -1,0 +1,84 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+}
+
+.item {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: 10px;
+
+  p,
+  svg {
+    color: var(--primary-color);
+  }
+  img,
+  svg {
+    height: 60%;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+  }
+
+  &:hover {
+    svg,
+    p {
+      color: var(--light-color);
+    }
+  }
+}
+.emojis.holder {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: auto;
+  padding: 10px;
+}
+.emoji.item {
+  cursor: pointer;
+  width: calc((100% / 6) - 13px);
+  min-width: 200px;
+  aspect-ratio: 1/1;
+  flex-direction: column;
+  justify-content: space-around;
+
+  img {
+    width: 60%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+}
+.emoji.item .amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--primary-color);
+  color: var(--dark-color);
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  transform: rotate(45deg) translate(20%, 50%);
+}
+.emoji.item .id {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: var(--primary-color);
+  color: var(--dark-color);
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+}

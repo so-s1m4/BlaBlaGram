@@ -1,0 +1,36 @@
+<div class="header">
+  <h1>Admin Panel</h1>
+  <div class="action-btns">
+    <select [(ngModel)]="selectedAction" class="select" GlassEffect>
+      <option value="users">Manage Users</option>
+      <option value="gifts">Manage Gifts</option>
+      <option value="emojis">Manage Emojis</option>
+      <option value="messages">Manage Messages</option>
+      <option value="posts">Manage Posts</option>
+      <option value="logs">System Logs</option>
+    </select>
+  </div>
+</div>
+
+<div class="content">
+  @switch (selectedAction) {
+  @case ('users'){
+  <app-users></app-users>
+  }
+  @case ('gifts'){
+  <app-gifts></app-gifts>
+  }
+  @case ('emojis'){
+  <app-emojis></app-emojis>
+  }
+  @case ('messages'){
+  <app-messages></app-messages>
+  }
+  @case ('posts'){
+  <app-posts></app-posts>
+  }
+  @case ('logs'){
+  <app-logs></app-logs>
+  }
+  }
+</div>

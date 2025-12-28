@@ -20,7 +20,6 @@ export const profileBorders = [
   'border4.png',
 ];
 
-// @ts-ignore
 window.isDesktop = function () {
   let check = false;
 

@@ -1,0 +1,98 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15vh;
+
+  height: 100%;
+}
+
+.holder {
+  width: 80%;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  * {
+    text-align: center;
+  }
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th {
+  font-size: 24px;
+  height: 3rem;
+}
+.table tr {
+  height: fit-content;
+}
+.table tr:has(td):nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.table tr:has(td):nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.table td {
+  align-content: center;
+  color: var(--dark-color);
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+h5 {
+  width: fit-content;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  height: 3rem;
+  border-radius: 8px;
+  padding: 0;
+  border: none;
+  color: var(--dark-color);
+
+  svg {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    color: var(--primary-color);
+
+  }
+  &:hover {
+    background: transparent;
+    svg {color: var(--light-color);}
+  }
+}
+
+@media (max-width: 800px) {
+  .holder {
+    width: 95%;
+  }
+
+  .table th {
+    font-size: 18px;
+    padding: 5px 0;
+  }
+
+  .table td {
+    font-size: 10px;
+    padding: 5px 0;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+  }
+}

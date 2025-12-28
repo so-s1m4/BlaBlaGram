@@ -1,88 +1,88 @@
 @if (!chatData.data) {
-<div class="loading">Loading...</div>
+  <div class="loading">Loading...</div>
 } @else {
-<div class="header" GlassEffect>
-  <button class="btn back" (click)="goBack()">
-    <svg icon="arrowBack"></svg>
-  </button>
-  <div class="avatar-wrap" [ngClass]="{
+  <app-block style="flex-direction: row; border-radius: 0" class="header">
+    <button class="btn back" (click)="goBack()">
+      <svg icon="arrowBack"></svg>
+    </button>
+    <div class="avatar-wrap" [ngClass]="{
     'online': (chatData.data.type === 'chat' && chatData.data.chat.friend.isOnline) ? true : false
   }">
-    <img [src]="chatData.data.img[chatData.data.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
-  </div>
+      <img [src]="chatData.data.img[chatData.data.img.length-1] | img" class="avatar" alt="" (click)="toggleInfo()" />
+    </div>
 
-  <div class="header-info" (click)="toggleInfo()">
-    <h2 class="name">{{ chatData.data.title }}</h2>
-    <p style="font-size: 12px; color: var(--light-color);">
-      @if (chatData.data.type == "chat") {
-      {{ chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
-      (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}
+    <div class="header-info" (click)="toggleInfo()">
+      <h2 class="name">{{ chatData.data.title }}</h2>
+      <p style="font-size: 12px; color: var(--light-color);">
+        @if (chatData.data.type == "chat") {
+          {{ chatData.data.chat.friend.isOnline ? 'online' : ('was at ' +
+          (chatData.data.chat.friend.wasOnline | date: 'HH:mm dd/MM/yy')) }}
+        }
+      </p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
+        <svg icon="trashcan"></svg>
+      </button>
+      <button class="btn" (click)="toggleSelectMode()">
+        <svg icon="select"></svg>
+      </button>
+      <button class="btn" (click)="toggleChatsSettigns()">
+        <svg icon="threedots"></svg>
+      </button>
+    </div>
+    <div class="chatsSettings" *ngIf="this.isChatsSettings" GlassEffect>
+      @if (chatData.data.type != "group") {
+        <div class="setting-item delete" (click)="deleteChat()">
+          <svg icon="trashcan"> </svg> Delete Chat
+        </div>
+      } @else if (chatData.data.group.owner.id == authService.me.id){
+        <div class="setting-item delete" (click)="leaveChat()">
+          <svg icon="reply"> </svg> Leave
+        </div>
+        <div class="setting-item delete" (click)="deleteChat()">
+          <svg icon="trashcan"> </svg> Delete Group
+        </div>
+      } @else {
+        <div class="setting-item delete" (click)="leaveChat()">
+          <svg icon="reply"> </svg> Leave
+        </div>
       }
-    </p>
-  </div>
-  <div class="header-actions">
-    <button class="btn" (click)="deleteSelectedMessages($event)" *ngIf="isSelectMode">
-      <svg icon="trashcan"></svg>
-    </button>
-    <button class="btn" (click)="toggleSelectMode()">
-      <svg icon="select"></svg>
-    </button>
-    <button class="btn" (click)="toggleChatsSettigns()">
-      <svg icon="threedots"></svg>
-    </button>
-  </div>
-  <div class="chatsSettings" *ngIf="this.isChatsSettings" GlassEffect>
-    @if (chatData.data.type != "group") {
-    <div class="setting-item delete" (click)="deleteChat()">
-      <svg icon="trashcan"> </svg> Delete Chat
-    </div>
-    } @else if (chatData.data.group.owner.id == authService.me.id){
-    <div class="setting-item delete" (click)="leaveChat()">
-      <svg icon="reply"> </svg> Leave
-    </div>
-    <div class="setting-item delete" (click)="deleteChat()">
-      <svg icon="trashcan"> </svg> Delete Group
-    </div>
-    } @else {
-    <div class="setting-item delete" (click)="leaveChat()">
-      <svg icon="reply"> </svg> Leave
-    </div>
-    }
 
-  </div>
-</div>
-@if (chatData.data.type == 'chat') {
-<app-modal *ngIf="showInfo" (click)="toggleInfo()">
-  <div class="info-container" (click)="stopPropagation($event)">
-    <app-profile [username]="chatData.data.chat.friendId"></app-profile>
-  </div>
-</app-modal>
-} @else if (chatData.data.type == 'group') {
-<app-modal *ngIf="showInfo" (click)="toggleInfo()">
-  <div class="info-container" (click)="stopPropagation($event)">
-    <app-space-info [id]="chatData.data.id" (showInChat)="scrollToMsg($event)"></app-space-info>
-  </div>
-</app-modal>
-}
-<app-video-message *ngIf="this.isRecordVM" (onstop)="onStopRecord($event)"></app-video-message>
-<div id="messages-holder" class="messages-holder">
-  <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
-  <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
-    [style]="emojiSelectorStyle"></app-emoji-selector>
-
-  @for (message of chatData.messages; track message.id; let last = $last) {
-  <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
-    [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
-    [isSender]="message.sender.id !== me?.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
-    (scrollToMsg)="scrollToMsg($event)">
-  </app-message>
+    </div>
+  </app-block>
+  @if (chatData.data.type == 'chat') {
+    <app-modal *ngIf="showInfo" (click)="toggleInfo()">
+      <div class="info-container" (click)="stopPropagation($event)">
+        <app-profile [username]="chatData.data.chat.friendId"></app-profile>
+      </div>
+    </app-modal>
+  } @else if (chatData.data.type == 'group') {
+    <app-modal *ngIf="showInfo" (click)="toggleInfo()">
+      <div class="info-container" (click)="stopPropagation($event)">
+        <app-space-info [id]="chatData.data.id" (showInChat)="scrollToMsg($event)"></app-space-info>
+      </div>
+    </app-modal>
   }
-</div>
-<div class="input-holder">
-  <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()" (toggleRecVideoMsg)="toggleRecVideoMsg()"
-    [chatData]="chatData"></app-input-field>
-</div>
+  <app-video-message *ngIf="this.isRecordVM" (onstop)="onStopRecord($event)"></app-video-message>
+  <div id="messages-holder" class="messages-holder">
+    <app-context-menu #contextMenu [items]="contextMenuItems" [style]="contextMenuStyle"></app-context-menu>
+    <app-emoji-selector #emojiSelector (close)="closeContextMenu()" (select)="toggleEmoji($event)"
+                        [style]="emojiSelectorStyle"></app-emoji-selector>
 
-<app-media-gallery *ngIf="mediaToShow.length > 0" (close)="closeMedia()" (delete)="deleteMedia($event)"
-  [media]="mediaToShow"></app-media-gallery>
+    @for (message of chatData.messages; track message.id; let last = $last) {
+      <app-message [chatData]="chatData" (onclick)="closeContextMenu()" [selectMode]="isSelectMode"
+                   [showSender]="chatData.data.type == 'group'" (openMedia)="openMedia(message.id)" [data]="message"
+                   [isSender]="message.sender.id !== me.id" (openContextMenu)="openContextMenu($event)" (onRead)="OnReadMsg($event)"
+                   (scrollToMsg)="scrollToMsg($event)">
+      </app-message>
+    }
+  </div>
+  <div class="input-holder">
+    <app-input-field (replyOn)="replyOn($event)" (sendMessage)="sendMessage()" (toggleRecVideoMsg)="toggleRecVideoMsg()"
+                     [chatData]="chatData"></app-input-field>
+  </div>
+
+  <app-media-gallery *ngIf="mediaToShow.length > 0" (close)="closeMedia()" (delete)="deleteMedia($event)"
+                     [media]="mediaToShow"></app-media-gallery>
 }

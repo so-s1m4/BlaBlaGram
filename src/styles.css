@@ -2,14 +2,20 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 :root {
-  --dark-color: #0f0f0f;
-  --light-color: color-mix(in srgb, var(--primary-color) 40%, white);
-  --primary-color: #9cce2b;
-  --secondary-color: #1a1a1a;
-  --darker-gray-color: #202020;
-  --dark-gray-color: #2b2b2b;
-  --gray-color: #555555;
-  --lightgray-color: #888888;
+  --bg-color: rgb(248, 250, 251);
+  --hover-color: rgb(242, 245, 249);
+  --primary-color: white;
+  --contrast-color: black;
+
+  --main-color: #9CCE2B;
+  --main-color-light:
+    radial-gradient(circle, var(--main-color) 1px, transparent 8px)
+    0 0 / 4px 4px
+    var(--bg-color);
+  --gray-color: rgba(97, 116, 142);
+  --hover-gray-color: rgba(50, 65, 88);
+
+  --border-color: color-mix(in srgb, var(--gray-color), white 80%);
 }
 *,
 *::before,
@@ -38,8 +44,8 @@ h6 {
   user-select: none;
 }
 body {
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background: var(--bg-color);
+  color: var(--dark-color);
 
   width: 100svw;
   height: 100svh;
@@ -49,7 +55,7 @@ body {
 
 h1 {
   font-size: 2rem;
-  color: var(--primary-color);
+  color: var(--main-color);
   width: fit-content;
   text-align: center;
 }
@@ -59,22 +65,22 @@ h1 {
   width: 100%;
   font-weight: 800;
   line-height: 1.5rem;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--main-color);
   padding: 0.5rem 1rem;
   background: transparent;
-  color: var(--primary-color);
+  color: var(--main-color);
 
   transition: all 0.3s ease;
 
   svg {
     width: inherit;
     height: inherit;
-    color: var(--primary-color);
+    color: var(--main-color);
     margin-right: 0.5rem;
   }
 }
 .btn:hover {
-  background-color: var(--primary-color);
+  background-color: var(--main-color);
   color: var(--light-color);
 }
 .btn:active {
@@ -85,14 +91,14 @@ h1 {
   display: none;
   cursor: not-allowed;
 }
-.btn-info {
+.btn.btn-info {
   color: var(--light-color);
   border-color: var(--light-color);
   svg {
     color: inherit;
   }
 }
-.btn-danger {
+.btn.btn-danger {
   color: red;
   border-color: red;
 
@@ -100,7 +106,7 @@ h1 {
     color: inherit;
   }
 }
-.btn-danger:hover {
+.btn.btn-danger:hover {
   background-color: red;
   color: var(--light-color);
 }
@@ -108,13 +114,13 @@ h1 {
   width: 0.25rem;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
+  background: var(--main-color);
   border-radius: 10px;
 }
 textarea:focus,
 input:focus {
   border: none;
-  outline: 1px solid var(--primary-color);
+  outline: 1px solid var(--main-color);
 }
 
 input[type="file"] {
@@ -143,7 +149,7 @@ input.upload[type="file"]::-webkit-file-upload-button {
   mask: url("/assets/svg/plus.svg") no-repeat center / contain;
 
   /* pick whatever color you like here */
-  background-color: var(--primary-color);
+  background-color: var(--main-color);
 }
 
 input.upload[type="file"] {
@@ -211,7 +217,7 @@ input[type="checkbox"]::before {
   background-color: CanvasText;
 }
 input[type="checkbox"]:checked {
-  background: var(--primary-color);
+  background: var(--main-color);
   transform: scale(1.05);
 }
 
@@ -229,6 +235,12 @@ input[type="checkbox"]:disabled {
 
   color: var(--form-control-disabled);
   cursor: not-allowed;
+}
+
+select {
+  color: var(--main-color);
+  padding: 0.5rem;
+  border-radius: 1rem;
 }
 
 .avatar {
@@ -291,7 +303,7 @@ input[type="checkbox"]:disabled {
   align-items: center;
 }
 .primary-color {
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 
 .counter {
@@ -300,7 +312,7 @@ input[type="checkbox"]:disabled {
   top: 0;
   right: 0;
 
-  background: var(--primary-color);
+  background: var(--main-color);
   color: var(--secondary-color);
   border-radius: 50%;
 
@@ -329,8 +341,8 @@ input[type="checkbox"]:disabled {
 @media (prefers-color-scheme: light) {
   :root {
     --dark-color: #f9f9f9; /* was darkest, now lightest background */
-    --light-color: color-mix(in srgb, var(--primary-color) 40%, black);
-    --primary-color: #8bbd1f; /* slightly deeper green for contrast on light bg */
+    --light-color: color-mix(in srgb, var(--main-color) 40%, black);
+    --main-color: #8bbd1f; /* slightly deeper green for contrast on light bg */
     --secondary-color: #ffffff; /* secondary background lighter */
     --darker-gray-color: #e5e5e5;
     --dark-gray-color: #cccccc;
@@ -343,10 +355,10 @@ input[type="checkbox"]:disabled {
     width: 100%;
     font-weight: 800;
     line-height: 1.5rem;
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--main-color);
     padding: 0.5rem 1rem;
     background: transparent;
-    color: var(--primary-color);
+    color: var(--main-color);
 
     transition: all 0.3s ease;
 
@@ -358,7 +370,7 @@ input[type="checkbox"]:disabled {
     }
   }
   .btn:hover {
-    background-color: var(--primary-color);
+    background-color: var(--main-color);
     color: var(--dark-color);
   }
 
@@ -388,6 +400,14 @@ input[type="checkbox"]:disabled {
   }
   100% {
     transform: translateY(0);
+  }
+}
+@keyframes showingLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 

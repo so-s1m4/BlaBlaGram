@@ -17,12 +17,12 @@
   border-radius: 50%;
 }
 .wrapper {
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   max-width: 550px;
   height: fit-content;
-  background: var(--secondary-color);
   padding: 1rem;
   border-radius: 0.5rem;
   user-select: none;
@@ -30,13 +30,13 @@
   -webkit-touch-callout: none;
 }
 .flash-highlight {
-  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  background: color-mix(in srgb, var(--main-color) 10%, transparent);
 }
 .wrapper .username {
   display: block;
   text-align: right;
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--main-color);
   text-align: right;
 }
 .wrapper .text pre {
@@ -46,7 +46,7 @@
 .message-sender .wrapper .username {
   display: block;
   font-weight: initial;
-  color: var(--primary-color);
+  color: var(--main-color);
   text-align: left;
 }
 .media-holder {
@@ -63,12 +63,12 @@
   border-radius: 0.5rem;
 
   padding: 0.5rem;
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 .media-item svg {
   width: 2rem;
   height: 2rem;
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 .media-item p {
   flex: 1;
@@ -81,7 +81,7 @@
   width: 2rem;
   height: 2rem;
 
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 .message-select-box {
   position: absolute;
@@ -91,7 +91,7 @@
   border-radius: inherit;
   transform: translateY(-50%);
 
-  color: var(--primary-color);
+  color: var(--main-color);
 
   width: 30px;
   height: 30px;
@@ -151,7 +151,7 @@
   background: color-mix(in srgb, var(--gray-color) 30%, transparent);
 }
 .emoji-wrapper.my {
-  background: color-mix(in srgb, var(--primary-color) 30%, transparent);
+  background: color-mix(in srgb, var(--main-color) 30%, transparent);
 }
 .emoji {
   height: 80%;
@@ -178,14 +178,14 @@
   flex-direction: column;
   gap: 3px;
   border-radius: 5px;
-  border-left: 3px solid var(--primary-color);
+  border-left: 3px solid var(--main-color);
   padding: 5px 0px 5px 5px;
-  background: color-mix(in srgb, var(--primary-color) 30%, transparent);
+  background: color-mix(in srgb, var(--main-color) 30%, transparent);
 }
 .replied-on-username {
   font-size: 0.8rem;
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 .replied-on-text {
   font-size: 0.6rem;
@@ -195,7 +195,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--primary-color);
+  color: var(--main-color);
 }
 
 @media (max-width: 800px) {
@@ -217,7 +217,7 @@
     display: block;
     text-align: right;
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--main-color);
   }
   .message-sender {
     flex-direction: column;

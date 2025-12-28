@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
 import { LoginPage } from '@features/login/login.component';
-import { AuthGuard } from '@core/guards/auth-guard.module';
+import { AuthGuard } from '@core/guards/auth.guard';
 import { LayoutComponent } from '@features/layout/layout.component';
 import { ChatsComponent } from '@features/chats/chats.component';
 import { FriendsComponent } from '@features/friends/friends.component';
 import { RegisterPage } from '@features/register/register.component';
 import { ChatComponent } from '@features/chats/ui/chat/chat.component';
 import { CreateComponent } from '@features/chats/ui/create-component/create-component';
+import { AdminComponent } from '@features/admin/admin.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterPage,
+  },
+  {
+    path: 'chats/:chatId',
+    component: ChatComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: '',
@@ -32,10 +38,6 @@ export const routes: Routes = [
         component: ChatsComponent,
         children: [
           {
-            path: ':chatId',
-            component: ChatComponent,
-          },
-          {
             path: 'create/:type',
             component: CreateComponent,
           },
@@ -44,6 +46,10 @@ export const routes: Routes = [
       {
         path: 'friends',
         component: FriendsComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
       },
     ],
   },

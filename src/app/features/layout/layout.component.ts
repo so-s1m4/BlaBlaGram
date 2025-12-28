@@ -11,6 +11,8 @@ import { SendGift } from './ui/send-gift/send-gift';
 import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { Gifts } from './data/gifts';
+import { ImgPipe } from "../../shared/utils/img.pipe";
+import {Block} from '@commonUI/block/block';
 
 @Component({
   selector: 'app-layout',
@@ -23,6 +25,8 @@ import { Gifts } from './data/gifts';
     SendGift,
     Modal,
     ProfileComponent,
+    ImgPipe,
+    Block
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -39,13 +43,13 @@ export class LayoutComponent implements OnInit {
   friendsService = inject(FriendsService);
 
   pages = [
-    {
-      name: 'gifts',
-      icon: 'gift',
-      title: 'Send gift',
-      isRoute: false,
-      onclick: this.toggleSendGift.bind(this),
-    },
+    // {
+    //   name: 'gifts',
+    //   icon: 'gift',
+    //   title: 'Send gift',
+    //   isRoute: false,
+    //   onclick: this.toggleSendGift.bind(this),
+    // },
     {
       name: 'friends',
       icon: 'friends',
@@ -73,8 +77,19 @@ export class LayoutComponent implements OnInit {
       isRoute: false,
       onclick: this.toggleShowProfile.bind(this),
     },
+    {
+      name: 'admin',
+      icon: 'hex',
+      title: 'Admin',
+      isRoute: true,
+      guard: () => this.authService.me && this.authService.me.role === 'admin',
+    },
   ];
   isCollapsed: boolean = true;
+  showSwitchAccounts: boolean = false;
+  toggleShowSwitchAccounts() {
+    this.showSwitchAccounts = !this.showSwitchAccounts;
+  }
   showNotifications: boolean = false;
 
   popUps: any[] = [];

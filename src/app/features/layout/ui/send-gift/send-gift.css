@@ -119,6 +119,19 @@
     object-fit: cover;
   }
 }
+.gift.item .amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--primary-color);
+  color: var(--dark-color);
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  transform: rotate(45deg) translate(20%, 50%);
+}
 
 @media screen and (max-width: 800px) {
   .wrapper {

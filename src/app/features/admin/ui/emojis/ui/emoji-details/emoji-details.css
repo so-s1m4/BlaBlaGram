@@ -1,0 +1,107 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.close.btn,
+.close.btn * {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: var(--primary-color);
+
+  &:hover {
+    background: transparent;
+    cursor: pointer;
+    color: var(--light-color);
+  }
+}
+.save.btn {
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  align-self: flex-end;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.holder {
+  position: absolute;
+  top: 20%;
+  min-height: 80%;
+  width: 45%;
+  padding: 20px;
+  animation: showingUp 0.3s ease-in-out;
+  border-radius: 2rem 2rem 0 0;
+}
+
+.holder form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.title {
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: bolder;
+  margin-bottom: 1rem;
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.row {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.row label {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+  min-width: 150px;
+  text-align: right;
+}
+.row .input {
+  width: 100%;
+  color: var(--light-color);
+}
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.field {
+  width: fit-content;
+  height: fit-content;
+  background: red;
+}
+@media (max-width: 1200px) {
+  .holder {
+    width: 70%;
+    min-height: 90%;
+    top: 10%;
+    padding: 10px;
+  }
+}
+@media (max-width: 800px) {
+  .holder {
+    width: 100%;
+    min-height: 90%;
+    top: 10%;
+    padding: 10px;
+  }
+}

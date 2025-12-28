@@ -1,19 +1,18 @@
 <div class="chats-container" style="border: 0;">
-  <div class="chats-header" GlassEffect>
+  <app-block class="chats-header" style="flex-direction: row; border-radius: 0 0 2rem 2rem">
     <h1>Chats</h1>
     <div class="btn create" (click)="toggleCreateModal()">
       <svg icon="plus"></svg>
     </div>
     <app-modal *ngIf="showCreateModal" (click)="toggleCreateModal()" [showBackdrop]="!window.isDesktop()"
-      [style]='"background: " + (window.isDesktop() ? "transparent" : "rgba(0,0,0,.4)")'>
+               [style]='"background: " + (window.isDesktop() ? "transparent" : "rgba(0,0,0,.4)")'>
       <app-create-modal (click)="stopPropagation($event)" (onClick)="toggleCreateModal()">
-
       </app-create-modal>
     </app-modal>
-  </div>
+  </app-block>
   <div class="chats-list">
     @for (chat of getChats.list; track chat.id) {
-    <app-chat-preview GlassEffect [chat]="chat" (click)="selectChat(chat)"></app-chat-preview>
+      <app-chat-preview [chat]="chat" (click)="selectChat(chat)"></app-chat-preview>
     }
   </div>
 </div>

@@ -29,6 +29,7 @@ import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { SpaceInfoComponent } from '../space-info-component/space-info';
 import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
+import {Block} from '@commonUI/block/block';
 
 @Component({
   selector: 'app-chat',
@@ -45,8 +46,9 @@ import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/
     Modal,
     ProfileComponent,
     SpaceInfoComponent,
-    GlassEffectDirective
-],
+    GlassEffectDirective,
+    Block
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
@@ -57,7 +59,6 @@ export class ChatComponent
   URL = URL;
   constructor(private aRoute: ActivatedRoute) {}
 
-  layout = inject(LayoutComponent);
   chatService = inject(ChatsService);
   friendsService = inject(FriendsService);
   authService = inject(AuthService);

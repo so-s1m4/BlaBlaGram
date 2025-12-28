@@ -26,6 +26,7 @@ import { PhotoGalleryComponent } from './ui/photo-gallery/photo-gallery.componen
 import { Subject, takeUntil } from 'rxjs';
 import { AppComponent } from 'app/app.component';
 import { GlassEffectDirective } from "@shared/common-ui/glass-wrapper-component/glass-wrapper-component";
+import {Block} from '@commonUI/block/block';
 
 interface Gift {
   url: string;
@@ -56,8 +57,9 @@ interface ProfileData {
     SvgIconComponent,
     GiftComponent,
     PhotoGalleryComponent,
-    GlassEffectDirective
-],
+    GlassEffectDirective,
+    Block
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
@@ -110,7 +112,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
 
-    
+
   }
 
   ngOnInit(): void {
@@ -240,10 +242,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private loadProfile(username: string) {
     if (username === 'me') {
       this.isMyProfile = true;
-      const me = this.authService.me as ProfileData;
-      this.data = { ...me };
-      this.data.gifts = me.gifts;
-      this.patchFormFromData(this.data);
+      this.data = this.authService.me;
+      this.patchFormFromData(this.data!);
       this.buildNavPanel();
       return;
     }
@@ -255,9 +255,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         const profile: ProfileData = res.data;
         this.data = { ...profile };
-        if (this.data.img) {
-          this.data.img = [...this.data.img].reverse();
-        }
         this.buildNavPanel();
       });
   }
@@ -272,7 +269,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   private buildNavPanel() {
     this.navPanel = [
-      { label: 'Gifts', guard: true },
+      // { label: 'Gifts', guard: true },
       { label: 'Photos', guard: true },
       // { label: 'Posts', guard: true },
       { label: 'Settings', guard: this.isMyProfile },

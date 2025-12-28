@@ -1,0 +1,62 @@
+<div class="holder" GlassEffect>
+  <table class="table">
+    <tr style="background: rgba(255, 255, 255, .4);">
+      <th>
+        #
+      </th>
+      <th style="width: 50px;">
+        🖼️
+      </th>
+      <th>
+        🪪
+      </th>
+      <th>
+        💾
+      </th>
+      <th>
+        📁
+      </th>
+      <th>
+        👤
+      </th>
+      <th>
+        📅
+      </th>
+      <th style="width: 30px; padding: 0 5px;">
+        <button class="btn" (click)="userIdForDetails = 'create'"><svg icon="plus"></svg></button>
+      </th>
+    </tr>
+    <tr *ngFor="let user of usersData.list">
+      <td><strong>{{user._id.slice(-7)}}</strong></td>
+      <td>
+        <a [href]="user.img[user.img.length - 1] | img">
+          <img [src]="user.img[user.img.length - 1] | img" class="avatar" width="50" height="50" />
+        </a>
+      </td>
+      <td>{{user.username}}</td>
+      <td>{{user.currency}}</td>
+      <td>{{user.storage / 1024 / 1024 | number: '1.0-2'}} MB</td>
+      <td>
+        <h2>
+          @switch(user.role){
+          @case ('user') {
+          👤
+          }
+          @case ('admin') {
+          👑
+          }}
+        </h2>
+      </td>
+      <td>{{user.createdAt | date: 'dd/MM/yy'}}</td>
+      <td><button class="btn" (click)="userIdForDetails = user._id"><svg icon="pen"></svg></button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<app-modal *ngIf="userIdForDetails !== null && userIdForDetails !== 'create'" (click)="userIdForDetails = null">
+  <app-user-details [userId]="userIdForDetails" (close)="userIdForDetails = null"></app-user-details>
+</app-modal>
+<app-modal *ngIf="userIdForDetails === 'create'" (click)="userIdForDetails = null">
+  <app-user-create (close)="userIdForDetails = null"></app-user-create>
+</app-modal>
