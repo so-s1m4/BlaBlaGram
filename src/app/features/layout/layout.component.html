@@ -1,10 +1,9 @@
 <!-- <div class="title-bar">
   <app-titlebar></app-titlebar>
 </div> -->
-@if (this.webSocketService.socket$.connected){
+@if (this.webSocketService.socket$.connected) {
 <div class="app">
-  <div class="sidebar" [ngClass]="{ collapsed: this.isCollapsed }">
-    <h1 class="title">Bla Bla Gram</h1>
+  <app-block class="sidebar" [ngClass]="{ collapsed: this.isCollapsed }">
     <div class="buttons">
       @for (link of this.pages; track link.name) {
       <button *ngIf='link.guard ? link.guard() : true' class="button page-link" [name]="link.name"
@@ -14,26 +13,25 @@
         <div class="counter" *ngIf="link.counter && link.counter() > 0">{{link.counter()}}</div>
       </button>
       }
-<!--      <div class="button profile-img" (click)="toggleShowSwitchAccounts()">-->
-<!--        <img [src]="authService.me?.img[authService.me.img.length - 1] | img" alt="" class="avatar">-->
-<!--      </div>-->
+      <button class="button profile-img" (click)="toggleShowSwitchAccounts()">
+        <img [src]="authService.me?.img[authService.me.img.length - 1] | img" alt="" class="avatar">
+      </button>
     </div>
 
 
-<!--    <div class="switch-accounts" *ngIf="showSwitchAccounts">-->
-<!--      <div class="account" (click)="authService.setIsAuthed(false)" [routerLink]="'/login'">-->
-<!--        <svg icon="plus" class="avatar"></svg>-->
-<!--        <h5>Add Account</h5>-->
-<!--      </div>-->
-<!--      @for (acc of authService.getAccounts(); track acc.token) {-->
-<!--      <div class="account" (click)="authService.switchAccount(acc.token)">-->
-<!--        <img [src]="acc.img[acc.img.length - 1] | img" alt="" class="avatar">-->
-<!--        <h5>{{ acc.username }}</h5>-->
-<!--      </div>-->
-<!--      }-->
-<!--    </div>-->
-
-  </div>
+    <app-block class="switch-accounts" *ngIf="showSwitchAccounts">
+      <div class="account" (click)="authService.setIsAuthed(false)" [routerLink]="'/login'">
+        <svg icon="plus" class="avatar"></svg>
+        <h5>Add Account</h5>
+      </div>
+      @for (acc of authService.getAccounts(); track acc.token) {
+      <div class="account" (click)="authService.switchAccount(acc.token)">
+        <img [src]="acc.img[acc.img.length - 1] | img" alt="" class="avatar">
+        <h5>{{ acc.username }}</h5>
+      </div>
+      }
+    </app-block>
+  </app-block>
   <div class="popups-holder" [ngClass]="{ showed: this.popUps.length > 0 }">
     @for (popUp of this.popUps; track popUp) {
     <app-popup [data]="popUp"></app-popup>

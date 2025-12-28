@@ -10,10 +10,11 @@ import { ImgPipe } from '@utils/img.pipe';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FriendsService } from '@features/friends/data/friends.service';
 import { WebSocketService } from '@services/web-socket.service';
+import { Block } from '@shared/common-ui/block/block';
 
 @Component({
   selector: 'app-chat-preview',
-  imports: [ImgPipe, DatePipe, CommonModule],
+  imports: [ImgPipe, DatePipe, CommonModule, Block],
   templateUrl: './chat-preview.component.html',
   styleUrl: './chat-preview.component.css',
 })

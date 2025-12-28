@@ -12,6 +12,7 @@ import { Modal } from '@shared/common-ui/modal/modal';
 import { ProfileComponent } from '@features/profile/profile.component';
 import { Gifts } from './data/gifts';
 import { ImgPipe } from "../../shared/utils/img.pipe";
+import {Block} from '@commonUI/block/block';
 
 @Component({
   selector: 'app-layout',
@@ -24,8 +25,9 @@ import { ImgPipe } from "../../shared/utils/img.pipe";
     SendGift,
     Modal,
     ProfileComponent,
-    ImgPipe
-],
+    ImgPipe,
+    Block
+  ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })

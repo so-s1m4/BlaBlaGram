@@ -18,7 +18,7 @@
 
   width: 3rem;
   height: 3rem;
-  background: var(--primary-color);
+  background: var(--main-color);
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -44,7 +44,7 @@
 
 .progress-bar {
   height: 100%;
-  background: var(--primary-color);
+  background: var(--main-color);
   width: 0%;
   transition: width 0.1s linear;
 }

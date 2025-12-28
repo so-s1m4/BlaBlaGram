@@ -11,15 +11,15 @@ export class AppComponent implements OnInit {
   title = 'BlaBlaGram';
   changeMainColor(color: string) {
     localStorage.setItem('mainColor', color);
-    document.documentElement.style.setProperty('--primary-color', color);
+    document.documentElement.style.setProperty('--main-color', color);
   }
   resetMainColor() {
     localStorage.setItem('mainColor', '');
 
-    document.documentElement.style.setProperty('--primary-color', '');
+    document.documentElement.style.setProperty('--main-color', '');
   }
   ngOnInit(): void {
     const color = localStorage.getItem('mainColor');
-    document.documentElement.style.setProperty('--primary-color', color);
+    document.documentElement.style.setProperty('--main-color', color);
   }
 }

@@ -19,6 +19,11 @@ export const routes: Routes = [
     component: RegisterPage,
   },
   {
+    path: 'chats/:chatId',
+    component: ChatComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     component: LayoutComponent,
     canActivate: [AuthGuard],
@@ -32,10 +37,6 @@ export const routes: Routes = [
         path: 'chats',
         component: ChatsComponent,
         children: [
-          {
-            path: ':chatId',
-            component: ChatComponent,
-          },
           {
             path: 'create/:type',
             component: CreateComponent,

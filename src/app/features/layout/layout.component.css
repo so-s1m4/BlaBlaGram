@@ -17,7 +17,7 @@
   width: 20%;
   min-width: 270px;
   height: 100%;
-  background: var(--dark-color);
+  background: var(--primary-color);
   padding: 0 1vw;
   border: 0px;
   border-right: 2px solid var(--primary-color);
@@ -60,7 +60,7 @@
   padding-left: 1vw;
   font-size: 25px;
   position: relative;
-  color: var(--primary-color);
+  color: var(--gray-color);
 }
 
 .button svg {
@@ -70,12 +70,12 @@
 
 .button:hover {
   background: rgba(1, 1, 1, 0.5);
-  color: var(--light-color);
+  color: var(--main-color);
 }
 .sidebar .page-link:hover {
   background: var(--secondary-color);
 }
-.sidebar.collapsed .page-link:hover {
+.sidebar .page-link:hover {
   background: transparent;
 }
 
@@ -124,7 +124,7 @@
   .app {
     flex-direction: row;
   }
-  .sidebar.collapsed {
+  .sidebar {
     width: 100px;
     align-items: center;
     padding: 0;
@@ -132,20 +132,20 @@
     border-right: 4px solid var(--primary-color);
     padding-top: 4rem;
   }
-  .sidebar.collapsed .buttons {
+  .sidebar .buttons {
     height: 100%;
     padding: 0;
   }
-  .sidebar.collapsed .buttons button {
+  .sidebar .buttons button {
     padding: 0;
   }
-  .sidebar.collapsed + .notifications.showed {
+  .sidebar + .notifications.showed {
     left: 95px;
 
     padding: 0 2px;
   }
-  .sidebar.collapsed .title,
-  .sidebar.collapsed span {
+  .sidebar .title,
+  .sidebar span {
     display: none;
   }
 }
@@ -166,7 +166,7 @@
   width: 200px;
   max-height: 150px;
   position: absolute;
-  bottom: 40px;
+  bottom: 60px;
   left: 100px;
   cursor: pointer;
 
@@ -175,21 +175,19 @@
   padding: 5px;
   border-radius: 8px;
 
-  background: var(--dark-color);
-
   overflow: auto;
 }
 .switch-accounts .account {
   height: 50px;
 
   display: flex;
-  color: var(--primary-color);
+  color: var(--gray-color);
   align-items: center;
   gap: 1rem;
   border-radius: 8px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.5);
+    color: #8bbd1f;
   }
 }
 
@@ -201,13 +199,27 @@
     display: none;
   }
   .sidebar {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+
     border: 0px;
-    border-top: 2px solid var(--primary-color);
-    width: 100%;
+    width: 90%;
     height: 4rem;
     display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 1rem;
+
+    border-radius: 2rem;
+    z-index: 1000;
   }
   .sidebar .buttons {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -247,16 +259,17 @@
   }
   .switch-accounts {
     position: absolute;
-    bottom: 60px;
-    left: 0;
+    bottom: 70px;
+    left: initial;
+    right: 0;
 
     cursor: pointer;
     z-index: 1000;
-    padding: 5px;
-    border-radius: 8px;
+    border-radius: 2rem;
+    padding: .5rem 1rem;
     background: var(--dark-color);
     overflow: auto;
-    width: 100%;
+    width: 50%;
 
     animation: showingUp 0.3s ease-in-out;
   }
